@@ -1,0 +1,74 @@
+explanation of SP calculation:
+st=start time: a timestamp instance in float values
+rt=response time: a time duration value(float)
+
+raw data example:
+data from slam
+slam_st; slam_rt 	
+
+data from rrt
+slam_st; rrt_st; rrt_rt
+
+data from mpc
+slam_st, mpc_st, mpc_rt
+
+data from tsp
+tsp_st; tsp_opt
+#tsp_st2-tsp_st1=10sec  //meaning tsp executes every 10 sec
+
+
+//asign deadlines, utilizing mean values from benchmark as deadlines, 
+//this is totally abitrary
+mean_slam=1.360387724;
+std_slam=2.2317932;
+mean_mpc=0.024897446;
+std_mpc=0.002504779;
+mean_rrt=1.000517992;
+std_rrt=0.259475283;
+mean_path=5.853386303;
+std_path=4.183426061;
+
+all probablistic deadlines, lambda set to 0.5
+lambda_path=0.5;
+lambda_slam=0.5;
+lambda_rrt=0.5;
+lambda_mpc=0.5;
+
+//build dsitributions:
+
+check the timestamps with each response times
+create an array for 10 sec trace data of response times for SLAM,RRT,MPC,critical path makespan
+build a distribution for every 10 sec data
+
+for slam:
+if slam response time nearly 10sec, tke determisnitic value instead of distribution
+same for rrt, beauce rrt only executes with new slam map
+
+
+//finish buidling all the traces 
+//for more than 1 element in the array of traces, calculate upper cdf for each distributions: (P(R>tau))
+//for only one lement of the array, check if value greater than absolute threshold, tau, 
+//if so, cdf=1
+//else , cdf =0
+
+this gives us all P(R>tau) values
+
+now for each critical node and path, calculate individual S values
+S=P(R>tau)-lambda
+
+if S<0, penalty
+if S>=0, reward
+
+follow Sp formula now to calculate final SP for each 10 sec time window that we assume for DAG activation
+
+
+
+
+
+
+
+
+
+
+
+
