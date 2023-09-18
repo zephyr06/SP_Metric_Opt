@@ -1,15 +1,16 @@
 #pragma once
+#include <cmath>
 #include <vector>
 
-namespace SP_OPT {
+namespace SP_OPT_PA {
 
 class ProbabilityDistributionBase {
    public:
     ProbabilityDistributionBase() {}
 
-    virtual double CDF(double x);
+    double CDF(double x);
 
-    virtual void UpdateDistribution(std::vector<double> execution_time_data);
+    // virtual void UpdateDistribution(std::vector<double> execution_time_data);
 
     // data members
 };
@@ -21,6 +22,19 @@ class FiniteDist : public ProbabilityDistributionBase {
     FiniteDist(double granularity) {}
 };
 
-class GaussianDist : public ProbabilityDistributionBase {};
+class GaussianDist : public ProbabilityDistributionBase {
+   public:
+    GaussianDist() {}
+    GaussianDist(double mu, double sigma) : mu(mu), sigma(sigma) {}
 
-}  // namespace SP_OPT
+    inline double CDF(double x) {
+        double z = (x - mu) / (sigma * std::sqrt(2.0));
+        return 0.5 * (1.0 + std::erf(z));
+    }
+
+    // data
+    double mu;
+    double sigma;
+};
+
+}  // namespace SP_OPT_PA

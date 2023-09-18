@@ -32,18 +32,18 @@ typedef boost::property_map<Graph, boost::edge_name_t>::type edge_name_map_t;
 typedef std::unordered_map<LLint, Vertex> indexVertexMap;
 
 struct first_name_t {
-  typedef boost::vertex_property_tag kind;
+    typedef boost::vertex_property_tag kind;
 };
 struct SF_Fork {
-  SF_Fork() {}
-  SF_Fork(const std::vector<int> &source, int sink)
-      : source(source), sink(sink) {}
+    SF_Fork() {}
+    SF_Fork(const std::vector<int> &source, int sink)
+        : source(source), sink(sink) {}
 
-  // data member
-  std::vector<int> source;
-  int sink;
+    // data member
+    std::vector<int> source;
+    int sink;
 };
-namespace SP_OPT {
+namespace SP_OPT_PA {
 
 static constexpr Vertex NIL = -1;
 // Code from
@@ -57,69 +57,69 @@ void PrintChains(const std::vector<std::vector<int>> &chains);
 typedef std::map<int, SP_OPT_PA::TaskSet> MAP_Prev;
 using namespace SP_OPT_PA;
 class DAG_Model {
- public:
-  DAG_Model() {}
+   public:
+    DAG_Model() {}
 
-  DAG_Model(TaskSet &tasks, MAP_Prev &mapPrev, int numCauseEffectChain,
-            int chain_length, int num_fork, int fork_sensor_num_min,
-            int fork_sensor_num_max)
-      : tasks(tasks), mapPrev(mapPrev) {
-    RecordTaskPosition();
-    std::tie(graph_, indexesBGL_) = GenerateGraphForTaskSet();
-    chains_ = GetRandomChains(numCauseEffectChain, chain_length);
-    CategorizeTaskSet();
-    sf_forks_ =
-        GetRandomForks(num_fork, fork_sensor_num_min, fork_sensor_num_max);
-  }
+    DAG_Model(TaskSet &tasks, MAP_Prev &mapPrev, int numCauseEffectChain,
+              int chain_length, int num_fork, int fork_sensor_num_min,
+              int fork_sensor_num_max)
+        : tasks(tasks), mapPrev(mapPrev) {
+        RecordTaskPosition();
+        std::tie(graph_, indexesBGL_) = GenerateGraphForTaskSet();
+        chains_ = GetRandomChains(numCauseEffectChain, chain_length);
+        CategorizeTaskSet();
+        sf_forks_ =
+            GetRandomForks(num_fork, fork_sensor_num_min, fork_sensor_num_max);
+    }
 
-  DAG_Model(TaskSet &tasks, MAP_Prev &mapPrev, int numCauseEffectChain)
-      : DAG_Model(tasks, mapPrev, numCauseEffectChain, 0, 0, 0, 1e3) {}
+    DAG_Model(TaskSet &tasks, MAP_Prev &mapPrev, int numCauseEffectChain)
+        : DAG_Model(tasks, mapPrev, numCauseEffectChain, 0, 0, 0, 1e3) {}
 
-  std::pair<Graph, indexVertexMap> GenerateGraphForTaskSet() const;
+    std::pair<Graph, indexVertexMap> GenerateGraphForTaskSet() const;
 
-  void addEdge(int prevIndex, int nextIndex) {
-    mapPrev[nextIndex].push_back(GetTask(prevIndex));
-  }
+    void addEdge(int prevIndex, int nextIndex) {
+        mapPrev[nextIndex].push_back(GetTask(prevIndex));
+    }
 
-  void print();
+    void print();
 
-  void printChains();
+    void printChains();
 
-  int edgeNumber();
+    int edgeNumber();
 
-  std::vector<std::vector<int>> GetRandomChains(int numOfChains,
-                                                int chain_length = 0);
-  std::vector<SF_Fork> GetRandomForks(int num_fork, int fork_sensor_num_min,
-                                      int fork_sensor_num_max);
-  void SetChains(std::vector<std::vector<int>> &chains) { chains_ = chains; }
-  std::vector<int> FindSourceTaskIds() const;
-  std::vector<int> FindSinkTaskIds() const;
+    std::vector<std::vector<int>> GetRandomChains(int numOfChains,
+                                                  int chain_length = 0);
+    std::vector<SF_Fork> GetRandomForks(int num_fork, int fork_sensor_num_min,
+                                        int fork_sensor_num_max);
+    void SetChains(std::vector<std::vector<int>> &chains) { chains_ = chains; }
+    std::vector<int> FindSourceTaskIds() const;
+    std::vector<int> FindSinkTaskIds() const;
 
-  void CategorizeTaskSet();
-  void RecordTaskPosition();
+    void CategorizeTaskSet();
+    void RecordTaskPosition();
 
-  inline const TaskSet &GetTaskSet() const { return tasks; }
+    inline const TaskSet &GetTaskSet() const { return tasks; }
 
-  inline int GetTaskIndex(int task_id) const {
-    return task_id2position_.at(task_id);
-  }
-  inline const Task &GetTask(int task_id) const {
-    return tasks[GetTaskIndex(task_id)];
-  }
+    inline int GetTaskIndex(int task_id) const {
+        return task_id2position_.at(task_id);
+    }
+    inline const Task &GetTask(int task_id) const {
+        return tasks[GetTaskIndex(task_id)];
+    }
 
-  // data member
- private:
-  TaskSet tasks;
+    // data member
+   private:
+    TaskSet tasks;
 
- public:
-  MAP_Prev mapPrev;
-  Graph graph_;
-  indexVertexMap indexesBGL_;
-  std::vector<std::vector<int>> chains_;
-  std::unordered_map<int, TaskSet> processor2taskset_;
-  std::unordered_map<int, uint> task_id2task_index_within_processor_;
-  std::unordered_map<int, int> task_id2position_;
-  std::vector<SF_Fork> sf_forks_;
+   public:
+    MAP_Prev mapPrev;
+    Graph graph_;
+    indexVertexMap indexesBGL_;
+    std::vector<std::vector<int>> chains_;
+    std::unordered_map<int, TaskSet> processor2taskset_;
+    std::unordered_map<int, uint> task_id2task_index_within_processor_;
+    std::unordered_map<int, int> task_id2position_;
+    std::vector<SF_Fork> sf_forks_;
 };
 
 // the number of cause-effect chains read into the DAG will be chainNum
@@ -129,9 +129,9 @@ DAG_Model ReadDAG_Tasks(std::string path, std::string priorityType = "orig",
 bool WhetherDAGChainsShareNodes(const DAG_Model &dag_tasks);
 
 inline std::string GetTaskSetName(int file_index, int N) {
-  return "dag-set-N" + std::to_string(N) + "-" +
-         std::string(3 - std::to_string(file_index).size(), '0') +
-         std::to_string(file_index) + "-syntheticJobs" + ".csv";
+    return "dag-set-N" + std::to_string(N) + "-" +
+           std::string(3 - std::to_string(file_index).size(), '0') +
+           std::to_string(file_index) + "-syntheticJobs" + ".csv";
 }
 
-}  // namespace SP_OPT
+}  // namespace SP_OPT_PA

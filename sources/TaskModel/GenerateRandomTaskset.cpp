@@ -65,7 +65,7 @@ void WriteTaskSets(std::ofstream &file, const TaskSet &tasks) {
     }
 }
 
-using namespace SP_OPT;
+using namespace SP_OPT_PA;
 DAG_Model GenerateDAG(const TaskSetGenerationParameters &tasks_params) {
     double totalUtilization = RandRange(tasks_params.totalUtilization_min,
                                         tasks_params.totalUtilization_max);
