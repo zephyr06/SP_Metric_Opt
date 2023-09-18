@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <unordered_map>
 #include <vector>
 
 #include "sources/Utils/testMy.h"
@@ -77,7 +78,7 @@ class FiniteDist : public ProbabilityDistributionBase {
     void Coalesce(const FiniteDist& other);
 
     // standard convolution to perform probabilitistic addition
-    void Convolve(const FiniteDist& other) {}
+    void Convolve(const FiniteDist& other);
 
     void AddPreemption(const FiniteDist& execution_time, double preempt_time) {}
 
@@ -87,12 +88,13 @@ class FiniteDist : public ProbabilityDistributionBase {
             p_sum += element.probability;
         for (Value_Proba& element : distribution) element.probability /= p_sum;
     }
-    std::unordered_map<int, double> GetV_PMap() const {
-        std::unordered_map<int, double> m;
+    std::unordered_map<double, double> GetV_PMap() const {
+        std::unordered_map<double, double> m;
         for (const Value_Proba& element : distribution)
             m[element.value] = element.probability;
         return m;
     }
+
     // sort distribution
     void SortDist() {
         std::sort(distribution.begin(), distribution.end(),
@@ -100,6 +102,7 @@ class FiniteDist : public ProbabilityDistributionBase {
                       return dis1.value < dis2.value;
                   });
     }
+    void UpdateDistribution(const std::unordered_map<double, double>& m_v2p);
 
     // data
     // saves the probability that x<= value

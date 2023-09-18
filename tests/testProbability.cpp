@@ -66,24 +66,25 @@ TEST(FiniteDist, Coalesce_v2) {
     EXPECT_EQ(8, dist1[2].value);
     EXPECT_EQ(0.02, dist1[2].probability);
 }
-// TEST(FiniteDist, Convolve) {
-//     std::vector<Value_Proba> dist_vec1 = {Value_Proba(3, 0.1),
-//                                           Value_Proba(7, 0.9)};
-//     std::vector<Value_Proba> dist_vec2 = {Value_Proba(0, 0.9),
-//                                           Value_Proba(4, 0.1)};
-//     FiniteDist dist1(dist_vec1);
-//     FiniteDist dist2(dist_vec2);
-//     dist1.Convolve(dist2);
-//     EXPECT_EQ(3, dist1.size());
-//     EXPECT_EQ(3, dist1[0].value);
-//     EXPECT_EQ(0.09, dist1[0].probability);
 
-//     EXPECT_EQ(7, dist1[1].value);
-//     EXPECT_EQ(0.82, dist1[1].probability);
+TEST(FiniteDist, Convolve) {
+    std::vector<Value_Proba> dist_vec1 = {Value_Proba(3, 0.1),
+                                          Value_Proba(7, 0.9)};
+    std::vector<Value_Proba> dist_vec2 = {Value_Proba(0, 0.9),
+                                          Value_Proba(4, 0.1)};
+    FiniteDist dist1(dist_vec1);
+    FiniteDist dist2(dist_vec2);
+    dist1.Convolve(dist2);
+    EXPECT_EQ(3, dist1.size());
+    EXPECT_EQ(3, dist1[0].value);
+    EXPECT_NEAR(0.09, dist1[0].probability, 1e-6);
 
-//     EXPECT_EQ(11, dist1[2].value);
-//     EXPECT_EQ(0.09, dist1[2].probability);
-// }
+    EXPECT_EQ(7, dist1[1].value);
+    EXPECT_NEAR(0.82, dist1[1].probability, 1e-6);
+
+    EXPECT_EQ(11, dist1[2].value);
+    EXPECT_NEAR(0.09, dist1[2].probability, 1e-6);
+}
 
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
