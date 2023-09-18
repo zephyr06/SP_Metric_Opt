@@ -80,7 +80,8 @@ class FiniteDist : public ProbabilityDistributionBase {
     // standard convolution to perform probabilitistic addition
     void Convolve(const FiniteDist& other);
 
-    void AddPreemption(const FiniteDist& execution_time, double preempt_time) {}
+    void AddPreemption(const FiniteDist& execution_time_dist,
+                       double preempt_time);
 
     void Normalize() {
         int p_sum = 0;
@@ -88,15 +89,11 @@ class FiniteDist : public ProbabilityDistributionBase {
             p_sum += element.probability;
         for (Value_Proba& element : distribution) element.probability /= p_sum;
     }
-    std::unordered_map<double, double> GetV_PMap() const {
-        std::unordered_map<double, double> m;
-        for (const Value_Proba& element : distribution)
-            m[element.value] = element.probability;
-        return m;
-    }
+
+    std::unordered_map<double, double> GetV_PMap() const;
 
     // sort distribution
-    void SortDist() {
+    inline void SortDist() {
         std::sort(distribution.begin(), distribution.end(),
                   [](const Value_Proba& dis1, const Value_Proba& dis2) {
                       return dis1.value < dis2.value;
@@ -104,6 +101,7 @@ class FiniteDist : public ProbabilityDistributionBase {
     }
     void UpdateDistribution(const std::unordered_map<double, double>& m_v2p);
 
+    std::vector<Value_Proba> GetTailDistribution(double preempt_time);
     // data
     // saves the probability that x<= value
     std::vector<Value_Proba> distribution;
