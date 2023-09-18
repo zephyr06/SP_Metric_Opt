@@ -1,5 +1,5 @@
 #include "RegularTasks.h"
-namespace RegularTaskSystem {
+namespace SP_OPT_PA {
 
 std::vector<int> GetIDVec(const TaskSet &tasks) {
   std::vector<int> ids;
@@ -145,4 +145,4 @@ int GetHyperPeriod(const TaskSetInfoDerived &tasks_info,
   }
   return hp;
 }
-}  // namespace RegularTaskSystem
+}  // namespace SP_OPT_PA

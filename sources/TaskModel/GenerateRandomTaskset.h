@@ -6,7 +6,7 @@
 #include "sources/TaskModel/RegularTasks.h"
 #include "sources/Utils/Parameters.h"
 
-using namespace RegularTaskSystem;
+using namespace SP_OPT_PA;
 
 // std::vector<int> PeriodSetAM = {1, 2, 5, 10, 20, 50, 100, 200, 1000};
 // std::vector<int> PeriodSetAM = {2, 5, 10, 20, 50, 100, 200};

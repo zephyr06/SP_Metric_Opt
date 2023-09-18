@@ -35,7 +35,7 @@ void PrintChains(const std::vector<std::vector<int>>& chains) {
 // *2, 1 means task 2 depend on task 1, or task 1 must execute before task 2;
 // 1 would be the first in MAP_Prev, while 2 is one task in TaskSet
 // MAP_Prev maps one task to all the tasks it depends on
-using namespace RegularTaskSystem;
+using namespace SP_OPT_PA;
 
 std::pair<Graph, indexVertexMap> DAG_Model::GenerateGraphForTaskSet() const {
   Graph g;

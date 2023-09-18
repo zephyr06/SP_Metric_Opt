@@ -54,8 +54,8 @@ void PrintChains(const std::vector<std::vector<int>> &chains);
 // *2, 1 means task 2 depend on task 1, or task 1 must execute before task 2;
 // 1 would be the first in MAP_Prev, while 2 is one task in TaskSet
 // MAP_Prev maps one task to all the tasks it depends on
-typedef std::map<int, RegularTaskSystem::TaskSet> MAP_Prev;
-using namespace RegularTaskSystem;
+typedef std::map<int, SP_OPT_PA::TaskSet> MAP_Prev;
+using namespace SP_OPT_PA;
 class DAG_Model {
  public:
   DAG_Model() {}

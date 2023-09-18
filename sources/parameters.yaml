@@ -1,0 +1,7 @@
+%YAML:1.0
+debugMode: 1
+TIME_LIMIT: 600 # seconds, -1 means unlimited time
+# Task set settings
+priorityMode: RM
+
+
