@@ -44,7 +44,8 @@ class FiniteDist : public ProbabilityDistributionBase {
    public:
     FiniteDist() {}
     FiniteDist(const GaussianDist& gauss_dist, double min_val, double max_val,
-               double granularity) {
+               double granularity)
+        : min_execution_time(min_val), max_execution_time(max_val) {
         distribution.reserve(granularity);
         if (granularity < 1)
             CoutError("Invalid granularity!");
@@ -60,12 +61,50 @@ class FiniteDist : public ProbabilityDistributionBase {
         }
     }
 
+    FiniteDist(const std::vector<Value_Proba>& distribution_input) {
+        distribution = distribution_input;
+        SortDist();
+        min_execution_time = distribution[0].value;
+        max_execution_time = distribution.back().value;
+    }
+
     inline size_t size() const { return distribution.size(); }
 
     inline Value_Proba& operator[](size_t i) { return distribution[i]; }
     inline const Value_Proba& at(size_t i) { return distribution.at(i); }
+
+    // ''merge'' two distribution
+    void Coalesce(const FiniteDist& other);
+
+    // standard convolution to perform probabilitistic addition
+    void Convolve(const FiniteDist& other) {}
+
+    void AddPreemption(const FiniteDist& execution_time, double preempt_time) {}
+
+    void Normalize() {
+        int p_sum = 0;
+        for (const Value_Proba& element : distribution)
+            p_sum += element.probability;
+        for (Value_Proba& element : distribution) element.probability /= p_sum;
+    }
+    std::unordered_map<int, double> GetV_PMap() const {
+        std::unordered_map<int, double> m;
+        for (const Value_Proba& element : distribution)
+            m[element.value] = element.probability;
+        return m;
+    }
+    // sort distribution
+    void SortDist() {
+        std::sort(distribution.begin(), distribution.end(),
+                  [](const Value_Proba& dis1, const Value_Proba& dis2) {
+                      return dis1.value < dis2.value;
+                  });
+    }
+
     // data
     // saves the probability that x<= value
     std::vector<Value_Proba> distribution;
+    double min_execution_time;
+    double max_execution_time;
 };
 }  // namespace SP_OPT_PA
