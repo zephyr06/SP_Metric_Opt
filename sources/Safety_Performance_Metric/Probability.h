@@ -43,7 +43,9 @@ struct Value_Proba {
     Value_Proba(double v, double p) : value(v), probability(p) {}
 
     inline bool operator==(const Value_Proba& other) const {
-        return value == other.value && probability == other.probability;
+        double tolerance = 1e-4;
+        return abs(value - other.value) < tolerance &&
+               abs(probability - other.probability) < tolerance;
     }
     inline bool operator!=(const Value_Proba& other) const {
         return !(*this == other);
@@ -142,6 +144,13 @@ class FiniteDist : public ProbabilityDistributionBase {
     void AddPreemption(const FiniteDist& execution_time_dist_hp,
                        double period_hp, double dealine_this);
     void CompressDeadlineMissProbability(double deadline);
+
+    void print() const {
+        for (const auto vp : distribution)
+            std::cout << "(" << vp.value << ", " << vp.probability << ") ";
+        std::cout << "\n";
+    }
+
     // data members
     // saves the probability that x<= value
     std::vector<Value_Proba> distribution;

@@ -96,7 +96,8 @@ void FiniteDist::CompressDeadlineMissProbability(double deadline) {
         ddl_miss += itr->probability;
     }
     distribution.erase(itr_exceed_ddl, distribution.end());
-    distribution.push_back(Value_Proba(deadline + 1, ddl_miss));
+    if (ddl_miss > 0)
+        distribution.push_back(Value_Proba(deadline + 1, ddl_miss));
 }
 void FiniteDist::AddPreemption(const FiniteDist& execution_time_dist_hp,
                                double period_hp, double deadline_this) {

@@ -24,9 +24,17 @@ class Task {
     // Member list
     int id;
     FiniteDist execution_time_dist;
-    int deadline;
-    int period;
+    double period;
+    double deadline;
     double priority;
+
+    Task(int id, const FiniteDist &exec, double period, double ddl,
+         double priority)
+        : id(id),
+          execution_time_dist(exec),
+          deadline(ddl),
+          period(period),
+          priority(priority) {}
 
     /**
      * only used in ReadTaskSet because the input parameter's type is int
@@ -39,9 +47,8 @@ class Task {
     }
 
     void print() {
-        std::cout << "The period is: " << period << " The executionTime is "
-                  << executionTime << " The deadline is " << deadline
-                  << std::endl;
+        std::cout << "The period is: " << period << " The deadline is "
+                  << deadline << std::endl;
     }
 };
 typedef std::vector<SP_OPT_PA::Task> TaskSet;
