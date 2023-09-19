@@ -102,7 +102,7 @@ class FiniteDist : public ProbabilityDistributionBase {
     bool operator==(const FiniteDist& other) const {
         if (size() != other.size())
             return false;
-        for (int i = 0; i < size(); i++) {
+        for (uint i = 0; i < size(); i++) {
             if (distribution[i] != other.distribution[i])
                 return false;
         }

@@ -32,8 +32,8 @@ class Task {
          double priority)
         : id(id),
           execution_time_dist(exec),
-          deadline(ddl),
           period(period),
+          deadline(ddl),
           priority(priority) {}
 
     /**

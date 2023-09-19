@@ -24,6 +24,13 @@ set(CONVENIENCE_LIB_NAME ${PROJECT_NAME})
 
 add_definitions(-DPROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")
 
+if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+find_package(GTSAMCMakeTools)
+include(GtsamMakeConfigFile)
+include(GtsamBuildTypes)
+include(GtsamTesting)
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${GTSAM_DIR}/../GTSAMCMakeTools")
+endif()
 
 # google test
 include(FetchContent)
