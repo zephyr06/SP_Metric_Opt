@@ -17,7 +17,9 @@ void FiniteDist::UpdateDistribution(
     for (auto itr = m_v2p.begin(); itr != m_v2p.end(); itr++) {
         distribution.push_back(Value_Proba(itr->first, itr->second));
     }
+
     SortDist();
+    UpdateMinMaxValues();
 }
 
 // O(n log(n))
@@ -50,10 +52,10 @@ void FiniteDist::Convolve(const FiniteDist& other) {
 
 std::vector<Value_Proba> FiniteDist::GetTailDistribution(double preempt_time) {
     auto itr =
-        lower_bound(distribution.begin(), distribution.end(), preempt_time,
-                    [](const Value_Proba& element, double preempt_time) {
-                        return element.value < preempt_time;
-                    });
+        std::upper_bound(distribution.begin(), distribution.end(), preempt_time,
+                         [](double preempt_time, const Value_Proba& element) {
+                             return preempt_time < element.value;
+                         });
     if (itr == distribution.end())
         return {};
     else {
@@ -62,8 +64,52 @@ std::vector<Value_Proba> FiniteDist::GetTailDistribution(double preempt_time) {
     }
 }
 
-void FiniteDist::AddPreemption(const FiniteDist& execution_time_dist,
-                               double preempt_time) {
-    std::vector<Value_Proba> tail_dist = GetTailDistribution(preempt_time);
+std::vector<Value_Proba> FiniteDist::GetHeadDistribution(size_t tail_size) {
+    std::vector<Value_Proba> head_dist(
+        distribution.begin(), distribution.begin() + size() - tail_size);
+    return head_dist;
 }
+
+// return whether new preemption is added
+bool FiniteDist::AddOnePreemption(const FiniteDist& execution_time_dist,
+                                  double preempt_time) {
+    std::vector<Value_Proba> tail_dist = GetTailDistribution(preempt_time);
+    if (tail_dist.size() == 0)
+        return false;
+    else {
+        FiniteDist head(GetHeadDistribution(tail_dist.size()));
+        FiniteDist tail(tail_dist);
+        tail.Convolve(execution_time_dist);
+        head.Coalesce(tail);
+        UpdateDistribution(head.distribution);
+        return true;
+    }
+}
+void FiniteDist::CompressDeadlineMissProbability(double deadline) {
+    auto itr_exceed_ddl =
+        std::upper_bound(distribution.begin(), distribution.end(), deadline,
+                         [](double deadline, const Value_Proba& element) {
+                             return deadline < element.value;
+                         });
+    double ddl_miss = 0;
+    for (auto itr = itr_exceed_ddl; itr != distribution.end(); itr++) {
+        ddl_miss += itr->probability;
+    }
+    distribution.erase(itr_exceed_ddl, distribution.end());
+    distribution.push_back(Value_Proba(deadline + 1, ddl_miss));
+}
+void FiniteDist::AddPreemption(const FiniteDist& execution_time_dist_hp,
+                               double period_hp, double deadline_this) {
+    // backlog
+    Convolve(execution_time_dist_hp);
+    int hp_instance_considered = 1;
+    while (max_time <= deadline_this &&
+           max_time > hp_instance_considered * period_hp) {
+        AddOnePreemption(execution_time_dist_hp,
+                         hp_instance_considered * period_hp);
+        hp_instance_considered++;
+    }
+    CompressDeadlineMissProbability(deadline_this);
+}
+
 }  // namespace SP_OPT_PA

@@ -46,7 +46,7 @@ class FiniteDist : public ProbabilityDistributionBase {
     FiniteDist() {}
     FiniteDist(const GaussianDist& gauss_dist, double min_val, double max_val,
                double granularity)
-        : min_execution_time(min_val), max_execution_time(max_val) {
+        : min_time(min_val), max_time(max_val) {
         distribution.reserve(granularity);
         if (granularity < 1)
             CoutError("Invalid granularity!");
@@ -63,10 +63,21 @@ class FiniteDist : public ProbabilityDistributionBase {
     }
 
     FiniteDist(const std::vector<Value_Proba>& distribution_input) {
+        UpdateDistribution(distribution_input);
+    }
+
+    void UpdateDistribution(
+        const std::vector<Value_Proba>& distribution_input) {
         distribution = distribution_input;
         SortDist();
-        min_execution_time = distribution[0].value;
-        max_execution_time = distribution.back().value;
+        UpdateMinMaxValues();
+    }
+
+    void UpdateMinMaxValues() {
+        if (size() > 0) {
+            min_time = distribution[0].value;
+            max_time = distribution.back().value;
+        }
     }
 
     inline size_t size() const { return distribution.size(); }
@@ -79,9 +90,6 @@ class FiniteDist : public ProbabilityDistributionBase {
 
     // standard convolution to perform probabilitistic addition
     void Convolve(const FiniteDist& other);
-
-    void AddPreemption(const FiniteDist& execution_time_dist,
-                       double preempt_time);
 
     void Normalize() {
         int p_sum = 0;
@@ -102,10 +110,17 @@ class FiniteDist : public ProbabilityDistributionBase {
     void UpdateDistribution(const std::unordered_map<double, double>& m_v2p);
 
     std::vector<Value_Proba> GetTailDistribution(double preempt_time);
-    // data
+    std::vector<Value_Proba> GetHeadDistribution(size_t tail_size);
+
+    bool AddOnePreemption(const FiniteDist& execution_time_dist,
+                          double preempt_time);
+    void AddPreemption(const FiniteDist& execution_time_dist_hp,
+                       double period_hp, double dealine_this);
+    void CompressDeadlineMissProbability(double deadline);
+    // data members
     // saves the probability that x<= value
     std::vector<Value_Proba> distribution;
-    double min_execution_time;
-    double max_execution_time;
+    double min_time;
+    double max_time;
 };
 }  // namespace SP_OPT_PA
