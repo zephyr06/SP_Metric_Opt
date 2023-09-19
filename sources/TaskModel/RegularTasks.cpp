@@ -58,7 +58,8 @@ TaskSet ReadTaskSet(std::string path, int granulairty) {
             tasksNode[i]["execution_time_max"].as<double>(), granulairty);
         Task task(tasksNode[i]["id"].as<int>(), finite_dist,
                   tasksNode[i]["period"].as<double>(),
-                  tasksNode[i]["deadline"].as<double>(), count++);
+                  tasksNode[i]["deadline"].as<double>(), count++,
+                  tasksNode[i]["name"].as<std::string>());
 
         tasks.push_back(task);
     }

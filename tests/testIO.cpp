@@ -22,7 +22,7 @@ TEST(read_write, task_sets) {
     EXPECT_EQ(4, tasks.size());
     EXPECT_EQ(20, tasks[0].period);
     EXPECT_EQ(5, tasks[3].execution_time_dist.size());
-    EXPECT_EQ(0.052, tasks[3].execution_time_dist[3].value);
+    EXPECT_EQ(0.052, tasks[3].execution_time_dist[0].value);
 }
 
 int main(int argc, char **argv) {
