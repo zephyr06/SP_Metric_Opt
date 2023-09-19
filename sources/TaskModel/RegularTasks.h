@@ -27,6 +27,7 @@ class Task {
     double period;
     double deadline;
     double priority;
+    std::string name;  // optional
 
     Task(int id, const FiniteDist& exec, double period, double ddl,
          double priority)
