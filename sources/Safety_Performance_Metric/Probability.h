@@ -26,6 +26,12 @@ class GaussianDist : public ProbabilityDistributionBase {
         double z = (x - mu) / (sigma * std::sqrt(2.0));
         return 0.5 * (1.0 + std::erf(z));
     }
+    inline bool operator==(const GaussianDist& other) const {
+        return mu == other.mu && sigma == other.sigma;
+    }
+    inline bool operator!=(const GaussianDist& other) const {
+        return !(*this == other);
+    }
 
     // data
     double mu;
@@ -35,6 +41,13 @@ class GaussianDist : public ProbabilityDistributionBase {
 struct Value_Proba {
     Value_Proba() {}
     Value_Proba(double v, double p) : value(v), probability(p) {}
+
+    inline bool operator==(const Value_Proba& other) const {
+        return value == other.value && probability == other.probability;
+    }
+    inline bool operator!=(const Value_Proba& other) const {
+        return !(*this == other);
+    }
 
     double value;
     double probability;
@@ -84,6 +97,18 @@ class FiniteDist : public ProbabilityDistributionBase {
 
     inline Value_Proba& operator[](size_t i) { return distribution[i]; }
     inline const Value_Proba& at(size_t i) { return distribution.at(i); }
+    bool operator==(const FiniteDist& other) const {
+        if (size() != other.size())
+            return false;
+        for (int i = 0; i < size(); i++) {
+            if (distribution[i] != other.distribution[i])
+                return false;
+        }
+        return true;
+    }
+    inline bool operator!=(const FiniteDist& other) const {
+        return !((*this) == other);
+    }
 
     // ''merge'' two distribution
     void Coalesce(const FiniteDist& other);
