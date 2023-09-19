@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
 
 def is_float(s):
     try:
@@ -24,11 +27,18 @@ def read_data(file_path, data_index):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
-def write_data(data_all, file_name):
+def write_data(data, file_name):
     path="FormatedData/"+file_name+".txt"
     file=open(path,'w')
-    for et in data_all:
+    for et in data:
         file.write(str(et)+"\n")
+
+    sns.kdeplot(data, shade=True)
+    plt.xlim(min(data), max(data))
+    print("Limits: ",min(data), max(data))
+    plt.xlabel(file_name)
+    plt.savefig(file_name+".png")
+    plt.show()
 
 def main():
     data = read_data("MPC_time.txt", 1)
@@ -42,5 +52,7 @@ def main():
 
     data = read_data("SLAM_time.txt", 2)
     write_data(data, "SLAM")
+
+
 
 main()
