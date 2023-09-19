@@ -61,4 +61,7 @@ inline void SortTasksByPriority(TaskSet& tasks) {
 }
 
 long long int HyperPeriod(const TaskSet& tasks);
+
+TaskSet ReadTaskSet(std::string path,
+                    int granulairty = GlobalVariables::Granularity);
 }  // namespace SP_OPT_PA

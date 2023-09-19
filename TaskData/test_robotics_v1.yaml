@@ -1,0 +1,26 @@
+tasks:
+- id: 0
+  execution_time_mu: 0.106
+  execution_time_sigma: 0.315
+  period: 20
+  deadline: 20
+  name: SLAM
+- id: 1
+  execution_time_mu: 0.0209
+  execution_time_sigma: 0.000766
+  period: 20
+  deadline: 20
+  name: MPC
+- id: 2
+  execution_time_mu: 0.9806
+  execution_time_sigma: 0.295
+  period: 20
+  deadline: 20
+  name: RRT
+- id: 3
+  execution_time_mu: 10
+  execution_time_sigma: 1.7e-10
+  period: 20
+  deadline: 20
+  name: TSP
+  

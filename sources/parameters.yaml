@@ -4,4 +4,6 @@ TIME_LIMIT: 600 # seconds, -1 means unlimited time
 # Task set settings
 priorityMode: RM
 
+Granularity: 5
+
 

@@ -5,7 +5,7 @@
 #include "sources/Utils/testMy.h"
 // All the global variables should be const
 
-namespace GlobalVariablesDAGOpt {
+namespace GlobalVariables {
 
 extern const std::string PROJECT_PATH;
 
@@ -14,4 +14,5 @@ extern int debugMode;
 extern int TIME_LIMIT;
 
 extern const std::string priorityMode;
-}  // namespace GlobalVariablesDAGOpt
+extern int Granularity;
+}  // namespace GlobalVariables

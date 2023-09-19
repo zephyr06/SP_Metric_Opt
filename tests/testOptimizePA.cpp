@@ -8,7 +8,7 @@ using ::testing::AtLeast;  // #1
 using ::testing::Return;
 using namespace std;
 using namespace SP_OPT_PA;
-using namespace GlobalVariablesDAGOpt;
+using namespace GlobalVariables;
 
 class TaskSetForTest_2tasks : public ::testing::Test {
    public:

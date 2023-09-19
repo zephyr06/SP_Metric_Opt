@@ -1,4 +1,8 @@
 #include "RegularTasks.h"
+
+#include <yaml-cpp/yaml.h>
+
+#include <filesystem>
 namespace SP_OPT_PA {
 
 // Recursive function to return gcd of a and b
@@ -30,6 +34,33 @@ long long int HyperPeriod(const TaskSet &tasks) {
         }
         return hyper;
     }
+}
+
+TaskSet ReadTaskSet(std::string path, int granulairty) {
+    if (!(std::filesystem::exists(path)))
+        CoutError(path + " not exist!");
+    YAML::Node config = YAML::LoadFile(path);
+    YAML::Node tasksNode;
+    if (config["tasks"]) {
+        tasksNode = config["tasks"];
+    } else {
+        CoutError("Input file doesn't follow Nasri format: " + path);
+    }
+
+    TaskSet tasks;
+    tasks.reserve(tasksNode.size());
+    int count = 0;
+    for (size_t i = 0; i < tasksNode.size(); i++) {
+        GaussianDist gauss(tasksNode[i]["execution_time_mu"].as<double>(),
+                           tasksNode[i]["execution_time_sigma"].as<double>());
+        FiniteDist finite_dist(gauss, granulairty);
+        Task task(tasksNode[i]["id"].as<int>(), finite_dist,
+                  tasksNode[i]["period"].as<double>(),
+                  tasksNode[i]["deadline"].as<double>(), count++);
+
+        tasks.push_back(task);
+    }
+    return tasks;
 }
 
 }  // namespace SP_OPT_PA
