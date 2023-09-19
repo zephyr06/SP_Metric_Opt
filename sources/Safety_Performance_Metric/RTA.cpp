@@ -30,6 +30,7 @@ FiniteDist GetRTA_OneTask(const Task& task_curr, const TaskSet& hp_tasks) {
     return rta_cur;
 }
 
+// input must be sorted
 std::vector<FiniteDist> ProbabilisticRTA_TaskSet(const TaskSet& tasks_input) {
     TaskSet tasks = tasks_input;
     std::sort(tasks.begin(), tasks.end(), [](const Task& t1, const Task& t2) {
@@ -48,4 +49,20 @@ std::vector<FiniteDist> ProbabilisticRTA_TaskSet(const TaskSet& tasks_input) {
     return rtas;
 }
 
+double GetDDL_MissProbability(const FiniteDist& finite_dist, double ddl) {
+    auto itr = std::upper_bound(finite_dist.distribution.begin(),
+                                finite_dist.distribution.end(), ddl,
+                                [](double ddl, const Value_Proba& element) {
+                                    return ddl < element.value;
+                                });
+    if (itr == finite_dist.distribution.end())
+        return 0;
+    else {
+        double ddl_miss = 0;
+        for (auto ite = itr; ite != finite_dist.distribution.end(); ite++) {
+            ddl_miss += ite->probability;
+        }
+        return ddl_miss;
+    }
+}
 }  // namespace SP_OPT_PA

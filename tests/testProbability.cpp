@@ -198,7 +198,6 @@ TEST(FiniteDist, AddPreemption) {
     EXPECT_THAT(12, testing::Le(dist2[6].value));
     EXPECT_NEAR(0.0012, dist2[6].probability, 1e-6);
 }
-
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);

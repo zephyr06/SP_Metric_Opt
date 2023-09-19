@@ -16,7 +16,7 @@ typedef std::map<int, std::vector<int>> ProcessorTaskSet;
 
 namespace SP_OPT_PA {
 
-inline bool CompareStringNoCase(const std::string &s1, const std::string s2) {
+inline bool CompareStringNoCase(const std::string& s1, const std::string s2) {
     return strcasecmp(s1.c_str(), s2.c_str()) == 0;
 }
 class Task {
@@ -28,7 +28,7 @@ class Task {
     double deadline;
     double priority;
 
-    Task(int id, const FiniteDist &exec, double period, double ddl,
+    Task(int id, const FiniteDist& exec, double period, double ddl,
          double priority)
         : id(id),
           execution_time_dist(exec),
@@ -53,5 +53,11 @@ class Task {
 };
 typedef std::vector<SP_OPT_PA::Task> TaskSet;
 
-long long int HyperPeriod(const TaskSet &tasks);
+inline void SortTasksByPriority(TaskSet& tasks) {
+    std::sort(tasks.begin(), tasks.end(), [](const Task& t1, const Task& t2) {
+        return t1.priority < t2.priority;
+    });
+}
+
+long long int HyperPeriod(const TaskSet& tasks);
 }  // namespace SP_OPT_PA
