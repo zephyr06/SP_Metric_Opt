@@ -44,8 +44,15 @@ TEST_F(TaskSetForTest_2tasks, optimize) {
 }
 
 TEST_F(TaskSetForTest_2tasks, Optimize) {
+    Task task_t = tasks[0];
+    tasks[0] = tasks[1];
+    tasks[0].id = 0;
+    tasks[1] = task_t;
+    tasks[1].id = 1;
     sp_parameters.thresholds = {0, 0};
     PriorityVec pa_opt = OptimizePA_BruteForce(tasks, sp_parameters);
+    EXPECT_EQ(5, tasks[pa_opt[0]].period);
+    EXPECT_EQ(12, tasks[pa_opt[1]].period);
 }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
