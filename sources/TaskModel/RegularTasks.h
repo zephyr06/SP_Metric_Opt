@@ -36,7 +36,10 @@ class Task {
           period(period),
           deadline(ddl),
           priority(priority),
-          name(name) {}
+          name(name) {
+        if (name == "")
+            name = "Task_" + std::to_string(id);
+    }
 
     /**
      * only used in ReadTaskSet because the input parameter's type is int

@@ -55,4 +55,12 @@ PriorityVec OptimizePA_BF::Optimize() {
     return opt_pa_;
 }
 
+void PrintPriorityVec(const TaskSet& tasks,
+                      const PriorityVec& priority_assignment) {
+    std::cout << "Priority assignment:\n";
+    for (uint i = 0; i < priority_assignment.size(); i++) {
+        std::cout << tasks[priority_assignment[i]].name << ": " << i << "\n";
+    }
+}
+
 }  // namespace SP_OPT_PA

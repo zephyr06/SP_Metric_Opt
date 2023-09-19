@@ -6,7 +6,8 @@ namespace SP_OPT_PA {
 
 // task id sequence;
 typedef std::vector<int> PriorityVec;
-
+void PrintPriorityVec(const TaskSet& tasks,
+                      const PriorityVec& priority_assignment);
 TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
                                 const PriorityVec& priority_assignment);
 
