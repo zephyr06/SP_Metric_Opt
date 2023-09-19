@@ -53,7 +53,9 @@ TaskSet ReadTaskSet(std::string path, int granulairty) {
     for (size_t i = 0; i < tasksNode.size(); i++) {
         GaussianDist gauss(tasksNode[i]["execution_time_mu"].as<double>(),
                            tasksNode[i]["execution_time_sigma"].as<double>());
-        FiniteDist finite_dist(gauss, granulairty);
+        FiniteDist finite_dist(
+            gauss, tasksNode[i]["execution_time_min"].as<double>(),
+            tasksNode[i]["execution_time_max"].as<double>(), granulairty);
         Task task(tasksNode[i]["id"].as<int>(), finite_dist,
                   tasksNode[i]["period"].as<double>(),
                   tasksNode[i]["deadline"].as<double>(), count++);

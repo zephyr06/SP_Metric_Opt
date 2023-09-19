@@ -68,12 +68,15 @@ class FiniteDist : public ProbabilityDistributionBase {
 
         double step = (max_val - min_val) / (granularity - 1);
         distribution.push_back(Value_Proba(min_val, gauss_dist.CDF(min_val)));
-
-        for (double execution_time = min_val + step; execution_time <= max_val;
-             execution_time += step) {
-            double chance = gauss_dist.CDF(execution_time) -
-                            gauss_dist.CDF(execution_time - step);
-            distribution.push_back(Value_Proba(execution_time, chance));
+        if (step > 0) {
+            for (double execution_time = min_val + step;
+                 execution_time <= max_val; execution_time += step) {
+                double chance = gauss_dist.CDF(execution_time) -
+                                gauss_dist.CDF(execution_time - step);
+                distribution.push_back(Value_Proba(execution_time, chance));
+            }
+        } else {
+            distribution = {Value_Proba(min_val, 1.0)};
         }
     }
 

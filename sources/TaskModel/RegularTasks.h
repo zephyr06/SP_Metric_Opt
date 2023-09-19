@@ -30,12 +30,13 @@ class Task {
     std::string name;  // optional
 
     Task(int id, const FiniteDist& exec, double period, double ddl,
-         double priority)
+         double priority, std::string name = "")
         : id(id),
           execution_time_dist(exec),
           period(period),
           deadline(ddl),
-          priority(priority) {}
+          priority(priority),
+          name(name) {}
 
     /**
      * only used in ReadTaskSet because the input parameter's type is int

@@ -18,9 +18,11 @@ TEST(read_write, task_sets) {
     std::string file_name = "test_robotics_v1";
     string path =
         GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
-    TaskSet tasks = ReadTaskSet(path);
+    TaskSet tasks = ReadTaskSet(path, 5);
     EXPECT_EQ(4, tasks.size());
     EXPECT_EQ(20, tasks[0].period);
+    EXPECT_EQ(5, tasks[3].execution_time_dist.size());
+    EXPECT_EQ(0.052, tasks[3].execution_time_dist[3].value);
 }
 
 int main(int argc, char **argv) {

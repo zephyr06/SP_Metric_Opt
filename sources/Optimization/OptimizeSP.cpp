@@ -18,6 +18,12 @@ void OptimizePA_BF::IterateAllPAs(
     PriorityVec& priority_assignment,
     std::unordered_set<int>& tasks_assigned_priority, int start) {
     if (start == N) {
+        if (GlobalVariables::debugMode == 1) {
+            std::cout << "Try PA assignments: ";
+            for (int x : priority_assignment) std::cout << x << ", ";
+            std::cout << "\n";
+        }
+
         TaskSet tasks_eval =
             UpdateTaskSetPriorities(tasks_, priority_assignment);
         double sp_eval = ObtainSP(tasks_eval, sp_parameters_);
