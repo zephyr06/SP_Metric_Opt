@@ -8,7 +8,7 @@ using ::testing::AtLeast;  // #1
 using ::testing::Return;
 using namespace std;
 using namespace SP_OPT_PA;
-using namespace GlobalVariablesDAGOpt;
+using namespace GlobalVariables;
 TEST(CDF, v1) {
     GaussianDist gau_dis(3, 1);
     EXPECT_EQ(0.5, gau_dis.CDF(3));
@@ -197,6 +197,13 @@ TEST(FiniteDist, AddPreemption) {
 
     EXPECT_THAT(12, testing::Le(dist2[6].value));
     EXPECT_NEAR(0.0012, dist2[6].probability, 1e-6);
+}
+
+TEST(FiniteDist, constructor) {
+    GaussianDist gau_dis(10, 1);
+    FiniteDist finite_dist(gau_dis, 10);
+    EXPECT_THAT(finite_dist.min_time, testing::Le(10 - 1));
+    EXPECT_THAT(finite_dist.max_time, testing::Ge(10 + 1));
 }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);

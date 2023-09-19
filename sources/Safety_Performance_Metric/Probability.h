@@ -77,6 +77,10 @@ class FiniteDist : public ProbabilityDistributionBase {
         }
     }
 
+    FiniteDist(const GaussianDist& gauss_dist, double granularity)
+        : FiniteDist(gauss_dist, gauss_dist.mu - 2.3263 * gauss_dist.sigma,
+                     gauss_dist.mu + 2.3263 * gauss_dist.sigma, granularity) {}
+
     FiniteDist(const std::vector<Value_Proba>& distribution_input) {
         UpdateDistribution(distribution_input);
     }
