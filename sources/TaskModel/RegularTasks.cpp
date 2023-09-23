@@ -36,6 +36,20 @@ long long int HyperPeriod(const TaskSet &tasks) {
     }
 }
 
+ProcessorTaskSet ExtractProcessorTaskSet(const TaskSet &tasks) {
+    int N = tasks.size();
+    ProcessorTaskSet processorTasks;
+    for (int i = 0; i < N; i++) {
+        if (processorTasks.find(tasks.at(i).processorId) ==
+            processorTasks.end()) {
+            std::vector<int> ttt{tasks.at(i).id};
+            processorTasks[tasks.at(i).processorId] = ttt;
+        } else {
+            processorTasks[tasks.at(i).processorId].push_back(tasks.at(i).id);
+        }
+    }
+    return processorTasks;
+}
 TaskSet ReadTaskSet(std::string path, int granulairty) {
     if (!(std::filesystem::exists(path)))
         CoutError(path + " not exist!");
@@ -60,10 +74,38 @@ TaskSet ReadTaskSet(std::string path, int granulairty) {
                   tasksNode[i]["period"].as<double>(),
                   tasksNode[i]["deadline"].as<double>(), count++,
                   tasksNode[i]["name"].as<std::string>());
+        if (tasksNode[i]["processorId"])
+            task.processorId = tasksNode[i]["processorId"].as<int>();
 
         tasks.push_back(task);
     }
+    ScaleToInteger(tasks);
     return tasks;
+}
+void ScaleToInteger(TaskSet &tasks) {
+    double min_period = tasks[0].period;
+    for (uint i = 0; i < tasks.size(); i++) {
+        min_period = min(tasks[i].period, min_period);
+    }
+    if (min_period < 1) {
+        for (Task &task_curr : tasks) {
+            task_curr.Scale(1 / min_period);
+        }
+    }
+}
+
+int GetHyperPeriod(const TaskSetInfoDerived &tasks_info,
+                   const std::vector<int> &chain) {
+    int hp = 1;
+    for (int task_id : chain) {
+        int period_curr = ceil(tasks_info.GetTask(task_id).period);
+        hp = std::lcm(hp, period_curr);
+    }
+    return hp;
+}
+
+void AssignTaskSetPriorityById(TaskSet &tasks) {
+    for (uint i = 0; i < tasks.size(); i++) tasks[i].priority = tasks[i].id;
 }
 
 }  // namespace SP_OPT_PA

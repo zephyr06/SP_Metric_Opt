@@ -35,6 +35,7 @@ TEST(read, DAG) {
     EXPECT_EQ(3, dag_tasks.chains_[0].size());
     EXPECT_EQ(0, dag_tasks.chains_[0][0]);
     EXPECT_EQ(2, dag_tasks.chains_[1].size());
+    EXPECT_EQ(0, dag_tasks.tasks[0].processorId);
 }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);

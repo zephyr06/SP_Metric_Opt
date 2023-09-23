@@ -59,6 +59,11 @@ class DAG_Model {
         chains_ = GetRandomChains(numCauseEffectChain, chain_length);
         CategorizeTaskSet();
     }
+    DAG_Model(TaskSet &tasks, const std::vector<std::vector<int>> &chains)
+        : tasks(tasks), chains_(chains) {
+        RecordTaskPosition();
+        CategorizeTaskSet();
+    }
 
     std::pair<Graph, indexVertexMap> GenerateGraphForTaskSet() const;
 

@@ -158,6 +158,10 @@ class FiniteDist : public ProbabilityDistributionBase {
         std::cout << "\n";
     }
 
+    void Scale(double k) {
+        for (Value_Proba& pair : distribution) pair.value *= k;
+    }
+
     // data members
     // saves the probability that x<= value
     std::vector<Value_Proba> distribution;

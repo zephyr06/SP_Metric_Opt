@@ -192,10 +192,7 @@ std::vector<int> Str2VecInt(const std::string& str) {
 
 DAG_Model ReadDAG_Tasks(std::string path, int max_possible_chains) {
     TaskSet tasks = ReadTaskSet(path);
-    DAG_Model dag_tasks;
-    dag_tasks.tasks = tasks;
     YAML::Node config = YAML::LoadFile(path);
-
     std::vector<std::vector<int>> chains;
     for (int i = 0; i < max_possible_chains; i++) {
         if (config["chain" + std::to_string(i)]) {
@@ -209,8 +206,7 @@ DAG_Model ReadDAG_Tasks(std::string path, int max_possible_chains) {
         } else
             break;
     }
-    dag_tasks.chains_ = chains;
-    return dag_tasks;
+    return DAG_Model(tasks, chains);
 }
 
 void WriteDAG_Tasks_chains(std::string path, const DAG_Model& dag_tasks) {

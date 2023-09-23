@@ -31,6 +31,7 @@ FiniteDist GetRTA_OneTask(const Task& task_curr, const TaskSet& hp_tasks) {
 }
 
 // input must be sorted
+// TODO: fix this input order issue;
 std::vector<FiniteDist> ProbabilisticRTA_TaskSet(const TaskSet& tasks_input) {
     TaskSet tasks = tasks_input;
     std::sort(tasks.begin(), tasks.end(), [](const Task& t1, const Task& t2) {
