@@ -1,6 +1,7 @@
 // #include <gtest/gtest.h>
 
 #include "gmock/gmock.h"  // Brings in gMock.
+#include "sources/TaskModel/DAG_Model.h"
 #include "sources/TaskModel/RegularTasks.h"
 #include "sources/Utils/Parameters.h"
 #include "sources/Utils/readwrite.h"
@@ -25,6 +26,16 @@ TEST(read_write, task_sets) {
     EXPECT_EQ(0.052, tasks[3].execution_time_dist[0].value);
 }
 
+TEST(read, DAG) {
+    std::string file_name = "test_robotics_v1";
+    string path =
+        GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
+    DAG_Model dag_tasks = ReadDAG_Tasks(path);
+    EXPECT_EQ(2, dag_tasks.chains_.size());
+    EXPECT_EQ(3, dag_tasks.chains_[0].size());
+    EXPECT_EQ(0, dag_tasks.chains_[0][0]);
+    EXPECT_EQ(2, dag_tasks.chains_[1].size());
+}
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);

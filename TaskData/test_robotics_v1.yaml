@@ -32,4 +32,11 @@ tasks:
   deadline: 10
   name: SLAM
 
+chain0:
+  - 0
+  - 1
+  - 2
+chain1:
+  - 1
+  - 2
   

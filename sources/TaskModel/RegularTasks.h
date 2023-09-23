@@ -28,6 +28,7 @@ class Task {
     double deadline;
     double priority;
     std::string name;  // optional
+    int processorId;
 
     Task(int id, const FiniteDist& exec, double period, double ddl,
          double priority, std::string name = "")
@@ -39,6 +40,7 @@ class Task {
           name(name) {
         if (name == "")
             name = "Task_" + std::to_string(id);
+        processorId = 0;
     }
 
     /**
