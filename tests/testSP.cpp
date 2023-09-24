@@ -20,7 +20,7 @@ class TaskSetForTest_2tasks : public ::testing::Test {
         tasks.push_back(Task(0, dist_vec1, 5, 5, 0));
         tasks.push_back(Task(1, dist_vec2, 12, 12, 1));
 
-        sp_parameters = SP_Parameters(tasks.size());
+        sp_parameters = SP_Parameters(tasks);
     }
 
     // data members
@@ -44,7 +44,7 @@ class TaskSetForTest_2tasks1chain : public ::testing::Test {
         tasks.push_back(Task(1, dist_vec2, 10, 10, 1));
 
         dag_tasks = DAG_Model(tasks, {{0, 1}});
-        sp_parameters = SP_Parameters(tasks.size(), 1);
+        sp_parameters = SP_Parameters(dag_tasks);
     }
 
     // data members

@@ -22,7 +22,7 @@ void travRTDACombinations(
     DAG_Model& dag_tasks, TaskSetInfoDerived& tasks_info,
     const std::vector<int>& chain, uint index, double probab,
     std::unordered_map<double, double>& response2prob_map) {
-    if (index == chain.size()) {
+    if (index == dag_tasks.tasks.size()) {
         double response_chain;
         if (CheckTaskSetSchedulabilityLL(dag_tasks.tasks)) {
             Schedule schedule =
@@ -38,10 +38,10 @@ void travRTDACombinations(
         return;
     }
     const FiniteDist& execution_time_dist =
-        dag_tasks.GetTask(chain[index]).execution_time_dist;
+        dag_tasks.GetTask(index).execution_time_dist;
     for (const Value_Proba& exec_pair : execution_time_dist.distribution) {
-        dag_tasks.tasks[chain[index]].setExecutionTime(exec_pair.value);
-        tasks_info.tasks[chain[index]].setExecutionTime(exec_pair.value);
+        dag_tasks.tasks[index].setExecutionTime(exec_pair.value);
+        tasks_info.tasks[index].setExecutionTime(exec_pair.value);
         travRTDACombinations<ObjectiveFunctionType>(
             dag_tasks, tasks_info, chain, index + 1,
             probab * exec_pair.probability, response2prob_map);

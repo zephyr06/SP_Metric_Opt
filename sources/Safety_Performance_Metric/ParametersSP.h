@@ -1,16 +1,18 @@
 #pragma once
 #include <vector>
 
+#include "sources/TaskModel/DAG_Model.h"
+
 namespace SP_OPT_PA {
 
 struct SP_Parameters {
     SP_Parameters() {}
-    SP_Parameters(int n_node) {
-        thresholds_node = std::vector<double>(n_node, 0.5);
+    SP_Parameters(const TaskSet& tasks) {
+        thresholds_node = std::vector<double>(tasks.size(), 0.5);
     }
-    SP_Parameters(int n_node, int n_path) {
-        thresholds_node = std::vector<double>(n_node, 0.5);
-        thresholds_path = std::vector<double>(n_path, 0.5);
+    SP_Parameters(const DAG_Model& dag_tasks) {
+        thresholds_node = std::vector<double>(dag_tasks.tasks.size(), 0.5);
+        thresholds_path = std::vector<double>(dag_tasks.chains_.size(), 0.5);
     }
 
     // data

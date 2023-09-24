@@ -21,7 +21,7 @@ class TaskSetForTest_scheduling_v1 : public ::testing::Test {
             GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
         dag_tasks = ReadDAG_Tasks(path);
         tasks = dag_tasks.tasks;
-        sp_parameters = SP_Parameters(tasks.size());
+        sp_parameters = SP_Parameters(tasks);
         AssignTaskSetPriorityById(dag_tasks.tasks);
         tasks_info = TaskSetInfoDerived(dag_tasks.tasks);
 

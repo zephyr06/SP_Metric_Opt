@@ -20,7 +20,7 @@ class TaskSetForTest_2tasks : public ::testing::Test {
         tasks.push_back(Task(0, dist_vec1, 5, 5, 0));
         tasks.push_back(Task(1, dist_vec2, 12, 12, 1));
 
-        sp_parameters = SP_Parameters(tasks.size());
+        sp_parameters = SP_Parameters(tasks);
     }
 
     // data members
@@ -50,7 +50,8 @@ TEST_F(TaskSetForTest_2tasks, Optimize) {
     tasks[1] = task_t;
     tasks[1].id = 1;
     sp_parameters.thresholds_node = {0, 0};
-    PriorityVec pa_opt = OptimizePA_BruteForce(tasks, sp_parameters);
+    DAG_Model dag_tasks(tasks, {});
+    PriorityVec pa_opt = OptimizePA_BruteForce(dag_tasks, sp_parameters);
     EXPECT_EQ(5, tasks[pa_opt[0]].period);
     EXPECT_EQ(12, tasks[pa_opt[1]].period);
 }

@@ -23,7 +23,7 @@ class TaskSetForTest_deterministic : public ::testing::Test {
             GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
         dag_tasks = ReadDAG_Tasks(path);
         tasks = dag_tasks.tasks;
-        sp_parameters = SP_Parameters(tasks.size());
+        sp_parameters = SP_Parameters(tasks);
         AssignTaskSetPriorityById(dag_tasks.tasks);
 
         dag_tasks.tasks[0].setExecutionTime(1);
@@ -81,7 +81,7 @@ class TaskSetForTest_probabilistic : public ::testing::Test {
             GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
         dag_tasks = ReadDAG_Tasks(path);
         tasks = dag_tasks.tasks;
-        sp_parameters = SP_Parameters(tasks.size());
+        sp_parameters = SP_Parameters(tasks);
         AssignTaskSetPriorityById(dag_tasks.tasks);
 
         std::vector<Value_Proba> exec0 = {Value_Proba(1, 0.5),
