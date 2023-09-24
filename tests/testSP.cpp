@@ -52,13 +52,25 @@ class TaskSetForTest_2tasks1chain : public ::testing::Test {
     DAG_Model dag_tasks;
     SP_Parameters sp_parameters;
 };
+TEST_F(TaskSetForTest_2tasks1chain, reaction_time_full_utilization) {
+    dag_tasks.tasks[0].setExecutionTime(3);
+    dag_tasks.tasks[1].setExecutionTime(4);
+    TaskSetInfoDerived tasks_info(dag_tasks.tasks);
+    Schedule schedule = SimulateFixedPrioritySched(dag_tasks, tasks_info);
+    EXPECT_EQ(5, schedule[JobCEC(0, 1)].start);
+    EXPECT_EQ(8, schedule[JobCEC(0, 1)].finish);
+    EXPECT_EQ(3, schedule[JobCEC(1, 0)].start);
+    EXPECT_EQ(10, schedule[JobCEC(1, 0)].finish);
+    EXPECT_EQ(15, ObjReactionTime::Obj(dag_tasks, tasks_info, schedule,
+                                       dag_tasks.chains_));
+}
 TEST_F(TaskSetForTest_2tasks1chain, GetRTDA_Dist_AllChains) {
     auto dists = GetRTDA_Dist_AllChains<ObjReactionTime>(dag_tasks);
 
     std::vector<Value_Proba> dist_vec1 = {
-        Value_Proba(10, 0.42), Value_Proba(12, 0.6 * 0.3 + 0.3 * 0.7),
-        Value_Proba(13, 0.3 * 0.3), Value_Proba(15, 0.1 * 0.7),
-        Value_Proba(INT32_MAX, 0.1 * 0.3)};
+        Value_Proba(10, 0.42),      Value_Proba(12, 0.6 * 0.3),
+        Value_Proba(13, 0.3 * 0.7), Value_Proba(14, 0.3 * 0.3),
+        Value_Proba(15, 0.1 * 0.7), Value_Proba(INT32_MAX, 0.1 * 0.3)};
     FiniteDist reaction_time_dist_expected(dist_vec1);
     EXPECT_EQ(reaction_time_dist_expected, dists[0]);
 }
