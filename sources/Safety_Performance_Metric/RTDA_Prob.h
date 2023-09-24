@@ -5,27 +5,16 @@
 #include "sources/RTDA/ImplicitCommunication/ScheduleSimulation.h"
 #include "sources/RTDA/ObjectiveFunction.h"
 #include "sources/Safety_Performance_Metric/RTA.h"
+#include "sources/Safety_Performance_Metric/RTA_LL.h"
 
 namespace SP_OPT_PA {
 
-void UnsetExecutionTime(DAG_Model& dag_tasks) {
-    for (uint i = 0; i < dag_tasks.tasks.size(); i++) {
-        dag_tasks.tasks[i].setExecutionTime(-1);
-    }
-}
+void UnsetExecutionTime(DAG_Model& dag_tasks);
 
 // ObjReactionTime or ObjDataAge
 // TODO: add granularity
 FiniteDist GetFiniteDist(
-    const std::unordered_map<double, double>& response2prob_map) {
-    std::vector<Value_Proba> distribution_pairs;
-    distribution_pairs.reserve(response2prob_map.size());
-    for (auto itr = response2prob_map.begin(); itr != response2prob_map.end();
-         itr++) {
-        distribution_pairs.push_back(Value_Proba(itr->first, itr->second));
-    }
-    return FiniteDist(distribution_pairs);
-}
+    const std::unordered_map<double, double>& response2prob_map);
 
 template <typename ObjectiveFunctionType>
 void travRTDACombinations(
@@ -33,9 +22,14 @@ void travRTDACombinations(
     const std::vector<int>& chain, uint index, double probab,
     std::unordered_map<double, double>& response2prob_map) {
     if (index == chain.size()) {
-        Schedule schedule = SimulateFixedPrioritySched(dag_tasks, tasks_info);
-        double response_chain = ObjectiveFunctionType::Obj(
-            dag_tasks, tasks_info, schedule, {chain});
+        double response_chain;
+        if (CheckTaskSetSchedulabilityLL(dag_tasks.tasks)) {
+            Schedule schedule =
+                SimulateFixedPrioritySched(dag_tasks, tasks_info);
+            response_chain = ObjectiveFunctionType::Obj(dag_tasks, tasks_info,
+                                                        schedule, {chain});
+        } else
+            response_chain = INT32_MAX;
         if (response2prob_map.count(response_chain))
             response2prob_map[response_chain] += probab;
         else

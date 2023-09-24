@@ -2,6 +2,7 @@
 #include "sources/Safety_Performance_Metric/ParametersSP.h"
 #include "sources/Safety_Performance_Metric/Probability.h"
 #include "sources/Safety_Performance_Metric/RTA.h"
+#include "sources/Safety_Performance_Metric/RTDA_Prob.h"
 #include "sources/TaskModel/RegularTasks.h"
 
 namespace SP_OPT_PA {

@@ -58,6 +58,8 @@ class Task {
         deadline *= k;
     }
 
+    double utilization() const { return double(getExecutionTime()) / period; }
+
     // Member list
     int id;
     FiniteDist execution_time_dist;
@@ -73,7 +75,15 @@ class Task {
 };
 typedef std::vector<SP_OPT_PA::Task> TaskSet;
 
+inline double Utilization(const TaskSet& tasks) {
+    double utilization = 0;
+    for (uint i = 0; i < tasks.size(); i++)
+        utilization += tasks[i].utilization();
+    return utilization;
+}
+
 void ScaleToInteger(TaskSet& tasks);
+
 inline void SortTasksByPriority(TaskSet& tasks) {
     std::sort(tasks.begin(), tasks.end(), [](const Task& t1, const Task& t2) {
         return t1.priority < t2.priority;
@@ -142,5 +152,36 @@ class TaskSetInfoDerived {
 };
 int GetHyperPeriod(const TaskSetInfoDerived& tasks_info,
                    const std::vector<int>& chain);
+
+template <typename T>
+VectorDynamic GetParameterVD(const TaskSet& taskset,
+                             std::string parameterType) {
+    uint N = taskset.size();
+    VectorDynamic parameterList;
+    parameterList.resize(N, 1);
+    parameterList.setZero();
+
+    for (uint i = 0; i < N; i++) {
+        if (parameterType == "period")
+            parameterList(i, 0) = ((T)(taskset[i].period));
+        else if (parameterType == "executionTime")
+            parameterList(i, 0) = ((T)(taskset[i].getExecutionTime()));
+        else if (parameterType == "deadline")
+            parameterList(i, 0) = ((T)(taskset[i].deadline));
+        else {
+            std::cout << Color::red
+                      << "parameterType in GetParameter is not recognized!\n"
+                      << Color::def << std::endl;
+            throw;
+        }
+    }
+    return parameterList;
+}
+
+template <typename T>
+std::vector<T> GetParameter(const TaskSet& taskset, std::string parameterType) {
+    VectorDynamic resEigen = GetParameterVD<T>(taskset, parameterType);
+    return Eigen2Vector<T>(resEigen);
+}
 
 }  // namespace SP_OPT_PA

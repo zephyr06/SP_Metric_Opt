@@ -24,7 +24,7 @@ class TaskSetForTest_robotics_v1 : public ::testing::Test {
     SP_Parameters sp_parameters;
 };
 TEST_F(TaskSetForTest_robotics_v1, optimize) {
-    // sp_parameters.thresholds = {0, 0};
+    // sp_parameters.thresholds_node = {0, 0};
     PriorityVec pa_opt = OptimizePA_BruteForce(tasks, sp_parameters);
     PrintPriorityVec(tasks, pa_opt);
     EXPECT_EQ("TSP", tasks[pa_opt[3]].name);
