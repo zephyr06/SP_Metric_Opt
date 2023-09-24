@@ -28,7 +28,7 @@ class TaskSetForTest_2tasks : public ::testing::Test {
     SP_Parameters sp_parameters;
 };
 TEST_F(TaskSetForTest_2tasks, SP_Calculation) {
-    double sp_actual = ObtainSP(tasks, sp_parameters);
+    double sp_actual = ObtainSP_TaskSet(tasks, sp_parameters);
     double sp_expected = log(1 + 0.5) + log(1 + 0.5 - 0.0012);
     EXPECT_NEAR(sp_expected, sp_actual, 1e-6);
 }
@@ -74,12 +74,14 @@ TEST_F(TaskSetForTest_2tasks1chain, GetRTDA_Dist_AllChains) {
     FiniteDist reaction_time_dist_expected(dist_vec1);
     EXPECT_EQ(reaction_time_dist_expected, dists[0]);
 }
-TEST_F(TaskSetForTest_2tasks1chain, SP_Calculation) {
-    double sp_actual = ObtainSP(tasks, sp_parameters);
-    double sp_expected = log(1 + 0.5) + log(1 + 0.5 - 0.003);
-    EXPECT_NEAR(sp_expected, sp_actual, 1e-6);
-}
 
+TEST_F(TaskSetForTest_2tasks1chain, SP_Calculation_dag) {
+    double sp_actual_dag = ObtainSP_DAG(dag_tasks, sp_parameters);
+    double penalty = 0.18 + 0.21 + 0.09 + 0.07 + 0.03 - 0.5;
+    double sp_expected_dag =
+        log(1 + 0.5) + log(1 + 0.5 - 0.003) + -0.01 * exp(10 * abs(penalty));
+    EXPECT_NEAR(sp_expected_dag, sp_actual_dag, 1e-8);
+}
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);

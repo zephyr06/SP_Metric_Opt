@@ -6,6 +6,7 @@
 #include "sources/RTDA/ObjectiveFunction.h"
 #include "sources/Safety_Performance_Metric/RTA.h"
 #include "sources/Safety_Performance_Metric/RTA_LL.h"
+#include "sources/Safety_Performance_Metric/RTDA_Prob.h"
 
 namespace SP_OPT_PA {
 
