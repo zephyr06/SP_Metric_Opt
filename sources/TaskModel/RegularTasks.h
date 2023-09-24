@@ -135,8 +135,9 @@ class TaskSetInfoDerived {
     ProcessorTaskSet processorTaskSet;
     std::unordered_map<int, int> task_id2position_;
 
-   private:
     TaskSet tasks;
+
+   private:
     std::vector<LLint> sizeOfVariables;
 };
 int GetHyperPeriod(const TaskSetInfoDerived& tasks_info,
