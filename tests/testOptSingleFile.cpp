@@ -12,7 +12,7 @@ using namespace GlobalVariables;
 class TaskSetForTest_robotics_v1 : public ::testing::Test {
    public:
     void SetUp() override {
-        std::string file_name = "test_robotics_v1";
+        std::string file_name = "test_robotics_v2";
         std::string path =
             GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
         dag_tasks = ReadDAG_Tasks(path, 5);

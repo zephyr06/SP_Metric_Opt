@@ -16,7 +16,7 @@ TEST(BasicExample, v1) {
     for (int i = 0; i < 5; i++) EXPECT_EQ(i + 1, data[i]);
 }
 TEST(read_write, task_sets) {
-    std::string file_name = "test_robotics_v1";
+    std::string file_name = "test_robotics_v2";
     string path =
         GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
     TaskSet tasks = ReadTaskSet(path, 5);
@@ -27,7 +27,7 @@ TEST(read_write, task_sets) {
 }
 
 TEST(read, DAG) {
-    std::string file_name = "test_robotics_v1";
+    std::string file_name = "test_robotics_v2";
     string path =
         GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
     DAG_Model dag_tasks = ReadDAG_Tasks(path);
@@ -38,7 +38,7 @@ TEST(read, DAG) {
     EXPECT_EQ(0, dag_tasks.tasks[0].processorId);
 }
 TEST(write, DAG) {
-    std::string file_name = "test_robotics_v1";
+    std::string file_name = "test_robotics_v2";
     string path =
         GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
     DAG_Model dag_tasks = ReadDAG_Tasks(path);
