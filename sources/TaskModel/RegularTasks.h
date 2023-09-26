@@ -60,6 +60,11 @@ class Task {
 
     double utilization() const { return double(getExecutionTime()) / period; }
 
+    inline void setExecGaussian(const GaussianDist& exec_gau) {
+        exec_time_gauss = exec_gau;
+    }
+
+    inline GaussianDist getExecGaussian() const { return exec_time_gauss; }
     // Member list
     int id;
     FiniteDist execution_time_dist;
@@ -72,6 +77,7 @@ class Task {
 
    private:
     double executionTime;
+    GaussianDist exec_time_gauss;  // not used except IO part
 };
 typedef std::vector<SP_OPT_PA::Task> TaskSet;
 
@@ -184,4 +190,5 @@ std::vector<T> GetParameter(const TaskSet& taskset, std::string parameterType) {
     return Eigen2Vector<T>(resEigen);
 }
 
+void WriteTaskSet(std::string path, const TaskSet& tasks);
 }  // namespace SP_OPT_PA

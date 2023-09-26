@@ -121,4 +121,7 @@ inline std::string GetTaskSetName(int file_index, int N) {
            std::to_string(file_index) + "-syntheticJobs" + ".csv";
 }
 
+void WriteDAG_Tasks(std::string path, const DAG_Model &dag_tasks);
+
+void WriteDAG_Tasks_chains(std::string path, const DAG_Model &dag_tasks);
 }  // namespace SP_OPT_PA

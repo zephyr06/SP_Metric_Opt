@@ -58,7 +58,7 @@ TaskSet ReadTaskSet(std::string path, int granulairty) {
     if (config["tasks"]) {
         tasksNode = config["tasks"];
     } else {
-        CoutError("Input file doesn't follow Nasri format: " + path);
+        CoutError("Input file doesn't follow DAG format: " + path);
     }
 
     TaskSet tasks;
@@ -76,12 +76,40 @@ TaskSet ReadTaskSet(std::string path, int granulairty) {
                   tasksNode[i]["name"].as<std::string>());
         if (tasksNode[i]["processorId"])
             task.processorId = tasksNode[i]["processorId"].as<int>();
-
+        task.setExecGaussian(
+            GaussianDist(tasksNode[i]["execution_time_mu"].as<double>(),
+                         tasksNode[i]["execution_time_sigma"].as<double>()));
         tasks.push_back(task);
     }
     ScaleToInteger(tasks);
     return tasks;
 }
+
+void WriteTaskSet(std::string path, const TaskSet &tasks) {
+    YAML::Node tasks_nodes;
+    for (const Task &task : tasks) {
+        YAML::Node task_node;
+        task_node["id"] = std::to_string(task.id);
+        task_node["execution_time_mu"] =
+            std::to_string(task.getExecGaussian().mu);
+        task_node["execution_time_sigma"] =
+            std::to_string(task.getExecGaussian().sigma);
+        task_node["execution_time_min"] =
+            std::to_string(task.execution_time_dist.min_time);
+        task_node["execution_time_max"] =
+            std::to_string(task.execution_time_dist.max_time);
+        task_node["period"] = std::to_string(task.period);
+        task_node["deadline"] = std::to_string(task.deadline);
+        task_node["name"] = task.name;
+        tasks_nodes.push_back(task_node);
+    }
+    YAML::Node nodeRoot;
+    nodeRoot["tasks"] = tasks_nodes;
+    std::ofstream fout(path);
+    fout << nodeRoot;
+    fout.close();
+}
+
 void ScaleToInteger(TaskSet &tasks) {
     double min_period = tasks[0].period;
     for (uint i = 0; i < tasks.size(); i++) {

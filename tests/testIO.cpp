@@ -37,6 +37,25 @@ TEST(read, DAG) {
     EXPECT_EQ(2, dag_tasks.chains_[1].size());
     EXPECT_EQ(0, dag_tasks.tasks[0].processorId);
 }
+TEST(write, DAG) {
+    std::string file_name = "test_robotics_v1";
+    string path =
+        GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
+    DAG_Model dag_tasks = ReadDAG_Tasks(path);
+    string path_output =
+        GlobalVariables::PROJECT_PATH + "TaskData/test_io_v1.yaml";
+    WriteDAG_Tasks(path_output, dag_tasks);
+    DAG_Model dag_tasks_read = ReadDAG_Tasks(path_output);
+    EXPECT_EQ(2, dag_tasks_read.chains_.size());
+    EXPECT_EQ(3, dag_tasks_read.chains_[0].size());
+    EXPECT_EQ(0, dag_tasks.chains_[0][0]);
+
+    TaskSet tasks = dag_tasks_read.tasks;
+    EXPECT_EQ(4, tasks.size());
+    EXPECT_EQ(10, tasks[0].period);
+    EXPECT_EQ(5, tasks[3].execution_time_dist.size());
+    EXPECT_EQ(0.052, tasks[3].execution_time_dist[0].value);
+}
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);

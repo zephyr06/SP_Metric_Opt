@@ -214,9 +214,15 @@ void WriteDAG_Tasks_chains(std::string path, const DAG_Model& dag_tasks) {
     for (uint i = 0; i < dag_tasks.chains_.size(); i++) {
         chains["chain" + std::to_string(i)] = dag_tasks.chains_[i];
     }
-    std::ofstream fout(path);
+    std::ofstream fout(path, std::ios_base::app | std::ios_base::out);
+    fout << "\n\n";
     fout << chains;
     fout.close();
+}
+
+void WriteDAG_Tasks(std::string path, const DAG_Model& dag_tasks) {
+    WriteTaskSet(path, dag_tasks.tasks);
+    WriteDAG_Tasks_chains(path, dag_tasks);
 }
 
 bool WhetherDAGChainsShareNodes(const DAG_Model& dag_tasks) {
