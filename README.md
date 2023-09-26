@@ -26,9 +26,8 @@ cd release
 Although you cannot modify chains using the script above, I think this should not be nececssary during the run-time.
 
 
-
 # Modify coefficients related to SP Metric
 Go to the file `sources/Safety_Performance_Metric/Parameters.h`, and modify the constructor functions
 
 # Modify optimizaion settings
-Go to the file `sources/parameters.yaml`, and modify the constructor functions
+Go to the file `sources/parameters.yaml`, and modify the granularity parameter.
