@@ -5,6 +5,7 @@
 - [CMake](https://cmake.org/download/)
 - [Boost](https://www.boost.org/users/download/)
 - [yaml-cpp](https://github.com/jbeder/yaml-cpp)
+- [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)
 - [GTSAM (optional, for unit tests only)](https://github.com/borglab/gtsam)
 
 
