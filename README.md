@@ -22,6 +22,11 @@ After running the commmand above, the priority assignment results will be saved 
 
 
 
+# Read the priority assignment results in bash scripts
+There is one script `TaskData/read_vec.sh`, which reads the priority assignment results into an array.
+
+
+
 # Modify the task set 
 You can always directly modify the yaml file manually for some test purposes. Besides, you can also use the following command to modify it in a bash environment.
 ```
