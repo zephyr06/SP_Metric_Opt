@@ -65,5 +65,23 @@ void PrintPriorityVec(const TaskSet& tasks,
         std::cout << tasks[priority_assignment[i]].name << ": " << i << "\n";
     }
 }
+void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec,
+                              double time_taken) {
+    std::ofstream outputFile(path, std::ios::out);
 
+    // Check if the file was opened successfully
+    if (outputFile.is_open()) {
+        // Iterate through the vector and write each element to the file
+        for (const int& element : pa_vec) {
+            outputFile << element << "\n";
+        }
+        outputFile << "# Run-time: " << std::to_string(time_taken) + "\n";
+        // Close the file
+        outputFile.close();
+
+        std::cout << "Vector has been written to " << path << std::endl;
+    } else {
+        std::cerr << "Unable to open the file: " << path << std::endl;
+    }
+}
 }  // namespace SP_OPT_PA

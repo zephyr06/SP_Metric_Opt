@@ -14,7 +14,8 @@ TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
 class OptimizePA_BF {
    public:
     OptimizePA_BF() {}
-    OptimizePA_BF(const DAG_Model& dag_tasks, const SP_Parameters& sp_parameters)
+    OptimizePA_BF(const DAG_Model& dag_tasks,
+                  const SP_Parameters& sp_parameters)
         : dag_tasks_(dag_tasks),
           sp_parameters_(sp_parameters),
           N(dag_tasks.tasks.size()),
@@ -39,5 +40,8 @@ inline PriorityVec OptimizePA_BruteForce(const DAG_Model& dag_tasks,
     OptimizePA_BF opt(dag_tasks, sp_parameters);
     return opt.Optimize();
 }
+
+void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec,
+                              double time_taken);
 
 }  // namespace SP_OPT_PA
