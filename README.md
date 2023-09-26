@@ -1,10 +1,13 @@
 # SP_Metric_Optimization
 
+
 # Dependencies
 - [CMake](https://cmake.org/download/)
 - [Boost](https://www.boost.org/users/download/)
 - [yaml-cpp](https://github.com/jbeder/yaml-cpp)
 - [GTSAM (optional, for unit tests only)](https://github.com/borglab/gtsam)
+
+
 
 # Build and Run
 ```
@@ -17,6 +20,8 @@ make -j4
 ```
 After running the commmand above, the priority assignment results will be saved in `TaskData/pa_res_test_robotics_v1.txt`
 
+
+
 # Modify the task set 
 You can always directly modify the yaml file manually for some test purposes. Besides, you can also use the following command to modify it in a bash environment.
 ```
@@ -26,8 +31,11 @@ cd release
 Although you cannot modify chains using the script above, I think this should not be nececssary during the run-time.
 
 
+
 # Modify coefficients related to SP Metric
 Go to the file `sources/Safety_Performance_Metric/Parameters.h`, and modify the constructor functions
+
+
 
 # Modify optimizaion settings
 Go to the file `sources/parameters.yaml`, and modify the granularity parameter.
