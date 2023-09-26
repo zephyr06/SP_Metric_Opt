@@ -23,3 +23,7 @@ You can always directly modify the yaml file manually for some test purposes. Be
 ```
 Although you cannot modify chains using the script above, I think this should not be nececssary during the run-time.
 
+
+
+# Modify coefficients related to SP Metric
+Go to the file "sources/Safety_Performance_Metric/Parameters.h", and modify the constructor functions
