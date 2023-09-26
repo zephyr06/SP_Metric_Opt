@@ -27,6 +27,12 @@ class TaskSetForTest_2tasks : public ::testing::Test {
     TaskSet tasks;
     SP_Parameters sp_parameters;
 };
+TEST_F(TaskSetForTest_2tasks, GetPriorityAssignments) {
+    PriorityVec pa_vec1 = GetPriorityAssignments(tasks);
+    EXPECT_EQ(2, pa_vec1.size());
+    EXPECT_EQ(0, pa_vec1[0]);
+    EXPECT_EQ(1, pa_vec1[1]);
+}
 TEST_F(TaskSetForTest_2tasks, optimize) {
     PriorityVec pa_vec = {0, 1};
     UpdateTaskSetPriorities(tasks, pa_vec);

@@ -1,12 +1,9 @@
 %YAML:1.0
 debugMode: 0
-TIME_LIMIT: 600 # seconds, -1 means unlimited time
-# Task set settings
-priorityMode: RM
+TIME_LIMIT: 1 # seconds
 
 # must be no less than 1, granularity balences accuracy and speed;
-Granularity: 5
-
+Granularity: 50
 
 printRTA: 0
 

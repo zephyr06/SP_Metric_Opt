@@ -1,6 +1,26 @@
 
 #include "sources/Optimization/OptimizeSP.h"
 namespace SP_OPT_PA {
+bool ifTimeout(TimerType start_time) {
+    auto curr_time = std::chrono::system_clock::now();
+    if (std::chrono::duration_cast<std::chrono::seconds>(curr_time - start_time)
+            .count() >= GlobalVariables::TIME_LIMIT) {
+        std::cout << "\nTime out when running OptimizeOrder. Maximum time is "
+                  << GlobalVariables::TIME_LIMIT << " seconds.\n\n";
+        return true;
+    }
+    return false;
+}
+
+PriorityVec GetPriorityAssignments(const TaskSet& tasks) {
+    TaskSet tasks_copy = tasks;
+    SortTasksByPriority(tasks_copy);
+    PriorityVec pa_vec;
+    pa_vec.reserve(tasks.size());
+    for (uint i = 0; i < tasks_copy.size(); i++)
+        pa_vec.push_back(tasks_copy[i].id);
+    return pa_vec;
+}
 
 TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
                                 const PriorityVec& priority_assignment) {
@@ -17,6 +37,8 @@ TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
 void OptimizePA_BF::IterateAllPAs(
     PriorityVec& priority_assignment,
     std::unordered_set<int>& tasks_assigned_priority, int start) {
+    if (ifTimeout(start_time_))
+        return;
     if (start == N) {
         TaskSet tasks_eval =
             UpdateTaskSetPriorities(dag_tasks_.tasks, priority_assignment);
@@ -51,6 +73,8 @@ PriorityVec OptimizePA_BF::Optimize() {
     double initial_sp = ObtainSP_TaskSet(dag_tasks_.tasks, sp_parameters_);
     PriorityVec pa = {};
     std::unordered_set<int> tasks_assigned_priority;
+    opt_sp_ = initial_sp;
+    opt_pa_ = GetPriorityAssignments(dag_tasks_.tasks);
     IterateAllPAs(pa, tasks_assigned_priority, 0);
 
     std::cout << "Initial SP is: " << initial_sp << "\n";

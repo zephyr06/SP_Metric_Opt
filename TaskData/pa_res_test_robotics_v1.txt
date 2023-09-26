@@ -1,7 +1,7 @@
 # Priority assignments, task ids are ordered from the highest priority to the lowest priority:
+0
 1
 2
 3
-0
 
-# Run-time: 0.003918 seconds
+# Run-time: 1.845547 seconds

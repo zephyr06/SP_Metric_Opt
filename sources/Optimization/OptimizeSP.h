@@ -10,6 +10,9 @@ void PrintPriorityVec(const TaskSet& tasks,
                       const PriorityVec& priority_assignment);
 TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
                                 const PriorityVec& priority_assignment);
+bool ifTimeout(TimerType start_time);
+
+PriorityVec GetPriorityAssignments(const TaskSet& tasks);
 
 class OptimizePA_BF {
    public:
@@ -19,7 +22,8 @@ class OptimizePA_BF {
         : dag_tasks_(dag_tasks),
           sp_parameters_(sp_parameters),
           N(dag_tasks.tasks.size()),
-          opt_sp_(INT_MIN) {}
+          opt_sp_(INT_MIN),
+          start_time_((std::chrono::high_resolution_clock::now())) {}
 
     void IterateAllPAs(PriorityVec& priority_assignment,
                        std::unordered_set<int>& tasks_assigned_priority,
@@ -33,6 +37,7 @@ class OptimizePA_BF {
     int N;
     double opt_sp_;
     PriorityVec opt_pa_;
+    TimerType start_time_;
 };
 
 inline PriorityVec OptimizePA_BruteForce(const DAG_Model& dag_tasks,
