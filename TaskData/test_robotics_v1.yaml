@@ -1,36 +1,36 @@
 tasks:
-- id: 0
-  execution_time_mu: 10
-  execution_time_sigma: 1.7e-10
-  execution_time_min: 10
-  execution_time_max: 10
-  period: 10
-  deadline: 10
-  name: TSP
-- id: 1
-  execution_time_mu: 0.0209
-  execution_time_sigma: 0.000766
-  execution_time_min: 0.02
-  execution_time_max: 0.0375
-  period: 1
-  deadline: 1
-  name: MPC
-- id: 2
-  execution_time_mu: 0.9806
-  execution_time_sigma: 0.295
-  execution_time_min: 0.352
-  execution_time_max: 1.876
-  period: 5
-  deadline: 5
-  name: RRT
-- id: 3
-  execution_time_mu: 0.106
-  execution_time_sigma: 0.01
-  execution_time_min: 0.052
-  execution_time_max: 0.3
-  period: 10
-  deadline: 10
-  name: SLAM
+  - id: 0
+    execution_time_mu: 10.000000
+    execution_time_sigma: 0.000000
+    execution_time_min: 10.000000
+    execution_time_max: 10.000000
+    period: 10
+    deadline: 10.000000
+    name: TSP
+  - id: 1
+    execution_time_mu: 0.020900
+    execution_time_sigma: 0.000766
+    execution_time_min: 0.020000
+    execution_time_max: 0.037500
+    period: 1
+    deadline: 1.000000
+    name: MPC
+  - id: 2
+    execution_time_mu: 0.980600
+    execution_time_sigma: 0.295000
+    execution_time_min: 0.352000
+    execution_time_max: 1.876000
+    period: 5
+    deadline: 5.000000
+    name: RRT
+  - id: 3
+    execution_time_mu: 0.106000
+    execution_time_sigma: 0.010000
+    execution_time_min: 0.052000
+    execution_time_max: 0.300000
+    period: 10
+    deadline: 10.000000
+    name: SLAM
 
 chain0:
   - 0
@@ -39,4 +39,3 @@ chain0:
 chain1:
   - 1
   - 2
-  
