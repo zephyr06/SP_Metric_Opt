@@ -71,11 +71,14 @@ void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec,
 
     // Check if the file was opened successfully
     if (outputFile.is_open()) {
+        outputFile << "# Priority assignments, task ids are ordered from the "
+                      "highest priority to the lowest priority:\n";
         // Iterate through the vector and write each element to the file
         for (const int& element : pa_vec) {
             outputFile << element << "\n";
         }
-        outputFile << "# Run-time: " << std::to_string(time_taken) + "\n";
+        outputFile << "\n# Run-time: "
+                   << std::to_string(time_taken) + " seconds\n";
         // Close the file
         outputFile.close();
 
