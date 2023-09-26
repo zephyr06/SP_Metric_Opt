@@ -1,8 +1,8 @@
 if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
 gtsamAddTestsGlob(SP_OPT "test*.cpp" "" "${CONVENIENCE_LIB_NAME}")
 endif()
-# ADD_EXECUTABLE(GenerateTaskSet GenerateTaskSet.cpp)
-# TARGET_LINK_LIBRARIES(GenerateTaskSet ${CONVENIENCE_LIB_NAME})
+ADD_EXECUTABLE(EditYamlFile EditYamlFile.cpp)
+TARGET_LINK_LIBRARIES(EditYamlFile ${CONVENIENCE_LIB_NAME})
 
 # If necessary, use the RELATIVE flag, otherwise each source file may be listed 
 # with full pathname. RELATIVE may makes it easier to extract an executable name
