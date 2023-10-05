@@ -51,8 +51,8 @@ ProcessorTaskSet ExtractProcessorTaskSet(const TaskSet &tasks) {
     return processorTasks;
 }
 TaskSet ReadTaskSet(std::string path, int granulairty) {
-    if (!(std::filesystem::exists(path)))
-        CoutError(path + " not exist!");
+    // if (!(std::filesystem::exists(path)))
+    //     CoutError(path + " not exist!");
     YAML::Node config = YAML::LoadFile(path);
     YAML::Node tasksNode;
     if (config["tasks"]) {
