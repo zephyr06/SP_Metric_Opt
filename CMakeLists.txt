@@ -12,9 +12,9 @@ add_compile_options(-Wdeprecated-declarations)
 unset(CMAKE_WARN_DEPRECATED)
 
 
-find_package(Boost 1.50 REQUIRED)
+find_package(Boost 1.65 REQUIRED)
 # find_package(CppUnitLite REQUIRED)
-find_package(yaml-cpp)
+find_package(yaml-cpp 0.5.2 REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(includeMoe)
 include_directories(/usr/local/lib)
