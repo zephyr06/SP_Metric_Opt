@@ -37,8 +37,7 @@ TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
 void OptimizePA_BF::IterateAllPAs(
     PriorityVec& priority_assignment,
     std::unordered_set<int>& tasks_assigned_priority, int start) {
-    if (ifTimeout(start_time_))
-        return;
+    if (ifTimeout(start_time_)) return;
     if (start == N) {
         TaskSet tasks_eval =
             UpdateTaskSetPriorities(dag_tasks_.tasks, priority_assignment);
@@ -90,18 +89,17 @@ void PrintPriorityVec(const TaskSet& tasks,
     }
 }
 
-vector<int> TranslatePriorityVec(const PriorityVec& pa_vec){
-    vector<int> res=vector<int>(pa_vec.size());
-    for(int i=0;i<pa_vec.size();i++){
-        res[pa_vec[i]]=(i+1)*10;
+std::vector<int> TranslatePriorityVec(const PriorityVec& pa_vec) {
+    std::vector<int> res(pa_vec.size());
+    for (int i = 0; i < pa_vec.size(); i++) {
+        res[pa_vec[i]] = (i + 1) * 10;
     }
     return res;
 }
 
-
 void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec_input,
                               double time_taken) {
-    PriorityVec pa_vec =    TranslatePriorityVec(pa_vec_input);
+    PriorityVec pa_vec = TranslatePriorityVec(pa_vec_input);
     std::ofstream outputFile(path, std::ios::out);
 
     // Check if the file was opened successfully
