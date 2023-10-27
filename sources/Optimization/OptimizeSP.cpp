@@ -37,7 +37,8 @@ TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
 void OptimizePA_BF::IterateAllPAs(
     PriorityVec& priority_assignment,
     std::unordered_set<int>& tasks_assigned_priority, int start) {
-    if (ifTimeout(start_time_)) return;
+    if (ifTimeout(start_time_))
+        return;
     if (start == N) {
         TaskSet tasks_eval =
             UpdateTaskSetPriorities(dag_tasks_.tasks, priority_assignment);
@@ -104,10 +105,11 @@ void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec_input,
 
     // Check if the file was opened successfully
     if (outputFile.is_open()) {
-        outputFile << "# Priority assignments, task ids are ordered from the "
-                      "highest priority to the lowest priority:\n";
-        // Iterate through the vector and write each element to the file
-        for (const int& element : pa_vec) {
+        outputFile << "# Priority assignments for each task (ordered by task id);\n
+        For example, the first value is the priority for the first task with id=0;
+        \n ";
+            // Iterate through the vector and write each element to the file
+            for (const int& element : pa_vec) {
             outputFile << element << "\n";
         }
         outputFile << "\n# Run-time: "
