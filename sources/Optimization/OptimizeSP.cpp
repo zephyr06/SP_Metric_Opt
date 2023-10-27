@@ -105,11 +105,12 @@ void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec_input,
 
     // Check if the file was opened successfully
     if (outputFile.is_open()) {
-        outputFile << "# Priority assignments for each task (ordered by task id);\n
-        For example, the first value is the priority for the first task with id=0;
-        \n ";
-            // Iterate through the vector and write each element to the file
-            for (const int& element : pa_vec) {
+        outputFile
+            << "# Priority assignments for each task (ordered by task id);\n"
+            << "#For example, the first value is the priority for the first "
+               "task with id = 0\n\n";
+        // Iterate through the vector and write each element to the file
+        for (const int& element : pa_vec) {
             outputFile << element << "\n";
         }
         outputFile << "\n# Run-time: "
