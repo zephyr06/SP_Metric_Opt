@@ -1,6 +1,7 @@
 // #include <gtest/gtest.h>
 
 #include "gmock/gmock.h"  // Brings in gMock.
+#include "sources/Optimization/OptimizeSP.h"
 #include "sources/TaskModel/DAG_Model.h"
 #include "sources/TaskModel/RegularTasks.h"
 #include "sources/Utils/Parameters.h"
@@ -55,6 +56,16 @@ TEST(write, DAG) {
     EXPECT_EQ(10, tasks[0].period);
     EXPECT_EQ(5, tasks[3].execution_time_dist.size());
     EXPECT_EQ(0.052, tasks[3].execution_time_dist[0].value);
+}
+TEST(TranslatePriorityVec, PA_VEC_v1) {
+    PriorityVec pa = {0, 1, 2, 3};
+    std::vector<int> translated_pa_val = {40, 30, 20, 10};
+    EXPECT_EQ(translated_pa_val, TranslatePriorityVec(pa));
+}
+TEST(TranslatePriorityVec, PA_VEC_v2) {
+    PriorityVec pa = {3, 2, 0, 1};
+    std::vector<int> translated_pa_val = {20, 10, 30, 40};
+    EXPECT_EQ(translated_pa_val, TranslatePriorityVec(pa));
 }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);

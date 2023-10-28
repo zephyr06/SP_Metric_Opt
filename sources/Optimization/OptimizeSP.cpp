@@ -92,8 +92,10 @@ void PrintPriorityVec(const TaskSet& tasks,
 
 std::vector<int> TranslatePriorityVec(const PriorityVec& pa_vec) {
     std::vector<int> res(pa_vec.size());
+    // int min_pa=10;
+    int max_pa = 10 * pa_vec.size();
     for (int i = 0; i < pa_vec.size(); i++) {
-        res[pa_vec[i]] = (i + 1) * 10;
+        res[pa_vec[i]] = max_pa - i * 10;
     }
     return res;
 }
