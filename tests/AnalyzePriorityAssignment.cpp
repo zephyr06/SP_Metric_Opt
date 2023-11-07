@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "sources/Optimization/OptimizeSP.h"
+#include "sources/Optimization/OptimizeSP_BF.h"
 #include "sources/TaskModel/DAG_Model.h"
 #include "sources/Utils/Parameters.h"
 #include "sources/Utils/argparse.hpp"

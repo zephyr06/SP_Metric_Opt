@@ -1,7 +1,7 @@
 // #include <gtest/gtest.h>
 
 #include "gmock/gmock.h"  // Brings in gMock.
-#include "sources/Optimization/OptimizeSP.h"
+#include "sources/Optimization/OptimizeSP_BF.h"
 #include "sources/TaskModel/DAG_Model.h"
 #include "sources/TaskModel/RegularTasks.h"
 #include "sources/Utils/Parameters.h"

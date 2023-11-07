@@ -1,6 +1,6 @@
 
 #include "gmock/gmock.h"  // Brings in gMock.
-#include "sources/Optimization/OptimizeSP.h"
+#include "sources/Optimization/OptimizeSP_BF.h"
 #include "sources/Utils/Parameters.h"
 
 using ::testing::AtLeast;  // #1
