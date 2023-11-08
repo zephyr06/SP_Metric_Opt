@@ -120,8 +120,8 @@ void OptimizePA_Incre::IterateAllPAs(
         DAG_Model dag_tasks_eval = dag_tasks_;
         dag_tasks_eval.tasks = tasks_eval;
 
-        double sp_eval = ObtainSP_DAG(dag_tasks_eval, sp_parameters_);
-        sp_eval = EvalAndRecordSP(priority_assignment, dag_tasks_eval);
+        // double sp_eval = ObtainSP_DAG(dag_tasks_eval, sp_parameters_);
+        double sp_eval = EvalAndRecordSP(priority_assignment, dag_tasks_eval);
         // double sp_eval2 = EvalAndRecordSP(priority_assignment,
         // dag_tasks_eval);
 
