@@ -40,6 +40,7 @@ TEST_F(TaskSetForTest_2tasks, RTA) {
     vector<FiniteDist> rtas_actual = ProbabilisticRTA_TaskSet(tasks);
     EXPECT_EQ(2, rtas_actual.size());
     EXPECT_EQ(rta0_expected, rtas_actual[0]);
+
     EXPECT_TRUE(rta1_expected == rtas_actual[1]);
     rta1_expected.print();
     rtas_actual[1].print();

@@ -27,6 +27,7 @@ FiniteDist GetRTA_OneTask(const Task& task_curr, const TaskSet& hp_tasks) {
         }
     }
     rta_cur.CompressDeadlineMissProbability(task_curr.deadline);
+    rta_cur.UpdateMinMaxValues();
     return rta_cur;
 }
 
