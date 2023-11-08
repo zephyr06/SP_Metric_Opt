@@ -54,7 +54,8 @@ TEST(write, DAG) {
     TaskSet tasks = dag_tasks_read.tasks;
     EXPECT_EQ(4, tasks.size());
     EXPECT_EQ(10, tasks[0].period);
-    EXPECT_EQ(5, tasks[3].execution_time_dist.size());
+    EXPECT_EQ(GlobalVariables::Granularity,
+              tasks[3].execution_time_dist.size());
     EXPECT_EQ(0.052, tasks[3].execution_time_dist[0].value);
 }
 TEST(TranslatePriorityVec, PA_VEC_v1) {
