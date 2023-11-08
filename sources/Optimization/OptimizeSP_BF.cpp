@@ -69,6 +69,7 @@ void OptimizePA_BF::IterateAllPAs(
         }
     }
 }
+
 PriorityVec OptimizePA_BF::Optimize() {
     double initial_sp = ObtainSP_TaskSet(dag_tasks_.tasks, sp_parameters_);
     PriorityVec pa = {};
