@@ -2,6 +2,7 @@
 
 #include "gmock/gmock.h"  // Brings in gMock.
 #include "sources/Optimization/OptimizeSP_BF.h"
+#include "sources/Optimization/OptimizeSP_Incre.h"
 #include "sources/Utils/Parameters.h"
 
 using ::testing::AtLeast;  // #1
@@ -49,7 +50,7 @@ TEST_F(TaskSetForTest_2tasks, optimize) {
     EXPECT_EQ(1, tasks[1].priority);
 }
 
-TEST_F(TaskSetForTest_2tasks, Optimize) {
+TEST_F(TaskSetForTest_2tasks, Optimize_bf) {
     Task task_t = tasks[0];
     tasks[0] = tasks[1];
     tasks[0].id = 0;
@@ -60,6 +61,41 @@ TEST_F(TaskSetForTest_2tasks, Optimize) {
     PriorityVec pa_opt = OptimizePA_BruteForce(dag_tasks, sp_parameters);
     EXPECT_EQ(5, tasks[pa_opt[0]].period);
     EXPECT_EQ(12, tasks[pa_opt[1]].period);
+}
+TEST_F(TaskSetForTest_2tasks, Optimize_incre) {
+    Task task_t = tasks[0];
+    tasks[0] = tasks[1];
+    tasks[0].id = 0;
+    tasks[1] = task_t;
+    tasks[1].id = 1;
+    sp_parameters.thresholds_node = {0, 0};
+    DAG_Model dag_tasks(tasks, {});
+    PriorityVec pa_opt = OptimizePA_Incremental(dag_tasks, sp_parameters);
+    PrintPriorityVec(tasks, pa_opt);
+    EXPECT_EQ(5, tasks[pa_opt[0]].period);
+    EXPECT_EQ(12, tasks[pa_opt[1]].period);
+}
+TEST_F(TaskSetForTest_2tasks, Optimize_incre_v2) {
+    Task task_t = tasks[0];
+    tasks[0] = tasks[1];
+    tasks[0].id = 0;
+    tasks[1] = task_t;
+    tasks[1].id = 1;
+    sp_parameters.thresholds_node = {0, 0};
+    DAG_Model dag_tasks(tasks, {});
+    OptimizePA_Incre opt(dag_tasks, sp_parameters);
+    BeginTimer("First-run");
+    PriorityVec pa_opt = opt.Optimize(dag_tasks);
+    EndTimer("First-run");
+    BeginTimer("Second-runs");
+    pa_opt = opt.Optimize(dag_tasks);
+    // pa_opt = opt.Optimize(dag_tasks);
+    // pa_opt = opt.Optimize(dag_tasks);
+    EndTimer("Second-runs");
+    PrintPriorityVec(tasks, pa_opt);
+    EXPECT_EQ(5, tasks[pa_opt[0]].period);
+    EXPECT_EQ(12, tasks[pa_opt[1]].period);
+    PrintTimer();
 }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);

@@ -1,8 +1,8 @@
 %YAML:1.0
-TIME_LIMIT: 1 # seconds
+TIME_LIMIT: 100 # seconds
 
 # must be no less than 1, granularity balences accuracy and speed;
-Granularity: 5
+Granularity: 10
 
 # ************** for debug purposes
 debugMode: 0
