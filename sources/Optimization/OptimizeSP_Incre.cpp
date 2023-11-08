@@ -135,7 +135,6 @@ double OptimizePA_Incre::EvalAndRecordSP(const PriorityVec& priority_assignment,
         GetParameter<double>(dag_tasks_eval.GetTaskSet(), "deadline");
 
     // chain SP
-    // BIG TODO: update this function's logic
     std::vector<FiniteDist> reaction_time_dists =
         GetRTDA_Dist_AllChains<ObjReactionTime>(priority_assignment,
                                                 dag_tasks_eval);

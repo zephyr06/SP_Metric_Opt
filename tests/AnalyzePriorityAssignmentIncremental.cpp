@@ -41,13 +41,13 @@ int main(int argc, char *argv[]) {
 
     DAG_Model dag_tasks = ReadDAG_Tasks(file_path);
     SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
-    // PriorityVec pa_opt = OptimizePA_Incremental(dag_tasks, sp_parameters);
     OptimizePA_Incre opt(dag_tasks, sp_parameters);
+    // read a DAG and optimize it for the first time
     PriorityVec pa_opt = opt.Optimize(dag_tasks);
+    // to perform incremental optimization, do not create a new OptimizePA_Incre
+    // class, but instead use the same OptimizePA_Incre class to run
+    // optimization
     for (int i = 0; i < 5; i++) pa_opt = opt.Optimize(dag_tasks);
-    // pa_opt = opt.Optimize(dag_tasks);
-    // pa_opt = opt.Optimize(dag_tasks);
-    // pa_opt = opt.Optimize(dag_tasks);
 
     TimerType finish_time = CurrentTimeInProfiler;
     double time_taken = GetTimeTaken(start_time, finish_time);
