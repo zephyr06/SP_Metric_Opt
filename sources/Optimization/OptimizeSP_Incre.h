@@ -50,6 +50,15 @@ struct SP_Per_PA_Info {
     double chain_sp;
 };
 
+std::vector<FiniteDist> GetExecutionTimeVector(const DAG_Model& dag_tasks) {
+    std::vector<FiniteDist> prev_exex_rec;
+    prev_exex_rec.reserve(dag_tasks.tasks.size());
+    for (uint i = 0; i < dag_tasks.tasks.size(); i++) {
+        prev_exex_rec.push_back(dag_tasks.GetTask(i).execution_time_dist);
+    }
+    return prev_exex_rec;
+}
+
 // task id must begin with 0 and be continuous integers
 class OptimizePA_Incre {
    public:
@@ -71,7 +80,8 @@ class OptimizePA_Incre {
 
     // ordered by task id, i-th element is true if the task with i-th id changes
     // ET
-    std::vector<bool> FindTasksWithDifferentET() const;
+    std::vector<bool> FindTasksWithDifferentET(
+        const DAG_Model& dag_tasks) const;
 
     double EvalAndRecordSP(const PriorityVec& priority_assignment,
                            const DAG_Model& dag_tasks_eval);
@@ -81,6 +91,7 @@ class OptimizePA_Incre {
     // data members
     DAG_Model dag_tasks_;
     SP_Parameters sp_parameters_;
+    std::vector<FiniteDist> prev_exex_rec_;
     int N;
     double opt_sp_;
     PriorityVec opt_pa_;

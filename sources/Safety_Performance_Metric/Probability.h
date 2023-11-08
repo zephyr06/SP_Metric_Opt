@@ -54,6 +54,11 @@ struct Value_Proba {
     double value;
     double probability;
 };
+
+inline bool ifDiff(double a, double b, double tolerance) {
+    return std::abs(a - b) > tolerance;
+}
+
 // stores a probability mass function, i.e., value-probability pair
 // this should be the major way to describe probability distribution
 class FiniteDist : public ProbabilityDistributionBase {
@@ -106,18 +111,6 @@ class FiniteDist : public ProbabilityDistributionBase {
 
     inline Value_Proba& operator[](size_t i) { return distribution[i]; }
     inline const Value_Proba& at(size_t i) { return distribution.at(i); }
-    bool operator==(const FiniteDist& other) const {
-        if (size() != other.size())
-            return false;
-        for (uint i = 0; i < size(); i++) {
-            if (distribution[i] != other.distribution[i])
-                return false;
-        }
-        return true;
-    }
-    inline bool operator!=(const FiniteDist& other) const {
-        return !((*this) == other);
-    }
 
     // ''merge'' two distribution
     void Coalesce(const FiniteDist& other);
@@ -160,6 +153,24 @@ class FiniteDist : public ProbabilityDistributionBase {
 
     void Scale(double k) {
         for (Value_Proba& pair : distribution) pair.value *= k;
+    }
+
+    bool operator==(const FiniteDist& other) const {
+        if (distribution.size() != other.distribution.size())
+            return false;
+        double tolerance = 1e-5;
+        for (uint i = 0; i < distribution.size(); i++) {
+            if (distribution[i] != other.distribution[i])
+                return false;
+        }
+        if (ifDiff(min_time, other.min_time, tolerance))
+            return false;
+        if (ifDiff(max_time, other.max_time, tolerance))
+            return false;
+        return true;
+    }
+    bool operator!=(const FiniteDist& other) const {
+        return !((*this) == other);
     }
 
     // data members

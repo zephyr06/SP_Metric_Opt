@@ -3,6 +3,22 @@
 
 namespace SP_OPT_PA {
 
+std::vector<bool> OptimizePA_Incre::FindTasksWithDifferentET(
+    const DAG_Model& dag_tasks) const {
+    std::vector<bool> diff_rec(dag_tasks_.GetTaskSet().size(), true);
+    if (prev_exex_rec_.size() == 0)
+        return diff_rec;
+    else {
+        std::vector<FiniteDist> exec_vec_curr =
+            GetExecutionTimeVector(dag_tasks);
+        for (int i = 0; i < N; i++) {
+            bool diff = bool(exec_vec_curr[i] == prev_exex_rec_[i]);
+            diff_rec[i] = diff;
+        }
+    }
+    return diff_rec;
+}
+
 PriorityVec OptimizePA_Incre::Optimize(const DAG_Model& dag_tasks) {
     // maybe not very necessary to create an initial PA
     double initial_sp = ObtainSP_TaskSet(dag_tasks_.tasks, sp_parameters_);
@@ -14,6 +30,7 @@ PriorityVec OptimizePA_Incre::Optimize(const DAG_Model& dag_tasks) {
 
     std::cout << "Initial SP is: " << initial_sp << "\n";
     std::cout << "Optimal SP is: " << opt_sp_ << "\n";
+    prev_exex_rec_ = GetExecutionTimeVector(dag_tasks);
     return opt_pa_;
 }
 // Big TODO: check whether hp tasks changed ?

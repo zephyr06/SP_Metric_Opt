@@ -97,6 +97,27 @@ TEST_F(TaskSetForTest_2tasks, Optimize_incre_v2) {
     EXPECT_EQ(12, tasks[pa_opt[1]].period);
     PrintTimer();
 }
+
+TEST_F(TaskSetForTest_2tasks, FindTasksWithDifferentET) {
+    Task task_t = tasks[0];
+    tasks[0] = tasks[1];
+    tasks[0].id = 0;
+    tasks[1] = task_t;
+    tasks[1].id = 1;
+    sp_parameters.thresholds_node = {0, 0};
+    DAG_Model dag_tasks(tasks, {});
+
+    OptimizePA_Incre opt_inc_class(dag_tasks, sp_parameters);
+    opt_inc_class.prev_exex_rec_ = GetExecutionTimeVector(dag_tasks);
+    std::vector<Value_Proba> dist_vec1 = {
+        Value_Proba(1, 0.5), Value_Proba(2, 0.4), Value_Proba(3, 0.1)};
+    tasks[0].execution_time_dist = dist_vec1;
+    DAG_Model dag_tasks2(tasks, {});
+    vector<bool> diff_rec = opt_inc_class.FindTasksWithDifferentET(dag_tasks2);
+    EXPECT_FALSE(diff_rec[0]);
+    EXPECT_TRUE(diff_rec[1]);
+}
+
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);
