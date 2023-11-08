@@ -98,7 +98,7 @@ TEST_F(TaskSetForTest_2tasks, Optimize_incre_v2) {
     PrintTimer();
 }
 
-TEST_F(TaskSetForTest_2tasks, FindTasksWithDifferentET) {
+TEST_F(TaskSetForTest_2tasks, FindTasksWithSameET) {
     Task task_t = tasks[0];
     tasks[0] = tasks[1];
     tasks[0].id = 0;
@@ -113,7 +113,7 @@ TEST_F(TaskSetForTest_2tasks, FindTasksWithDifferentET) {
         Value_Proba(1, 0.5), Value_Proba(2, 0.4), Value_Proba(3, 0.1)};
     tasks[0].execution_time_dist = dist_vec1;
     DAG_Model dag_tasks2(tasks, {});
-    vector<bool> diff_rec = opt_inc_class.FindTasksWithDifferentET(dag_tasks2);
+    vector<bool> diff_rec = opt_inc_class.FindTasksWithSameET(dag_tasks2);
     EXPECT_FALSE(diff_rec[0]);
     EXPECT_TRUE(diff_rec[1]);
 }

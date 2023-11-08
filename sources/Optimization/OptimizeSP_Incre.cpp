@@ -3,9 +3,10 @@
 
 namespace SP_OPT_PA {
 
-std::vector<bool> OptimizePA_Incre::FindTasksWithDifferentET(
+// true if a task's ET is the same as prev
+std::vector<bool> OptimizePA_Incre::FindTasksWithSameET(
     const DAG_Model& dag_tasks) const {
-    std::vector<bool> diff_rec(dag_tasks_.GetTaskSet().size(), true);
+    std::vector<bool> diff_rec(dag_tasks_.GetTaskSet().size(), false);
     if (prev_exex_rec_.size() == 0)
         return diff_rec;
     else {
@@ -20,6 +21,7 @@ std::vector<bool> OptimizePA_Incre::FindTasksWithDifferentET(
 }
 
 PriorityVec OptimizePA_Incre::Optimize(const DAG_Model& dag_tasks) {
+    tasks_ET_if_same_ = FindTasksWithSameET(dag_tasks);
     // maybe not very necessary to create an initial PA
     double initial_sp = ObtainSP_TaskSet(dag_tasks_.tasks, sp_parameters_);
     PriorityVec pa = {};
@@ -33,16 +35,23 @@ PriorityVec OptimizePA_Incre::Optimize(const DAG_Model& dag_tasks) {
     prev_exex_rec_ = GetExecutionTimeVector(dag_tasks);
     return opt_pa_;
 }
-// Big TODO: check whether hp tasks changed ?
-bool SameHpTasks(const std::vector<int>& a, const std::vector<int>& b) {
-    if (a.size() != b.size())
+
+bool OptimizePA_Incre::SameHpTasks(
+    const std::vector<int>& hp_task_ids_ite,
+    const std::vector<int>& hp_task_ids_prev) const {
+    if (hp_task_ids_ite.size() != hp_task_ids_ite.size())
         return false;
-    for (uint i = 0; i < a.size(); i++) {
-        if (a[i] != b[i])
+    for (uint i = 0; i < hp_task_ids_ite.size(); i++) {
+        if (hp_task_ids_ite[i] != hp_task_ids_prev[i])
+            return false;
+    }
+    for (int id : hp_task_ids_ite) {
+        if (tasks_ET_if_same_[id] == false)
             return false;
     }
     return true;
 }
+
 std::vector<FiniteDist> OptimizePA_Incre::ProbabilisticRTA_TaskSet(
     const PriorityVec& priority_assignment, const TaskSet& tasks_input) {
     if (!prev_sp_rec_.count(priority_assignment))

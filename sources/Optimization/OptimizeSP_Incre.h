@@ -78,10 +78,11 @@ class OptimizePA_Incre {
     std::vector<FiniteDist> ProbabilisticRTA_TaskSet(
         const PriorityVec& priority_assignment, const TaskSet& tasks_input);
 
-    // ordered by task id, i-th element is true if the task with i-th id changes
-    // ET
-    std::vector<bool> FindTasksWithDifferentET(
-        const DAG_Model& dag_tasks) const;
+    // ordered by task id, i-th element is false if the task with i-th id
+    // changes ET
+    std::vector<bool> FindTasksWithSameET(const DAG_Model& dag_tasks) const;
+    bool SameHpTasks(const std::vector<int>& hp_task_ids_ite,
+                     const std::vector<int>& hp_task_ids_prev) const;
 
     double EvalAndRecordSP(const PriorityVec& priority_assignment,
                            const DAG_Model& dag_tasks_eval);
@@ -96,6 +97,8 @@ class OptimizePA_Incre {
     double opt_sp_;
     PriorityVec opt_pa_;
     TimerType start_time_;
+    std::vector<bool>
+        tasks_ET_if_same_;  // true means not changed; false means changed;
     std::unordered_map<PriorityVec, SP_Per_PA_Info> prev_sp_rec_;
 };
 
