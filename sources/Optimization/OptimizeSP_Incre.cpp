@@ -52,6 +52,14 @@ bool OptimizePA_Incre::SameHpTasks(
     return true;
 }
 
+bool OptimizePA_Incre::SameChains(const std::vector<int>& chain) const {
+    for (int id : chain) {
+        if (tasks_ET_if_same_[id] == false)
+            return false;
+    }
+    return true;
+}
+
 std::vector<FiniteDist> OptimizePA_Incre::ProbabilisticRTA_TaskSet(
     const PriorityVec& priority_assignment, const TaskSet& tasks_input) {
     if (!prev_sp_rec_.count(priority_assignment))
@@ -88,6 +96,34 @@ std::vector<FiniteDist> OptimizePA_Incre::ProbabilisticRTA_TaskSet(
     return rtas;
 }
 
+template <typename ObjectiveFunctionType>
+std::vector<FiniteDist> OptimizePA_Incre::GetRTDA_Dist_AllChains(
+    const PriorityVec& priority_assignment, const DAG_Model& dag_tasks) {
+    if (!prev_sp_rec_.count(priority_assignment))
+        prev_sp_rec_[priority_assignment] =
+            SP_Per_PA_Info(dag_tasks.GetTaskSet().size());
+
+    std::vector<FiniteDist> dists;
+    dists.reserve(dag_tasks.chains_.size());
+    int chain_id = 0;
+    for (const auto& chain : dag_tasks.chains_) {
+        const SP_Per_PA_Info& sp_prev_pa_eval =
+            prev_sp_rec_[priority_assignment];
+        Chain_SP_Info prev_chain_sp_info = sp_prev_pa_eval.read_chain(chain_id);
+        if (SameChains(chain) && chain_id == prev_chain_sp_info.chain_id) {
+            dists.push_back(prev_chain_sp_info.rta_dist);
+        } else {
+            FiniteDist chain_dist =
+                GetRTDA_Dist_SingleChain<ObjectiveFunctionType>(dag_tasks,
+                                                                chain);
+            prev_sp_rec_[priority_assignment].update_chain(chain_id,
+                                                           chain_dist);
+            dists.push_back(chain_dist);
+        }
+        chain_id++;
+    }
+    return dists;
+}
 // this function does the same as ObtainSP_DAG() except it updates the
 // prev_sp_rec_
 double OptimizePA_Incre::EvalAndRecordSP(const PriorityVec& priority_assignment,
@@ -101,7 +137,8 @@ double OptimizePA_Incre::EvalAndRecordSP(const PriorityVec& priority_assignment,
     // chain SP
     // BIG TODO: update this function's logic
     std::vector<FiniteDist> reaction_time_dists =
-        GetRTDA_Dist_AllChains<ObjReactionTime>(dag_tasks_eval);
+        GetRTDA_Dist_AllChains<ObjReactionTime>(priority_assignment,
+                                                dag_tasks_eval);
     std::vector<double> chains_ddl = GetChainsDDL(dag_tasks_eval);
     return ObtainSP(rtas_task_set, deadlines_task_set,
                     sp_parameters_.thresholds_node) +

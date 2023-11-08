@@ -35,9 +35,21 @@ struct Task_SP_Info {
     FiniteDist rta_dist;
 };
 
+struct Chain_SP_Info {
+    Chain_SP_Info() : chain_id(-1) {}
+    Chain_SP_Info(int chain_id, const FiniteDist& rta_dist)
+        : chain_id(chain_id), rta_dist(rta_dist) {}
+
+    int chain_id;
+    FiniteDist rta_dist;
+};
 struct SP_Per_PA_Info {
     SP_Per_PA_Info() {}
-    SP_Per_PA_Info(int N) { sp_rec_per_task = std::vector<Task_SP_Info>(N); }
+    // TODO: make chain_num an input
+    SP_Per_PA_Info(int tasks_num, int chains_num = 10) {
+        sp_rec_per_task = std::vector<Task_SP_Info>(tasks_num);
+        sp_rec_per_chain = std::vector<Chain_SP_Info>(chains_num);
+    }
 
     void update(int task_id, const std::vector<int>& hp_task_ids,
                 const FiniteDist& rta_dist) {
@@ -45,9 +57,16 @@ struct SP_Per_PA_Info {
     }
     Task_SP_Info read(int task_id) const { return sp_rec_per_task[task_id]; }
 
+    void update_chain(int chain_id, const FiniteDist& rta_dist) {
+        sp_rec_per_chain[chain_id] = Chain_SP_Info(chain_id, rta_dist);
+    }
+    Chain_SP_Info read_chain(int chain_id) const {
+        return sp_rec_per_chain[chain_id];
+    }
+
    private:
     std::vector<Task_SP_Info> sp_rec_per_task;
-    double chain_sp;
+    std::vector<Chain_SP_Info> sp_rec_per_chain;
 };
 
 std::vector<FiniteDist> GetExecutionTimeVector(const DAG_Model& dag_tasks) {
@@ -78,11 +97,17 @@ class OptimizePA_Incre {
     std::vector<FiniteDist> ProbabilisticRTA_TaskSet(
         const PriorityVec& priority_assignment, const TaskSet& tasks_input);
 
+    template <typename ObjectiveFunctionType>
+    std::vector<FiniteDist> GetRTDA_Dist_AllChains(
+        const PriorityVec& priority_assignment, const DAG_Model& dag_tasks);
+
     // ordered by task id, i-th element is false if the task with i-th id
     // changes ET
     std::vector<bool> FindTasksWithSameET(const DAG_Model& dag_tasks) const;
     bool SameHpTasks(const std::vector<int>& hp_task_ids_ite,
                      const std::vector<int>& hp_task_ids_prev) const;
+
+    bool SameChains(const std::vector<int>& chain) const;
 
     double EvalAndRecordSP(const PriorityVec& priority_assignment,
                            const DAG_Model& dag_tasks_eval);
