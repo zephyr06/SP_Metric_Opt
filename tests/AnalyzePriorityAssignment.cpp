@@ -40,6 +40,14 @@ int main(int argc, char *argv[]) {
                               program.get<std::string>("--output_file_path");
 
     DAG_Model dag_tasks = ReadDAG_Tasks(file_path);
+    // dag_tasks.tasks[0].priority = 3;
+    // dag_tasks.tasks[1].priority = 2;
+    // dag_tasks.tasks[2].priority = 0;
+    // dag_tasks.tasks[3].priority = 1;
+    dag_tasks.tasks[0].priority = 0;
+    dag_tasks.tasks[1].priority = 1;
+    dag_tasks.tasks[2].priority = 2;
+    dag_tasks.tasks[3].priority = 3;
     SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
     PriorityVec pa_opt = OptimizePA_BruteForce(dag_tasks, sp_parameters);
     PrintPriorityVec(dag_tasks.tasks, pa_opt);
