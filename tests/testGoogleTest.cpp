@@ -8,10 +8,10 @@ using ::testing::Return;
 using namespace std;
 using namespace SP_OPT_PA;
 using namespace GlobalVariables;
-TEST(BasicExample, v1) {
-    vector<double> data = ReadTxtFile("RRT");
-    for (double x : data) cout << x << "\n";
-}
+// TEST(BasicExample, v1) {
+//     vector<double> data = ReadTxtFile("RRT");
+//     for (double x : data) cout << x << "\n";
+// }
 
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);

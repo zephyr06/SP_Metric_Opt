@@ -7,9 +7,9 @@
 #include "sources/Utils/testMy.h"
 
 namespace SP_OPT_PA {
-std::vector<double> ReadTxtFile(std::string kernel_name) {
-    std::string path = std::string(PROJECT_ROOT_DIR) +
-                       "/ExperimentsData/FormatedData/" + kernel_name + ".txt";
+std::vector<double> ReadTxtFile(std::string path) {
+    // std::string path = GlobalVariables::PROJECT_PATH + folder_path
+    //                     + kernel_name + ".txt";
     std::ifstream inputFile(path);
 
     if (!inputFile.is_open()) {

@@ -9,6 +9,9 @@ ADD_EXECUTABLE(AnalyzePriorityAssignment AnalyzePriorityAssignment.cpp)
 TARGET_LINK_LIBRARIES(AnalyzePriorityAssignment ${CONVENIENCE_LIB_NAME})
 
 
+ADD_EXECUTABLE(AnalyzeSP_Metric AnalyzeSP_Metric.cpp)
+TARGET_LINK_LIBRARIES(AnalyzeSP_Metric ${CONVENIENCE_LIB_NAME})
+
 ADD_EXECUTABLE(AnalyzePriorityAssignmentIncremental AnalyzePriorityAssignmentIncremental.cpp)
 TARGET_LINK_LIBRARIES(AnalyzePriorityAssignmentIncremental ${CONVENIENCE_LIB_NAME})
 

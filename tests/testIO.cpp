@@ -12,7 +12,7 @@ using namespace std;
 using namespace SP_OPT_PA;
 using namespace GlobalVariables;
 TEST(BasicExample, v1) {
-    vector<double> data = ReadTxtFile("test");
+    vector<double> data = ReadTxtFile(GlobalVariables::PROJECT_PATH +"ExperimentsData/FormatedData/test.txt");
     EXPECT_EQ(5, data.size());
     for (int i = 0; i < 5; i++) EXPECT_EQ(i + 1, data[i]);
 }
