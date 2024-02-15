@@ -113,4 +113,27 @@ void FiniteDist::AddPreemption(const FiniteDist& execution_time_dist_hp,
     CompressDeadlineMissProbability(deadline_this);
 }
 
+
+FiniteDist::FiniteDist(const std::vector<double>& data_raw, int granularity){
+    std::vector<double> data = data_raw;
+    std::sort(data.begin(), data.end());
+    min_time = data[0];
+    max_time = data[data.size() - 1];
+    double range = max_time - min_time;
+    double step = range / (granularity-1);
+    
+    distribution.reserve(granularity);
+    int value_index=0;
+    for (int i = 0; i < granularity; i++) {
+        double val = min_time + i * step;
+        int count = 0;
+        while(value_index < static_cast<int>(data.size()) && data[value_index] <= val){
+            count++;
+            value_index++;
+        }
+        if(count>0)
+            distribution.push_back(Value_Proba(val, double(count) / data.size()));
+    }
+}
+
 }  // namespace SP_OPT_PA

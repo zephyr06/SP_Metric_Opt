@@ -205,6 +205,27 @@ TEST(FiniteDist, constructor) {
     EXPECT_THAT(finite_dist.min_time, testing::Le(10 - 1));
     EXPECT_THAT(finite_dist.max_time, testing::Ge(10 + 1));
 }
+
+TEST(FiniteDist, AnalyzeFiniteDist_v2) {
+    std::vector<double> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    FiniteDist finite_dist(data, 5);
+    EXPECT_EQ(5, finite_dist.size());
+
+    EXPECT_EQ(1, finite_dist[0].value);
+    EXPECT_EQ(0.1, finite_dist[0].probability);
+
+    EXPECT_EQ(3.25, finite_dist[1].value);
+    EXPECT_EQ(0.2, finite_dist[1].probability);
+    
+    EXPECT_EQ(5.5, finite_dist[2].value);
+    EXPECT_EQ(0.2, finite_dist[2].probability);
+
+    EXPECT_EQ(7.75, finite_dist[3].value);
+    EXPECT_EQ(0.2, finite_dist[3].probability);
+    
+    EXPECT_EQ(10, finite_dist[4].value);
+    EXPECT_EQ(0.3, finite_dist[4].probability);
+}
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);
