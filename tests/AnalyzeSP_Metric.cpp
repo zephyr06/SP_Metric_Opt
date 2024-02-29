@@ -11,9 +11,7 @@
 using namespace std;
 using namespace SP_OPT_PA;
 
-
 int main(int argc, char *argv[]) {
-
     argparse::ArgumentParser program("program name");
     program.add_argument("--slam_path")
         .default_value(std::string("TaskData/AnalyzeSP_Metric/slam.txt"))
@@ -35,12 +33,12 @@ int main(int argc, char *argv[]) {
         .help(
             "the relative path of the yaml file that saves information about "
             "the tasks. Example: TaskData/AnalyzeSP_Metric/tsp.txt");
-        
+
     // program.add_argument("--file_path")
     //     .default_value(std::string("TaskData/test_robotics_v1.yaml"))
     //     .help(
-    //         "the relative path of the yaml file that saves information about "
-    //         "the tasks. Example: TaskData/test_robotics_v1.yaml");
+    //         "the relative path of the yaml file that saves information about
+    //         " "the tasks. Example: TaskData/test_robotics_v1.yaml");
     // program.add_argument("--output_file_path")
     //     .default_value(std::string("TaskData/pa_res_test_robotics_v1.txt"))
     //     .help(
@@ -63,23 +61,26 @@ int main(int argc, char *argv[]) {
         GlobalVariables::PROJECT_PATH + program.get<std::string>("--mpc_path");
     string tsp_path =
         GlobalVariables::PROJECT_PATH + program.get<std::string>("--tsp_path");
-    string file_path_ref = "TaskData/test_robotics_v1.yaml";
-    
-    file_path_ref =
-        GlobalVariables::PROJECT_PATH + file_path_ref;
+    string file_path_ref = "TaskData/test_robotics_v3.yaml";
+
+    file_path_ref = GlobalVariables::PROJECT_PATH + file_path_ref;
 
     int granularity = 10;
-    DAG_Model dag_tasks = ReadDAG_Tasks( file_path_ref); // only read the tasks without worrying about the execution time distribution
+    DAG_Model dag_tasks =
+        ReadDAG_Tasks(file_path_ref);  // only read the tasks without worrying
+                                       // about the execution time distribution
     std::vector<FiniteDist> dists;
     // std::string folder_path="TaskData/AnalyzeSP_Metric/";
-    dists.push_back( FiniteDist(ReadTxtFile(tsp_path), granularity));
-    dists.push_back( FiniteDist(ReadTxtFile(mpc_path), granularity));
-    dists.push_back( FiniteDist(ReadTxtFile(rrt_path), granularity));
-    dists.push_back( FiniteDist(ReadTxtFile(slam_path), granularity));
-    
-    std::vector<double> deadlines = GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
-    
-    SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
-    std::cout<<"SP-Metric: "<<ObtainSP(dists, deadlines, sp_parameters.thresholds_node)<<"\n";
+    dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
+    dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
+    dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
+    dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
 
+    std::vector<double> deadlines =
+        GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
+
+    SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
+    std::cout << "SP-Metric: "
+              << ObtainSP(dists, deadlines, sp_parameters.thresholds_node)
+              << "\n";
 }

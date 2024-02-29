@@ -13,6 +13,7 @@ std::vector<double> ReadTxtFile(std::string path) {
     std::ifstream inputFile(path);
 
     if (!inputFile.is_open()) {
+        std::cout << "Input path: " << path << "\n";
         CoutError("Failed to open the file.");
     }
 
