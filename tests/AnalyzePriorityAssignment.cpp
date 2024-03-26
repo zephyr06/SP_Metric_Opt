@@ -21,10 +21,10 @@ int main(int argc, char *argv[]) {
             "the relative path of the yaml file that saves information about "
             "the tasks. Example: TaskData/test_robotics_v1.yaml");
     program.add_argument("--output_file_path")
-        .default_value(std::string("TaskData/pa_res_test_robotics_v1.txt"))
+        .default_value(std::string("TaskData/pa_res_test_robotics_v1.yaml"))
         .help(
             "the relative path of the file that saves priority assignment "
-            "results. Example: TaskData/pa_res_test_robotics_v1.txt");
+            "results. Example: TaskData/pa_res_test_robotics_v1.yaml");
 
     try {
         program.parse_args(argc, argv);
