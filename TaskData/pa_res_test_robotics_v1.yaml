@@ -1,9 +1,8 @@
 # Priority assignments for each task (ordered by task id);
 #For example, the first value is the priority for the first task with id = 0
 
-20
-10
-30
-40
-
-# Run-time: 0.249343 seconds
+SLAM: 0
+RRT: 1
+TSP: 2
+MPC: 3
+# Run-time: 0.210836 seconds
