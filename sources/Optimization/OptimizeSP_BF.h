@@ -50,7 +50,7 @@ inline PriorityVec OptimizePA_BruteForce(const DAG_Model& dag_tasks,
 // the task with id equals i;
 std::vector<int> TranslatePriorityVec(const PriorityVec& pa_vec);
 
-void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec,
-                              double time_taken);
+void WritePriorityAssignments(std::string path, const TaskSet& tasks,
+                              const PriorityVec& pa_vec, double time_taken);
 
 }  // namespace SP_OPT_PA

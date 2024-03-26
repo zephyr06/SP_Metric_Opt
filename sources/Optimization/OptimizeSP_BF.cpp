@@ -37,8 +37,7 @@ TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
 void OptimizePA_BF::IterateAllPAs(
     PriorityVec& priority_assignment,
     std::unordered_set<int>& tasks_assigned_priority, int start) {
-    if (ifTimeout(start_time_))
-        return;
+    if (ifTimeout(start_time_)) return;
     if (start == N) {
         TaskSet tasks_eval =
             UpdateTaskSetPriorities(dag_tasks_.tasks, priority_assignment);
@@ -101,9 +100,19 @@ std::vector<int> TranslatePriorityVec(const PriorityVec& pa_vec) {
     return res;
 }
 
-void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec_input,
+YAML::Node PriorityAssignmentToYaml(const TaskSet& tasks,
+                                    const PriorityVec& priority_assignment) {
+    YAML::Node dictionary;
+    for (uint i = 0; i < priority_assignment.size(); i++) {
+        dictionary[tasks[priority_assignment[i]].name] = i;
+    }
+    return dictionary;
+}
+
+void WritePriorityAssignments(std::string path, const TaskSet& tasks,
+                              const PriorityVec& pa_vec_input,
                               double time_taken) {
-    PriorityVec pa_vec = TranslatePriorityVec(pa_vec_input);
+    auto dictionary = PriorityAssignmentToYaml(tasks, pa_vec_input);
     std::ofstream outputFile(path, std::ios::out);
 
     // Check if the file was opened successfully
@@ -113,9 +122,11 @@ void WritePriorityAssignments(std::string path, const PriorityVec& pa_vec_input,
             << "#For example, the first value is the priority for the first "
                "task with id = 0\n\n";
         // Iterate through the vector and write each element to the file
-        for (const int& element : pa_vec) {
-            outputFile << element << "\n";
-        }
+        // for (const int& element : pa_vec) {
+        //     outputFile << element << "\n";
+        // }
+        outputFile << dictionary;
+
         outputFile << "\n# Run-time: "
                    << std::to_string(time_taken) + " seconds\n";
         // Close the file

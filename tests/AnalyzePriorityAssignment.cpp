@@ -54,5 +54,6 @@ int main(int argc, char *argv[]) {
 
     TimerType finish_time = CurrentTimeInProfiler;
     double time_taken = GetTimeTaken(start_time, finish_time);
-    WritePriorityAssignments(output_file_path, pa_opt, time_taken);
+    WritePriorityAssignments(output_file_path, dag_tasks.tasks, pa_opt,
+                             time_taken);
 }
