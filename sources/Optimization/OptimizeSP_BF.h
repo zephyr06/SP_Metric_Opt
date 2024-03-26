@@ -48,7 +48,7 @@ inline PriorityVec OptimizePA_BruteForce(const DAG_Model& dag_tasks,
 
 // change pa_vec to a different meaning: res[i] denotes the priority number of
 // the task with id equals i;
-std::vector<int> TranslatePriorityVec(const PriorityVec& pa_vec);
+// std::vector<int> TranslatePriorityVec(const PriorityVec& pa_vec);
 
 void WritePriorityAssignments(std::string path, const TaskSet& tasks,
                               const PriorityVec& pa_vec, double time_taken);

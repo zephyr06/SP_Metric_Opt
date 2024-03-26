@@ -12,7 +12,8 @@ using namespace std;
 using namespace SP_OPT_PA;
 using namespace GlobalVariables;
 TEST(BasicExample, v1) {
-    vector<double> data = ReadTxtFile(GlobalVariables::PROJECT_PATH +"ExperimentsData/FormatedData/test.txt");
+    vector<double> data = ReadTxtFile(GlobalVariables::PROJECT_PATH +
+                                      "ExperimentsData/FormatedData/test.txt");
     EXPECT_EQ(5, data.size());
     for (int i = 0; i < 5; i++) EXPECT_EQ(i + 1, data[i]);
 }
@@ -58,16 +59,16 @@ TEST(write, DAG) {
               tasks[3].execution_time_dist.size());
     EXPECT_EQ(0.052, tasks[3].execution_time_dist[0].value);
 }
-TEST(TranslatePriorityVec, PA_VEC_v1) {
-    PriorityVec pa = {0, 1, 2, 3};
-    std::vector<int> translated_pa_val = {40, 30, 20, 10};
-    EXPECT_EQ(translated_pa_val, TranslatePriorityVec(pa));
-}
-TEST(TranslatePriorityVec, PA_VEC_v2) {
-    PriorityVec pa = {3, 2, 0, 1};
-    std::vector<int> translated_pa_val = {20, 10, 30, 40};
-    EXPECT_EQ(translated_pa_val, TranslatePriorityVec(pa));
-}
+// TEST(TranslatePriorityVec, PA_VEC_v1) {
+//     PriorityVec pa = {0, 1, 2, 3};
+//     std::vector<int> translated_pa_val = {40, 30, 20, 10};
+//     EXPECT_EQ(translated_pa_val, TranslatePriorityVec(pa));
+// }
+// TEST(TranslatePriorityVec, PA_VEC_v2) {
+//     PriorityVec pa = {3, 2, 0, 1};
+//     std::vector<int> translated_pa_val = {20, 10, 30, 40};
+//     EXPECT_EQ(translated_pa_val, TranslatePriorityVec(pa));
+// }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);
