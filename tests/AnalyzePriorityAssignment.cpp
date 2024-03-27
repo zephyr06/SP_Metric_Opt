@@ -34,8 +34,10 @@ int main(int argc, char *argv[]) {
         exit(0);
     }
 
-    string file_path =
-        GlobalVariables::PROJECT_PATH + program.get<std::string>("--file_path");
+    string file_path = program.get<std::string>("--file_path");
+    if (file_path[0] != '/')
+        file_path = GlobalVariables::PROJECT_PATH + file_path;
+        
     string output_file_path = GlobalVariables::PROJECT_PATH +
                               program.get<std::string>("--output_file_path");
 
