@@ -1,0 +1,21 @@
+Tasks:
+  - id: 0
+    name: TSP
+    cpu_lists: [1]
+    scheduling_policy: SCHED_FIFO
+    priority: 2
+  - id: 1
+    name: MPC
+    cpu_lists: [1]
+    scheduling_policy: SCHED_FIFO
+    priority: 4
+  - id: 2
+    name: RRT
+    cpu_lists: [1]
+    scheduling_policy: SCHED_FIFO
+    priority: 3
+  - id: 3
+    name: SLAM
+    cpu_lists: [1]
+    scheduling_policy: SCHED_FIFO
+    priority: 1
