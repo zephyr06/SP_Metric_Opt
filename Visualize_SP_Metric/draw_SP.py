@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import os
 import yaml
+import subprocess
+from datetime import datetime
 
 PROJECT_PATH = "/home/zephyr/Programming/SP_Metric_Opt"
 # All time in seconds
@@ -112,7 +114,60 @@ def get_task_set_info(tasks_name_list, app_name2period, data_folder_path):
         tasks_name_to_info[task].load_subscribe_data(data_folder_path)
     return normalize_offsets(tasks_name_to_info)
 
+def get_response_time_file_name(task_name, start_time, end_time):
+    file_name = task_name + "_response_time_" + str(start_time) + "_" + str(end_time) + ".txt"
+    return os.path.join(PROJECT_PATH, "Visualize_SP_Metric", "data", "temp", file_name)
 
+def get_SP_analyze_executable_file_path():
+    return os.path.join(PROJECT_PATH, "release", "tests", "AnalyzeSP_Metric")
+
+def get_sp_value(output_str):
+    """output str format: SP-Metric: -2.40811"""
+    return float(output_str.split(" ")[1])
+
+def get_sp_value_file_name():
+    current_time = datetime.now()
+    time_string = current_time.strftime("%m-%d %H:%M:%S")  # Example format, adjust as needed
+    return os.path.join(PROJECT_PATH, "Visualize_SP_Metric", "data", "temp", "sp_value"+time_string+ ".txt")
+
+def write_sp_value_to_file(sp_value_list, file_name):
+    with open(file_name, 'w') as file:
+        for sp_value in sp_value_list:
+            file.write(str(sp_value))
+    file.close()
+
+def draw_sp_value_plot(sp_value_list, horizon_granularity):
+    x_axis = [i for i in range(0, len(sp_value_list)*horizon_granularity, horizon_granularity)]
+    plt.plot(x_axis, sp_value_list)
+    plt.xlabel("Time (s)")
+    plt.ylabel("SP-Metric")
+    plt.show()
+
+def get_sp_value_list(tasks_name_list, tasks_name_to_info, horizon, horizon_granularity, discard_early_time):
+    run_out_of_data=False
+    sp_value_list=[]
+    for start_time in range(discard_early_time, horizon, horizon_granularity):
+        end_time = start_time + horizon_granularity
+        command_in_terminal_to_analyze_taskset_sp = get_SP_analyze_executable_file_path()
+        for task_name in tasks_name_list:
+            response_time_within_range = tasks_name_to_info[task_name].get_response_time_within_range(
+                start_time, end_time)
+            if len(response_time_within_range) == 0:
+                run_out_of_data=True
+                break
+            file_name = get_response_time_file_name(task_name, start_time, end_time)
+            with open(file_name, 'w') as file:
+                for response_time in response_time_within_range:
+                    file.write(str(response_time) + "\n")
+            command_in_terminal_to_analyze_taskset_sp += " --" + task_name.lower() + "_path " + file_name
+        if run_out_of_data:
+            break
+        # print(command_in_terminal_to_analyze_taskset_sp)
+        result = subprocess.run(command_in_terminal_to_analyze_taskset_sp, shell=True, capture_output=True, text=True)
+        # print(result.stdout)
+        sp_value = get_sp_value(result.stdout)
+        sp_value_list.append(sp_value)
+    return sp_value_list
 
 if __name__ == "__main__":
     data_folder_path = os.path.join(
@@ -124,18 +179,14 @@ if __name__ == "__main__":
     tasks_name_list = ['TSP', 'RRT', 'SLAM', 'MPC']
 
     horizon_granularity = 10  # 10 seconds
-    horizon = 100  # 100 seconds
+    horizon = 200  # 100 seconds
     discard_early_time = 20  # 20 seconds
 
-    # offset, index_to_data = get_index_to_data_map(get_publisher_file_path(data_folder_path, 'MPC'))
-    offset, index_to_data = get_index_to_data_map(
-        get_subscription_file_path(data_folder_path, 'SLAM'))
     tasks_name_to_info = get_task_set_info(tasks_name_list, app_name2period, data_folder_path)
 
-    for task in tasks_name_list:
-        print(task, tasks_name_to_info[task].publisher_offset,
-              tasks_name_to_info[task].subscriber_offset)
+    sp_value_list = get_sp_value_list(tasks_name_list, tasks_name_to_info, horizon, horizon_granularity, discard_early_time)
+    # write_sp_value_to_file(sp_value_list, get_sp_value_file_name())
+    draw_sp_value_plot(sp_value_list, horizon_granularity)
+    
 
-    for start_time in range(discard_early_time, horizon, horizon_granularity):
-        end_time = start_time + horizon_granularity
-        # for task_name in tasks_name_list:
+            

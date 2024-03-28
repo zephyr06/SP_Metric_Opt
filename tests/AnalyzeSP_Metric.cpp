@@ -53,14 +53,23 @@ int main(int argc, char *argv[]) {
         exit(0);
     }
 
-    string slam_path =
-        GlobalVariables::PROJECT_PATH + program.get<std::string>("--slam_path");
-    string rrt_path =
-        GlobalVariables::PROJECT_PATH + program.get<std::string>("--rrt_path");
-    string mpc_path =
-        GlobalVariables::PROJECT_PATH + program.get<std::string>("--mpc_path");
-    string tsp_path =
-        GlobalVariables::PROJECT_PATH + program.get<std::string>("--tsp_path");
+    string slam_path = program.get<std::string>("--slam_path");
+    if (slam_path[0] != '/')
+        slam_path = GlobalVariables::PROJECT_PATH +
+                    program.get<std::string>("--slam_path");
+
+    string rrt_path = program.get<std::string>("--rrt_path");
+    if (rrt_path[0] != '/')
+        rrt_path = GlobalVariables::PROJECT_PATH + rrt_path;
+
+    string mpc_path = program.get<std::string>("--mpc_path");
+    if (mpc_path[0] != '/')
+        mpc_path = GlobalVariables::PROJECT_PATH + mpc_path;
+
+    string tsp_path = program.get<std::string>("--tsp_path");
+    if (tsp_path[0] != '/')
+        tsp_path = GlobalVariables::PROJECT_PATH + tsp_path;
+
     string file_path_ref = "TaskData/test_robotics_v3.yaml";
 
     file_path_ref = GlobalVariables::PROJECT_PATH + file_path_ref;
