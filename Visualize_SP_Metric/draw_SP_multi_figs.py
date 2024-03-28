@@ -3,9 +3,10 @@ from draw_SP import *
 if __name__=="__main__":
     # the path of the folder which generates the profiling data in ROS2 workspace
     data_folder_paths = {
-        "FIFO": os.path.join(
-        PROJECT_PATH, "Visualize_SP_Metric", "data"),
-        "CFS": "/home/zephyr/Programming/SP_Metric_Opt/Visualize_SP_Metric/data/all_time_records"}
+        # "FIFO": os.path.join(
+        # PROJECT_PATH, "Visualize_SP_Metric", "data"),
+        "FIFO": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_FIFO_Dyn/all_time_records"),
+        "CFS": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_CFS/all_time_records")}
     
 
     # used to provide period parameters
