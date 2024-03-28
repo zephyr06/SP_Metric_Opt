@@ -4,16 +4,16 @@ tasks:
     execution_time_sigma: 0.000000
     execution_time_min: 10000.000000
     execution_time_max: 10000.000000
-    period: 1000
-    deadline: 1000.000000
+    period: 10000
+    deadline: 10000.000000
     name: TSP
   - id: 1
     execution_time_mu: 20.900000
     execution_time_sigma: 0.076600
     execution_time_min: 20.000000
     execution_time_max: 37.500000
-    period: 500
-    deadline: 500.000000
+    period: 20
+    deadline: 20.000000
     name: MPC
   - id: 2
     execution_time_mu: 980.600000
