@@ -20,7 +20,10 @@ class ProbabilityDistributionBase {
 class GaussianDist : public ProbabilityDistributionBase {
    public:
     GaussianDist() {}
-    GaussianDist(double mu, double sigma) : mu(mu), sigma(sigma) {}
+    GaussianDist(double mu, double sigma) : mu(mu), sigma(sigma) {
+        if (abs(sigma) < 1e-6)
+            CoutError("Invalid sigma value!");
+    }
 
     inline double CDF(double x) const {
         double z = (x - mu) / (sigma * std::sqrt(2.0));
@@ -71,7 +74,7 @@ class FiniteDist : public ProbabilityDistributionBase {
         if (granularity < 1)
             CoutError("Invalid granularity!");
 
-        double step = (max_val - min_val) / (double(granularity )- 1);
+        double step = (max_val - min_val) / (double(granularity) - 1);
         distribution.push_back(Value_Proba(min_val, gauss_dist.CDF(min_val)));
         if (step > 0) {
             for (double execution_time = min_val + step;
@@ -181,7 +184,5 @@ class FiniteDist : public ProbabilityDistributionBase {
     double min_time;
     double max_time;
 };
-
-
 
 }  // namespace SP_OPT_PA

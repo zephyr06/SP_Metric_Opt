@@ -1,7 +1,7 @@
 tasks:
   - id: 0
     execution_time_mu: 10.000000
-    execution_time_sigma: 0.000000
+    execution_time_sigma: 0.001
     execution_time_min: 10.000000
     execution_time_max: 10.000000
     period: 10
