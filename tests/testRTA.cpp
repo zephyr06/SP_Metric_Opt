@@ -3,6 +3,7 @@
 #include "gmock/gmock.h"  // Brings in gMock.
 #include "sources/Safety_Performance_Metric/Probability.h"
 #include "sources/Safety_Performance_Metric/RTA.h"
+#include "sources/TaskModel/DAG_Model.h"
 #include "sources/Utils/Parameters.h"
 #include "sources/Utils/readwrite.h"
 using ::testing::AtLeast;  // #1
@@ -61,6 +62,25 @@ TEST_F(TaskSetForTest_2tasks, GetDDL_MissProbability) {
     EXPECT_NEAR(0.0012, GetDDL_MissProbability(rtas[1], 12), 1e-6);
 }
 
+class TaskSetForTest_4tasks : public ::testing::Test {
+   public:
+    void SetUp() override {
+        string file_path =
+            GlobalVariables::PROJECT_PATH + "TaskData/test_robotics_v3.yaml";
+        dag_tasks = ReadDAG_Tasks(file_path);
+    }
+
+    // data members
+    DAG_Model dag_tasks;
+};
+// TEST_F(TaskSetForTest_4tasks, GetDDL_MissProbability) {
+//     dag_tasks.tasks[0].priority = 1;
+//     dag_tasks.tasks[1].priority = 0;
+//     dag_tasks.tasks[2].priority = 2;
+//     dag_tasks.tasks[3].priority = 3;
+
+//     std::vector<FiniteDist> rtas = ProbabilisticRTA_TaskSet(dag_tasks.tasks);
+// }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);
