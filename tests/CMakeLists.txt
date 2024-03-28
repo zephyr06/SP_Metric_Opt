@@ -12,8 +12,8 @@ TARGET_LINK_LIBRARIES(AnalyzePriorityAssignment ${CONVENIENCE_LIB_NAME})
 ADD_EXECUTABLE(AnalyzeSP_Metric AnalyzeSP_Metric.cpp)
 TARGET_LINK_LIBRARIES(AnalyzeSP_Metric ${CONVENIENCE_LIB_NAME})
 
-ADD_EXECUTABLE(AnalyzePriorityAssignmentIncremental AnalyzePriorityAssignmentIncremental.cpp)
-TARGET_LINK_LIBRARIES(AnalyzePriorityAssignmentIncremental ${CONVENIENCE_LIB_NAME})
+# ADD_EXECUTABLE(AnalyzePriorityAssignmentIncremental AnalyzePriorityAssignmentIncremental.cpp)
+# TARGET_LINK_LIBRARIES(AnalyzePriorityAssignmentIncremental ${CONVENIENCE_LIB_NAME})
 
 # If necessary, use the RELATIVE flag, otherwise each source file may be listed 
 # with full pathname. RELATIVE may makes it easier to extract an executable name
