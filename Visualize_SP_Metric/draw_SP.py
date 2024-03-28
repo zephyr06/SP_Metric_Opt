@@ -22,7 +22,7 @@ def get_app2period(task_set_config):
         yaml_data = yaml.safe_load(file)
         for i in range(len(yaml_data['tasks'])):
             data_entry = yaml_data['tasks'][i]
-            app_name2period[data_entry['name']] = data_entry['period']/1e3
+            app_name2period[data_entry['name']] = data_entry['period']/float(1e3)
     return app_name2period
 
 
@@ -83,7 +83,7 @@ class TaskInfo:
         return self.response_time_index2data
     
     def publisher_index2actual_time(self, index):
-        return self.publisher_index2data[index] * self.period + self.publisher_offset
+        return index * self.period + self.publisher_offset
     
     def get_response_time_within_range(self, start_time, end_time):
         response_time_index2data = self.get_response_time_index2data()
