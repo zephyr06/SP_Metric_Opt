@@ -170,8 +170,10 @@ def get_sp_value_list(tasks_name_list, tasks_name_to_info, horizon, horizon_gran
     return sp_value_list
 
 if __name__ == "__main__":
+    # the path of the folder which generates the profiling data in ROS2 workspace
     data_folder_path = os.path.join(
         PROJECT_PATH, "Visualize_SP_Metric", "data")
+    # used to provide period parameters
     task_set_config = os.path.join(
         PROJECT_PATH, "TaskData/test_robotics_v4.yaml")
     verify_task_set_config(task_set_config)
