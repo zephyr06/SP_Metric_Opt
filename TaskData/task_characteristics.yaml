@@ -1,0 +1,33 @@
+tasks:
+  - id: 0
+    execution_time_mu: 10001
+    execution_time_sigma: 0
+    execution_time_min: 10001
+    execution_time_max: 10002
+    period: 10000
+    deadline: 10000
+    name: TSP
+  - id: 1
+    execution_time_mu: 7
+    execution_time_sigma: 0
+    execution_time_min: 7
+    execution_time_max: 7
+    period: 50
+    deadline: 50
+    name: MPC
+  - id: 2
+    execution_time_mu: 1408
+    execution_time_sigma: 1043
+    execution_time_min: 97
+    execution_time_max: 4973
+    period: 1000
+    deadline: 1000
+    name: RRT
+  - id: 3
+    execution_time_mu: 3316
+    execution_time_sigma: 4215
+    execution_time_min: 1151
+    execution_time_max: 17104
+    period: 1000
+    deadline: 1000
+    name: SLAM

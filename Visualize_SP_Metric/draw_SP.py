@@ -12,7 +12,8 @@ def verify_task_set_config(path):
         # print("task_set_config exists.")
         return
     else:
-        print(path, " does not exist.")
+        # print(path, " does not exist.")
+        raise Exception(path + " does not exist.")
 
 
 def get_app2period(task_set_config):
@@ -21,7 +22,7 @@ def get_app2period(task_set_config):
         yaml_data = yaml.safe_load(file)
         for i in range(len(yaml_data['tasks'])):
             data_entry = yaml_data['tasks'][i]
-            app_name2period[data_entry['name']] = data_entry['period']/1e3
+            app_name2period[data_entry['name']] = data_entry['period']/float(1e3)
     return app_name2period
 
 
@@ -82,7 +83,7 @@ class TaskInfo:
         return self.response_time_index2data
     
     def publisher_index2actual_time(self, index):
-        return self.publisher_index2data[index] * self.period + self.publisher_offset
+        return index * self.period + self.publisher_offset
     
     def get_response_time_within_range(self, start_time, end_time):
         response_time_index2data = self.get_response_time_index2data()
@@ -119,7 +120,9 @@ def get_response_time_file_name(task_name, start_time, end_time):
     return os.path.join(PROJECT_PATH, "Visualize_SP_Metric", "data", "temp", file_name)
 
 def get_SP_analyze_executable_file_path():
-    return os.path.join(PROJECT_PATH, "release", "tests", "AnalyzeSP_Metric")
+    path = os.path.join(PROJECT_PATH, "release", "tests", "AnalyzeSP_Metric")
+    verify_task_set_config(path)
+    return path
 
 def get_sp_value(output_str):
     """output str format: SP-Metric: -2.40811"""
@@ -181,7 +184,7 @@ if __name__ == "__main__":
     tasks_name_list = ['TSP', 'RRT', 'SLAM', 'MPC']
 
     horizon_granularity = 10  # 10 seconds
-    horizon = 200  # 100 seconds
+    horizon = 2000  # 100 seconds
     discard_early_time = 20  # 20 seconds
 
     tasks_name_to_info = get_task_set_info(tasks_name_list, app_name2period, data_folder_path)
