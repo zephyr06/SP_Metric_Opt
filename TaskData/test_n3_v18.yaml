@@ -1,7 +1,7 @@
 tasks:
 - id: 0
   execution_time_mu: 1
-  execution_time_sigma: 1.0e-10
+  execution_time_sigma: 1.0e-3
   execution_time_min: 1
   execution_time_max: 1
   period: 10
@@ -10,7 +10,7 @@ tasks:
   name: 0
 - id: 1
   execution_time_mu: 2
-  execution_time_sigma: 1.0e-10
+  execution_time_sigma: 1.0e-3
   execution_time_min: 2
   execution_time_max: 2
   period: 20
@@ -19,7 +19,7 @@ tasks:
   name: 1
 - id: 2
   execution_time_mu: 3
-  execution_time_sigma: 1.0e-10
+  execution_time_sigma: 1.0e-3
   execution_time_min: 3
   execution_time_max: 3
   period: 20

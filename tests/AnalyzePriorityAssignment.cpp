@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 
     argparse::ArgumentParser program("program name");
     program.add_argument("--file_path")
-        .default_value(std::string("TaskData/test_robotics_v1.yaml"))
+        .default_value(std::string("TaskData/task_characteristics.yaml"))
         .help(
             "the relative path of the yaml file that saves information about "
             "the tasks. Example: TaskData/test_robotics_v1.yaml");
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     string file_path = program.get<std::string>("--file_path");
     if (file_path[0] != '/')
         file_path = GlobalVariables::PROJECT_PATH + file_path;
-        
+
     string output_file_path = GlobalVariables::PROJECT_PATH +
                               program.get<std::string>("--output_file_path");
 
