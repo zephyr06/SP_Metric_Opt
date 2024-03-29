@@ -1,4 +1,5 @@
 from draw_SP import *
+import numpy as np
 
 if __name__=="__main__":
     # the path of the folder which generates the profiling data in ROS2 workspace
@@ -6,12 +7,13 @@ if __name__=="__main__":
         # "FIFO": os.path.join(
         # PROJECT_PATH, "Visualize_SP_Metric", "data"),
         "FIFO": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_FIFO_Dyn/all_time_records"),
-        "CFS": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_CFS/all_time_records")}
+        # "CFS": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_CFS/all_time_records"),
+        }
     
 
     # used to provide period parameters
     task_set_config = os.path.join(
-        PROJECT_PATH, "TaskData/test_robotics_v4.yaml")
+        PROJECT_PATH, "TaskData/task_characteristics.yaml")
     verify_task_set_config(task_set_config)
     app_name2period = get_app2period(task_set_config)
     tasks_name_list = ['TSP', 'RRT', 'SLAM', 'MPC']
@@ -27,6 +29,7 @@ if __name__=="__main__":
         sp_value_list = get_sp_value_list(tasks_name_list, tasks_name_to_info, horizon, horizon_granularity, discard_early_time)
         x_axis = [i for i in range(0, len(sp_value_list)*horizon_granularity, horizon_granularity)]
         plt.plot(x_axis, sp_value_list, label = method_name)
+        print(f"SP-Metric for {method_name}: {sum(sp_value_list)/len(sp_value_list)}")
 
     plt.legend(data_folder_paths.keys())
     plt.xlabel("Time (s)")
