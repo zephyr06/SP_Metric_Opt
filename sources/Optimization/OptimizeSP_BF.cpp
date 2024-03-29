@@ -84,7 +84,7 @@ PriorityVec OptimizePA_BF::Optimize() {
 
 void PrintPriorityVec(const TaskSet& tasks,
                       const PriorityVec& priority_assignment) {
-    std::cout << "Priority assignment:\n";
+    std::cout << "Priority assignment (small values have higher priority):\n";
     for (uint i = 0; i < priority_assignment.size(); i++) {
         std::cout << tasks[priority_assignment[i]].name << ": " << i << "\n";
     }
@@ -104,7 +104,8 @@ YAML::Node PriorityAssignmentToYaml(const TaskSet& tasks,
                                     const PriorityVec& priority_assignment) {
     YAML::Node dictionary;
     for (uint i = 0; i < priority_assignment.size(); i++) {
-        dictionary[tasks[priority_assignment[i]].name] = i;
+        dictionary[tasks[priority_assignment[i]].name] =
+            priority_assignment.size() - i;
     }
     return dictionary;
 }
