@@ -1,4 +1,5 @@
-from draw_SP import *
+from SP_draw_fig_utils import *
+import os
 import numpy as np
 
 if __name__=="__main__":
@@ -6,8 +7,8 @@ if __name__=="__main__":
     data_folder_paths = {
         # "FIFO": os.path.join(
         # PROJECT_PATH, "Visualize_SP_Metric", "data"),
-        "FIFO": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_FIFO_Dyn/all_time_records"),
         "CFS": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_CFS/all_time_records"),
+        "FIFO": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_FIFO_Dyn/all_time_records"),
         }
     
 
