@@ -229,22 +229,28 @@ TEST(FiniteDist, constructor_v3) {
 TEST(FiniteDist, AnalyzeFiniteDist_v2) {
     std::vector<double> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     FiniteDist finite_dist(data, 5);
-    EXPECT_EQ(5, finite_dist.size());
+    // EXPECT_EQ(5, finite_dist.size());
 
-    EXPECT_EQ(1, finite_dist[0].value);
-    EXPECT_EQ(0.1, finite_dist[0].probability);
+    // EXPECT_EQ(1, finite_dist[0].value);
+    // EXPECT_EQ(0.1, finite_dist[0].probability);
 
-    EXPECT_EQ(3.25, finite_dist[1].value);
-    EXPECT_EQ(0.2, finite_dist[1].probability);
+    // EXPECT_EQ(3.25, finite_dist[1].value);
+    // EXPECT_EQ(0.2, finite_dist[1].probability);
 
-    EXPECT_EQ(5.5, finite_dist[2].value);
-    EXPECT_EQ(0.2, finite_dist[2].probability);
+    // EXPECT_EQ(5.5, finite_dist[2].value);
+    // EXPECT_EQ(0.2, finite_dist[2].probability);
 
-    EXPECT_EQ(7.75, finite_dist[3].value);
-    EXPECT_EQ(0.2, finite_dist[3].probability);
+    // EXPECT_EQ(7.75, finite_dist[3].value);
+    // EXPECT_EQ(0.2, finite_dist[3].probability);
 
-    EXPECT_EQ(10, finite_dist[4].value);
-    EXPECT_EQ(0.3, finite_dist[4].probability);
+    // EXPECT_EQ(10, finite_dist[4].value);
+    // EXPECT_EQ(0.3, finite_dist[4].probability);
+
+    EXPECT_NEAR(0.1, finite_dist.CDF(1), 1e-3);
+    EXPECT_NEAR(0.3, finite_dist.CDF(3.25), 1e-3);
+    EXPECT_NEAR(0.5, finite_dist.CDF(5.5), 1e-3);
+    EXPECT_NEAR(0.7, finite_dist.CDF(7.75), 1e-3);
+    EXPECT_NEAR(1, finite_dist.CDF(10), 1e-3);
 }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);

@@ -1,5 +1,6 @@
 #include "sources/Safety_Performance_Metric/Probability.h"
 
+#include "algorithm"
 namespace SP_OPT_PA {
 
 std::unordered_map<double, double> FiniteDist::GetV_PMap() const {
@@ -145,9 +146,10 @@ FiniteDist::FiniteDist(const std::vector<double>& data_raw,
     if (data.size() > 0) {
         min_time = data[0];
         max_time = data[data.size() - 1];
-        if (max_time / min_time > 50) {
-            granularity = int(max_time / min_time) * 5;
-        }
+        // if (max_time / min_time > 10) {
+        granularity =
+            int(std::max(granularity, double(max_time / min_time) * 5));
+        // }
         double range = max_time - min_time;
         double step = range / (granularity - 1);
 
