@@ -207,11 +207,23 @@ TEST(FiniteDist, constructor) {
 }
 
 TEST(FiniteDist, constructor_v2) {
-    vector<double> seqs = {1000000000000.0, 1000000000000.0, 6062.339021759016,
-                           1000000000000.0, 1000000000000.0};
+    vector<double> seqs = {1e11, 1e11, 6062, 1e11, 1e11};
     FiniteDist dists(seqs, 10);
     EXPECT_THAT(2, dists.size());
     EXPECT_NEAR(1.0, dists[0].probability + dists[1].probability, 1e-3);
+    EXPECT_NEAR(0.2, dists[0].probability, 1e-3);
+    EXPECT_NEAR(1e11, dists[1].value, 1e0);
+}
+TEST(FiniteDist, constructor_v3) {
+    vector<double> seqs = {1e3, 1.1e3, 1.2e3, 1.3e3, 2e3,
+                           8e3, 11e3,  1e5,   1e11,  1e11};  // 10 elements
+    FiniteDist dists(seqs, 4);
+    EXPECT_NEAR(0.4, dists.CDF(2e3), 1e-3);
+    EXPECT_NEAR(0.6, dists.CDF(1e4), 1e-3);
+    EXPECT_NEAR(0.8, dists.CDF(1e5), 1e-3);
+
+    EXPECT_NEAR(1e11, dists[dists.size() - 1].value, 1e0);
+    EXPECT_NEAR(0.2, dists[dists.size() - 1].probability, 1e-3);
 }
 
 TEST(FiniteDist, AnalyzeFiniteDist_v2) {

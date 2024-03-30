@@ -113,28 +113,60 @@ void FiniteDist::AddPreemption(const FiniteDist& execution_time_dist_hp,
     CompressDeadlineMissProbability(deadline_this);
 }
 
-FiniteDist::FiniteDist(const std::vector<double>& data_raw, int granularity) {
+inline bool near(double a, double b) { return abs(a - b) < 1e-6; }
+
+/*
+Implementation consideration:
+If data_raw is in a small range, actual granularity can be obtained by evenly
+dividing the range;
+- Always create a separate value-probability pair for the very large data (e.g.,
+1e9 and its probaility)
+- After excluding the very large data, if the data is still spreaded within a
+large range, we increase the actual granularity to ensure precision
+
+TODO: consider improve the run-time speed
+*/
+FiniteDist::FiniteDist(const std::vector<double>& data_raw,
+                       int granularity_suggest) {
+    long long unschedulable_max_time = 1e11 - 1;
+    int data_size = data_raw.size();
+    double granularity = granularity_suggest;
     std::vector<double> data = data_raw;
     std::sort(data.begin(), data.end());
-    min_time = data[0];
-    max_time = data[data.size() - 1];
-    double range = max_time - min_time;
-    double step = range / (granularity - 1);
+    auto itr =
+        std::lower_bound(data.begin(), data.end(), unschedulable_max_time);
 
-    distribution.reserve(granularity);
-    int value_index = 0;
-    for (int i = 0; i < granularity; i++) {
-        double val = min_time + i * step;
-        int count = 0;
-        while (value_index < static_cast<int>(data.size()) &&
-               data[value_index] - 1e-3 <= val) {
-            count++;
-            value_index++;
-        }
-        if (count > 0)
-            distribution.push_back(
-                Value_Proba(val, double(count) / data.size()));
+    int max_index_during_iterate = data_size - 1;
+    if (itr != data.end()) {
+        distribution.push_back(
+            Value_Proba(*itr, double(int(data.end() - itr)) / data_size));
     }
+    data.erase(itr, data.end());
+    if (data.size() > 0) {
+        min_time = data[0];
+        max_time = data[data.size() - 1];
+        if (max_time / min_time > 50) {
+            granularity = int(max_time / min_time) * 5;
+        }
+        double range = max_time - min_time;
+        double step = range / (granularity - 1);
+
+        distribution.reserve(granularity);
+        int value_index = 0;
+        for (int i = 0; i < granularity; i++) {
+            double val = min_time + i * step;
+            int count = 0;
+            while (value_index < static_cast<int>(data_size) &&
+                   data[value_index] - 1e-3 <= val) {
+                count++;
+                value_index++;
+            }
+            if (count > 0)
+                distribution.push_back(
+                    Value_Proba(val, double(count) / data_size));
+        }
+    }
+
     double sum = 0;
     for (int i = 0; i < distribution.size(); i++) {
         sum += distribution[i].probability;
@@ -143,6 +175,17 @@ FiniteDist::FiniteDist(const std::vector<double>& data_raw, int granularity) {
         CoutError("Error in FiniteDist constructor: sum of probabilities is " +
                   std::to_string(sum));
     }
+    UpdateDistribution(distribution);
 }
 
+double FiniteDist::CDF(double x) const {
+    double cdf = 0;
+    for (const Value_Proba& element : distribution) {
+        if (element.value <= x)
+            cdf += element.probability;
+        else
+            break;
+    }
+    return cdf;
+}
 }  // namespace SP_OPT_PA

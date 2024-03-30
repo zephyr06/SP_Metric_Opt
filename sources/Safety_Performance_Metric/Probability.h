@@ -178,8 +178,11 @@ class FiniteDist : public ProbabilityDistributionBase {
         return !((*this) == other);
     }
 
+    double CDF(double x) const;
+
     // data members
-    // saves the probability that x<= value
+    // saves the probability that x<= value, this is probability mass function
+    // rather than cumulative function
     std::vector<Value_Proba> distribution;
     double min_time;
     double max_time;
