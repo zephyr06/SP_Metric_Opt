@@ -62,6 +62,28 @@ TEST_F(TaskSetForTest_2tasks, GetDDL_MissProbability) {
     EXPECT_NEAR(0.0012, GetDDL_MissProbability(rtas[1], 12), 1e-6);
 }
 
+TEST_F(TaskSetForTest_2tasks, GetDDL_MissProbability_v2) {
+    FiniteDist dists({5, 6, 7, 8, 5, 6, 7, 8}, 10);
+
+    EXPECT_NEAR(0.0, GetDDL_MissProbability(dists, 10), 1e-6);
+    EXPECT_NEAR(1.0, GetDDL_MissProbability(dists, 4), 1e-6);
+    EXPECT_NEAR(0.75, GetDDL_MissProbability(dists, 5), 1e-6);
+    EXPECT_NEAR(0.5, GetDDL_MissProbability(dists, 6.5), 1e-6);
+}
+TEST_F(TaskSetForTest_2tasks, GetDDL_MissProbability_v3) {
+    FiniteDist dists({5}, 10);
+
+    EXPECT_NEAR(0.0, GetDDL_MissProbability(dists, 10), 1e-6);
+    EXPECT_NEAR(1.0, GetDDL_MissProbability(dists, 4), 1e-6);
+    EXPECT_NEAR(0.0, GetDDL_MissProbability(dists, 5), 1e-6);
+}
+TEST_F(TaskSetForTest_2tasks, GetDDL_MissProbability_v4) {
+    FiniteDist dists({5, 10000, 10000}, 10);
+
+    EXPECT_NEAR(0.66666666, GetDDL_MissProbability(dists, 10), 1e-3);
+    EXPECT_NEAR(1.0, GetDDL_MissProbability(dists, 4), 1e-3);
+    EXPECT_NEAR(0.66666666, GetDDL_MissProbability(dists, 5), 1e-3);
+}
 class TaskSetForTest_4tasks : public ::testing::Test {
    public:
     void SetUp() override {
