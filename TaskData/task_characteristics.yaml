@@ -12,8 +12,8 @@ tasks:
     execution_time_sigma: 0.67788292531512828
     execution_time_min: 7.7097600000000002
     execution_time_max: 10.442751999999999
-    period: 1000
-    deadline: 1000
+    period: 20
+    deadline: 20
     name: MPC
   - id: 2
     execution_time_mu: 1417.3482412799997
