@@ -1,7 +1,6 @@
 import pytest
 import numpy as np
-
-from draw_SP import *
+from SP_draw_fig_utils import *
 
 def test_read_period():
     task_set_config = os.path.join(
