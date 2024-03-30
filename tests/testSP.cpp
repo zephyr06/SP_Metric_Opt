@@ -3,6 +3,7 @@
 #include "gmock/gmock.h"  // Brings in gMock.
 #include "sources/Safety_Performance_Metric/SP_Metric.h"
 #include "sources/Utils/Parameters.h"
+#include "sources/Utils/readwrite.h"
 
 using ::testing::AtLeast;  // #1
 using ::testing::Return;
@@ -81,6 +82,49 @@ TEST_F(TaskSetForTest_2tasks1chain, SP_Calculation_dag) {
     double sp_expected_dag =
         log(1 + 0.5) + log(1 + 0.5 - 0.003) + -0.01 * exp(10 * abs(penalty));
     EXPECT_NEAR(sp_expected_dag, sp_actual_dag, 1e-8);
+}
+
+class TaskSetForTest_robotics_v1 : public ::testing::Test {
+   public:
+    void SetUp() override {
+        std::string file_name = "test_robotics_v3";
+        std::string path =
+            GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
+        dag_tasks = ReadDAG_Tasks(path, 5);
+        sp_parameters = SP_Parameters(dag_tasks);
+    }
+
+    // data members
+    DAG_Model dag_tasks;
+    SP_Parameters sp_parameters;
+};
+
+TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag) {
+    string slam_path =
+        GlobalVariables::PROJECT_PATH +
+        "TaskData/AnalyzeSP_Metric/SLAM_response_time_200_210.txt";
+    string rrt_path = GlobalVariables::PROJECT_PATH +
+                      "TaskData/AnalyzeSP_Metric/RRT_response_time_200_210.txt";
+    string mpc_path = GlobalVariables::PROJECT_PATH +
+                      "TaskData/AnalyzeSP_Metric/MPC_response_time_200_210.txt";
+    string tsp_path = GlobalVariables::PROJECT_PATH +
+                      "TaskData/AnalyzeSP_Metric/TSP_response_time_200_210.txt";
+
+    int granularity = 10;
+    std::vector<FiniteDist> dists;
+    // std::string folder_path="TaskData/AnalyzeSP_Metric/";
+    dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
+    dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
+    dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
+    dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
+    std::vector<double> deadlines =
+        GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
+
+    SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
+    cout << "SP-Metric: "
+         << ObtainSP(dists, deadlines, sp_parameters.thresholds_node);
+    EXPECT_THAT(ObtainSP(dists, deadlines, sp_parameters.thresholds_node),
+                testing::Le(-4.5));
 }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
