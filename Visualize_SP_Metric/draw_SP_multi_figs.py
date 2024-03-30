@@ -7,7 +7,7 @@ if __name__=="__main__":
         # "FIFO": os.path.join(
         # PROJECT_PATH, "Visualize_SP_Metric", "data"),
         "FIFO": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_FIFO_Dyn/all_time_records"),
-        # "CFS": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_CFS/all_time_records"),
+        "CFS": os.path.join(PROJECT_PATH,"Visualize_SP_Metric/data/all_time_records_CFS/all_time_records"),
         }
     
 
@@ -20,7 +20,7 @@ if __name__=="__main__":
 
     horizon_granularity = 10  # 10 seconds
     horizon = 2000  # 100 seconds
-    discard_early_time = 20  # 20 seconds
+    discard_early_time = 120  # 20 seconds
 
 
 
