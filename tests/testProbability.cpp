@@ -206,6 +206,14 @@ TEST(FiniteDist, constructor) {
     EXPECT_THAT(finite_dist.max_time, testing::Ge(10 + 1));
 }
 
+TEST(FiniteDist, constructor_v2) {
+    vector<double> seqs = {1000000000000.0, 1000000000000.0, 6062.339021759016,
+                           1000000000000.0, 1000000000000.0};
+    FiniteDist dists(seqs, 10);
+    EXPECT_THAT(2, dists.size());
+    EXPECT_NEAR(1.0, dists[0].probability + dists[1].probability, 1e-3);
+}
+
 TEST(FiniteDist, AnalyzeFiniteDist_v2) {
     std::vector<double> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     FiniteDist finite_dist(data, 5);
@@ -216,13 +224,13 @@ TEST(FiniteDist, AnalyzeFiniteDist_v2) {
 
     EXPECT_EQ(3.25, finite_dist[1].value);
     EXPECT_EQ(0.2, finite_dist[1].probability);
-    
+
     EXPECT_EQ(5.5, finite_dist[2].value);
     EXPECT_EQ(0.2, finite_dist[2].probability);
 
     EXPECT_EQ(7.75, finite_dist[3].value);
     EXPECT_EQ(0.2, finite_dist[3].probability);
-    
+
     EXPECT_EQ(10, finite_dist[4].value);
     EXPECT_EQ(0.3, finite_dist[4].probability);
 }

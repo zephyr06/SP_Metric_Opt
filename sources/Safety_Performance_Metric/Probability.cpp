@@ -127,13 +127,21 @@ FiniteDist::FiniteDist(const std::vector<double>& data_raw, int granularity) {
         double val = min_time + i * step;
         int count = 0;
         while (value_index < static_cast<int>(data.size()) &&
-               data[value_index] - 1e-5 <= val) {
+               data[value_index] - 1e-3 <= val) {
             count++;
             value_index++;
         }
         if (count > 0)
             distribution.push_back(
                 Value_Proba(val, double(count) / data.size()));
+    }
+    double sum = 0;
+    for (int i = 0; i < distribution.size(); i++) {
+        sum += distribution[i].probability;
+    }
+    if (abs(sum - 1.0) > 1e-4) {
+        CoutError("Error in FiniteDist constructor: sum of probabilities is " +
+                  std::to_string(sum));
     }
 }
 
