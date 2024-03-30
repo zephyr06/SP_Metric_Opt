@@ -1,0 +1,3 @@
+Start time of subscriber: ::1711401393.7634830475
+Receiving rrt message:rrt 0::5.9412279999999997315
+Receiving rrt message:rrt 4::9.3803099999999997038

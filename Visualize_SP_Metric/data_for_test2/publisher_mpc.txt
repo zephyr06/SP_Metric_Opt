@@ -1,0 +1,6 @@
+Start time of publisher: ::0.1
+Publishing mpc mpc 0::1.5
+Publishing mpc mpc 1::2.5
+Publishing mpc mpc 2::3.5
+Publishing mpc mpc 3::4.5
+Publishing mpc mpc 4::5.5

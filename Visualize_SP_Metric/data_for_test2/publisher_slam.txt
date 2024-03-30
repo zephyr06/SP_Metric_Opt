@@ -1,0 +1,6 @@
+Start time of publisher: ::0.4
+Publishing slam slam 0::2
+Publishing slam slam 1::4
+Publishing slam slam 2::6
+Publishing slam slam 3::8
+Publishing slam slam 4::10

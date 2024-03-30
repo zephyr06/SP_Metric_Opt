@@ -1,4 +1,4 @@
-tasks:
+Tasks:
   - id: 0
     execution_time_mu: 1002
     execution_time_sigma: 5
@@ -9,7 +9,7 @@ tasks:
     name: TSP
   - id: 1
     execution_time_mu: 63
-    execution_time_sigma: 0.01
+    execution_time_sigma: 0
     execution_time_min: 62
     execution_time_max: 66
     period: 20

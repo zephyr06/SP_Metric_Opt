@@ -1,0 +1,11 @@
+Start time of publisher: ::0.5
+Publishing tsp tsp 0::1.0979929999999999968
+Publishing tsp tsp 1::2.1013239999999999696
+Publishing tsp tsp 2::3.0980609999999999538
+Publishing tsp tsp 3::4.0981360000000002231
+Publishing tsp tsp 4::5.0981690000000003948
+Publishing tsp tsp 5::6.0982209999999996697
+Publishing tsp tsp 6::7.0982950000000002433
+Publishing tsp tsp 7::8.0983459999999993784
+Publishing tsp tsp 8::9.0983680000000006771
+Publishing tsp tsp 9::10.098394000000000759
