@@ -20,8 +20,14 @@ def get_app2period(task_set_config):
     app_name2period = {}
     with open(task_set_config, 'r') as file:
         yaml_data = yaml.safe_load(file)
-        for i in range(len(yaml_data['tasks'])):
-            data_entry = yaml_data['tasks'][i]
+        if 'tasks' in yaml_data:
+            key ='tasks'
+        elif 'Tasks' in yaml_data:
+            key = 'Tasks'
+        else:
+            raise Exception("The key for tasks is not found in the yaml file.")
+        for i in range(len(yaml_data[key])):
+            data_entry = yaml_data[key][i]
             app_name2period[data_entry['name']] = data_entry['period']/float(1e3)
     return app_name2period
 
@@ -42,8 +48,12 @@ def get_index_to_data_map(file_path):
         offset = float(lines[0].split("::")[1][:-1])
         for i in range(1, len(lines)):
             line = lines[i]
+            if len(line)==0:
+                continue
             words = line.split(" ")
-            last_word = words[-1][:-1]
+            last_word = words[-1]
+            if last_word[-1]=='\n':
+                last_word = last_word[:-1]
             index = int(last_word.split("::")[0])
             time = float(last_word.split("::")[1])
             index_to_data[index] = time

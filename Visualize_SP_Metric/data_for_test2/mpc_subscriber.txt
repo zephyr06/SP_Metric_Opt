@@ -1,0 +1,6 @@
+Start time of subscriber: ::0.1
+Receiving mpc message:mpc 0::1.5002
+Receiving mpc message:mpc 1::2.5001
+Receiving mpc message:mpc 2::3.5003
+Receiving mpc message:mpc 3::4.501
+Receiving mpc message:mpc 4::5.51

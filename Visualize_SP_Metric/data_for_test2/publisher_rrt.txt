@@ -1,0 +1,6 @@
+Start time of publisher: ::0.2
+Publishing rrt rrt 0::1
+Publishing rrt rrt 1::2
+Publishing rrt rrt 2::3
+Publishing rrt rrt 3::4
+Publishing rrt rrt 4::5
