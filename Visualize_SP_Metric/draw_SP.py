@@ -171,7 +171,7 @@ def get_sp_value_list(tasks_name_list, tasks_name_to_info, horizon, horizon_gran
             file_name = get_response_time_file_name(task_name, start_time, end_time)
             with open(file_name, 'w') as file:
                 for response_time in response_time_within_range:
-                    file.write(str(response_time) + "\n")
+                    file.write(str(response_time*1000) + "\n")
             command_in_terminal_to_analyze_taskset_sp += " --" + task_name.lower() + "_path " + file_name
         if run_out_of_data:
             break
