@@ -33,9 +33,11 @@ tasks:
     name: SLAM
 
 chain0:
-  - 0
-  - 1
-  - 2
+  nodes:
+    - 0
+    - 1
+    - 2
 chain1:
-  - 1
-  - 2
+  nodes:
+    - 1
+    - 2

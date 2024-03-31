@@ -7,6 +7,8 @@ tasks:
     period: 10000
     deadline: 10000
     name: TSP
+    sp_threshold: 0.5
+    sp_Weight: 1
   - id: 1
     execution_time_mu: 63
     execution_time_sigma: 0.01
@@ -15,6 +17,8 @@ tasks:
     period: 20
     deadline: 20
     name: MPC
+    sp_threshold: 0.5
+    sp_Weight: 1
   - id: 2
     execution_time_mu: 1496
     execution_time_sigma: 835
@@ -23,6 +27,8 @@ tasks:
     period: 1000
     deadline: 1000
     name: RRT
+    sp_threshold: 0.5
+    sp_Weight: 1
   - id: 3
     execution_time_mu: 3290
     execution_time_sigma: 4336
@@ -31,3 +37,5 @@ tasks:
     period: 1000
     deadline: 1000
     name: SLAM
+    sp_threshold: 0.5
+    sp_Weight: 1

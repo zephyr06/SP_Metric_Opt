@@ -31,11 +31,16 @@ tasks:
     period: 10
     deadline: 10.000000
     name: SLAM
-
 chain0:
-  - 0
-  - 1
-  - 2
+  nodes:
+    - 0
+    - 1
+    - 2
+  sp_threshold: 0.5
+  sp_Weight: 1
 chain1:
-  - 1
-  - 2
+  nodes:
+    - 1
+    - 2
+  sp_threshold: 0.5
+  sp_Weight: 1
