@@ -39,23 +39,19 @@ PriorityVec OptimizePA_Incre::Optimize(const DAG_Model& dag_tasks) {
 bool OptimizePA_Incre::SameHpTasks(
     const std::vector<int>& hp_task_ids_ite,
     const std::vector<int>& hp_task_ids_prev) const {
-    if (hp_task_ids_ite.size() != hp_task_ids_ite.size())
-        return false;
+    if (hp_task_ids_ite.size() != hp_task_ids_ite.size()) return false;
     for (uint i = 0; i < hp_task_ids_ite.size(); i++) {
-        if (hp_task_ids_ite[i] != hp_task_ids_prev[i])
-            return false;
+        if (hp_task_ids_ite[i] != hp_task_ids_prev[i]) return false;
     }
     for (int id : hp_task_ids_ite) {
-        if (tasks_ET_if_same_[id] == false)
-            return false;
+        if (tasks_ET_if_same_[id] == false) return false;
     }
     return true;
 }
 
 bool OptimizePA_Incre::SameChains(const std::vector<int>& chain) const {
     for (int id : chain) {
-        if (tasks_ET_if_same_[id] == false)
-            return false;
+        if (tasks_ET_if_same_[id] == false) return false;
     }
     return true;
 }
@@ -140,16 +136,17 @@ double OptimizePA_Incre::EvalAndRecordSP(const PriorityVec& priority_assignment,
                                                 dag_tasks_eval);
     std::vector<double> chains_ddl = GetChainsDDL(dag_tasks_eval);
     return ObtainSP(rtas_task_set, deadlines_task_set,
-                    sp_parameters_.thresholds_node) +
+                    sp_parameters_.thresholds_node,
+                    sp_parameters_.weights_node) +
            ObtainSP(reaction_time_dists, chains_ddl,
-                    sp_parameters_.thresholds_path);
+                    sp_parameters_.thresholds_path,
+                    sp_parameters_.weights_path);
 }
 
 void OptimizePA_Incre::IterateAllPAs(
     PriorityVec& priority_assignment,
     std::unordered_set<int>& tasks_assigned_priority, int start) {
-    if (ifTimeout(start_time_))
-        return;
+    if (ifTimeout(start_time_)) return;
     if (start == N) {
         TaskSet tasks_eval =
             UpdateTaskSetPriorities(dag_tasks_.tasks, priority_assignment);

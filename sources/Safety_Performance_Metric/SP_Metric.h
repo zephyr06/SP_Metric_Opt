@@ -11,7 +11,8 @@ std::vector<double> GetChainsDDL(const DAG_Model& dag_tasks);
 
 double ObtainSP(const std::vector<FiniteDist>& dists,
                 const std::vector<double>& deadline,
-                const std::vector<double>& ddl_miss_thresholds);
+                const std::vector<double>& ddl_miss_thresholds,
+                const std::vector<double>& weights);
 
 inline double PenaltyFunc(double violate_probability, double threshold) {
     return -0.01 * exp(10 * abs(threshold - violate_probability));
