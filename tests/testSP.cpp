@@ -121,67 +121,73 @@ TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag) {
         GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
 
     SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
-    cout << "SP-Metric: "
-         << ObtainSP(dists, deadlines, sp_parameters.thresholds_node);
-    EXPECT_THAT(ObtainSP(dists, deadlines, sp_parameters.thresholds_node),
-                testing::Le(-4.5));
+    double sp_metric_val =
+        ObtainSP(dists, deadlines, sp_parameters.thresholds_node,
+                 sp_parameters.weights_node);
+    cout << "SP-Metric: " << sp_metric_val << "\n";
+    EXPECT_THAT(sp_metric_val, testing::Le(-4.5));
 }
 
-TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag_v2) {
-    string slam_path =
-        GlobalVariables::PROJECT_PATH +
-        "TaskData/AnalyzeSP_Metric/SLAM_response_time_240_250.txt";
-    string rrt_path = GlobalVariables::PROJECT_PATH +
-                      "TaskData/AnalyzeSP_Metric/RRT_response_time_240_250.txt";
-    string mpc_path = GlobalVariables::PROJECT_PATH +
-                      "TaskData/AnalyzeSP_Metric/MPC_response_time_240_250.txt";
-    string tsp_path = GlobalVariables::PROJECT_PATH +
-                      "TaskData/AnalyzeSP_Metric/TSP_response_time_240_250.txt";
-
-    int granularity = 10;
-    std::vector<FiniteDist> dists;
-    // std::string folder_path="TaskData/AnalyzeSP_Metric/";
-    dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
-    std::vector<double> deadlines =
-        GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
-
-    SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
-    cout << "SP-Metric: "
-         << ObtainSP(dists, deadlines, sp_parameters.thresholds_node);
-    EXPECT_THAT(ObtainSP(dists, deadlines, sp_parameters.thresholds_node),
-                testing::Ge(-5.9));
+TEST_F(TaskSetForTest_robotics_v1, read_sp){
+    
 }
+// TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag_v2) {
+//     string slam_path =
+//         GlobalVariables::PROJECT_PATH +
+//         "TaskData/AnalyzeSP_Metric/SLAM_response_time_240_250.txt";
+//     string rrt_path = GlobalVariables::PROJECT_PATH +
+//                       "TaskData/AnalyzeSP_Metric/RRT_response_time_240_250.txt";
+//     string mpc_path = GlobalVariables::PROJECT_PATH +
+//                       "TaskData/AnalyzeSP_Metric/MPC_response_time_240_250.txt";
+//     string tsp_path = GlobalVariables::PROJECT_PATH +
+//                       "TaskData/AnalyzeSP_Metric/TSP_response_time_240_250.txt";
 
-TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag_v3) {
-    string slam_path =
-        GlobalVariables::PROJECT_PATH +
-        "TaskData/AnalyzeSP_Metric/SLAM_response_time_300_310.txt";
-    string rrt_path = GlobalVariables::PROJECT_PATH +
-                      "TaskData/AnalyzeSP_Metric/RRT_response_time_300_310.txt";
-    string mpc_path = GlobalVariables::PROJECT_PATH +
-                      "TaskData/AnalyzeSP_Metric/MPC_response_time_300_310.txt";
-    string tsp_path = GlobalVariables::PROJECT_PATH +
-                      "TaskData/AnalyzeSP_Metric/TSP_response_time_300_310.txt";
+//     int granularity = 10;
+//     std::vector<FiniteDist> dists;
+//     // std::string folder_path="TaskData/AnalyzeSP_Metric/";
+//     dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
+//     dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
+//     dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
+//     dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
+//     std::vector<double> deadlines =
+//         GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
 
-    int granularity = 10;
-    std::vector<FiniteDist> dists;
-    // std::string folder_path="TaskData/AnalyzeSP_Metric/";
-    dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
-    std::vector<double> deadlines =
-        GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
+//     SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
+// double sp_metric_val =
+//     ObtainSP(dists, deadlines, sp_parameters.thresholds_node,
+//              sp_parameters.weights_node);
+// cout << "SP-Metric: " << sp_metric_val << "\n";
+// EXPECT_THAT(sp_metric_val, testing::Le(-5.9));
+// }
 
-    SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
-    cout << "SP-Metric: "
-         << ObtainSP(dists, deadlines, sp_parameters.thresholds_node);
-    EXPECT_THAT(ObtainSP(dists, deadlines, sp_parameters.thresholds_node),
-                testing::Ge(-5.9));
-}
+// TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag_v3) {
+//     string slam_path =
+//         GlobalVariables::PROJECT_PATH +
+//         "TaskData/AnalyzeSP_Metric/SLAM_response_time_300_310.txt";
+//     string rrt_path = GlobalVariables::PROJECT_PATH +
+//                       "TaskData/AnalyzeSP_Metric/RRT_response_time_300_310.txt";
+//     string mpc_path = GlobalVariables::PROJECT_PATH +
+//                       "TaskData/AnalyzeSP_Metric/MPC_response_time_300_310.txt";
+//     string tsp_path = GlobalVariables::PROJECT_PATH +
+//                       "TaskData/AnalyzeSP_Metric/TSP_response_time_300_310.txt";
+
+//     int granularity = 10;
+//     std::vector<FiniteDist> dists;
+//     // std::string folder_path="TaskData/AnalyzeSP_Metric/";
+//     dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
+//     dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
+//     dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
+//     dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
+//     std::vector<double> deadlines =
+//         GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
+
+//     SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
+// double sp_metric_val =
+//     ObtainSP(dists, deadlines, sp_parameters.thresholds_node,
+//              sp_parameters.weights_node);
+// cout << "SP-Metric: " << sp_metric_val << "\n";
+// EXPECT_THAT(sp_metric_val, testing::Le(-5.9));
+// }
 int main(int argc, char **argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);

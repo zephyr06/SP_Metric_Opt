@@ -18,10 +18,19 @@ struct SP_Parameters {
         weights_path = std::vector<double>(dag_tasks.chains_.size(), 1);
     }
 
+    void reserve(size_t size) {
+        thresholds_node.reserve(size);
+        weights_node.reserve(size);
+        thresholds_path.reserve(size);
+        weights_path.reserve(size);
+    }
+
     // data
     std::vector<double> thresholds_node;
     std::vector<double> weights_node;
     std::vector<double> thresholds_path;
     std::vector<double> weights_path;
 };
+
+SP_Parameters ReadSP_Parameters(const std::string& filename);
 }  // namespace SP_OPT_PA

@@ -2,6 +2,7 @@
 
 #include "gmock/gmock.h"  // Brings in gMock.
 #include "sources/Optimization/OptimizeSP_BF.h"
+#include "sources/Safety_Performance_Metric/ParametersSP.h"
 #include "sources/TaskModel/DAG_Model.h"
 #include "sources/TaskModel/RegularTasks.h"
 #include "sources/Utils/Parameters.h"
@@ -38,6 +39,14 @@ TEST(read, DAG) {
     EXPECT_EQ(0, dag_tasks.chains_[0][0]);
     EXPECT_EQ(2, dag_tasks.chains_[1].size());
     EXPECT_EQ(0, dag_tasks.tasks[0].processorId);
+}
+TEST(ReadSP_Parameters, V1) {
+    std::string file_name = "test_robotics_v5";
+    string path =
+        GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
+    SP_Parameters sp_par = ReadSP_Parameters(path);
+    EXPECT_EQ(5, sp_par.weights_node[3]);
+    EXPECT_EQ(0.1, sp_par.thresholds_node[2]);
 }
 TEST(write, DAG) {
     std::string file_name = "test_robotics_v2";
