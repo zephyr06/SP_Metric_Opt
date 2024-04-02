@@ -27,7 +27,7 @@ tasks:
     period: 1000
     deadline: 1000
     name: RRT
-    sp_threshold: 0.5
+    sp_threshold: 0.1
     sp_Weight: 1
   - id: 3
     execution_time_mu: 3290
@@ -37,5 +37,5 @@ tasks:
     period: 1000
     deadline: 1000
     name: SLAM
-    sp_threshold: 0.5
-    sp_Weight: 1
+    sp_threshold: 0.1
+    sp_Weight: 5

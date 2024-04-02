@@ -144,8 +144,7 @@ std::vector<std::vector<int>> DAG_Model::GetRandomChains(int numOfChains,
 
     for (int sourceId : sourceIds) {
         for (int sinkId : sinkIds) {
-            if (chainCount >= numOfChains)
-                break;
+            if (chainCount >= numOfChains) break;
             auto path = shortest_paths(sourceId, sinkId, graph_);
             if (path.size() > 1) {
                 if (chain_length == 0 ||
@@ -184,8 +183,7 @@ std::vector<int> Str2VecInt(const std::string& str) {
     std::stringstream ss(str);
     for (int i; ss >> i;) {
         vect.push_back(i);
-        if (ss.peek() == ',')
-            ss.ignore();
+        if (ss.peek() == ',') ss.ignore();
     }
     return vect;
 }
@@ -196,12 +194,12 @@ DAG_Model ReadDAG_Tasks(std::string path, int max_possible_chains) {
     std::vector<std::vector<int>> chains;
     for (int i = 0; i < max_possible_chains; i++) {
         if (config["chain" + std::to_string(i)]) {
+            YAML::Node chain_node = config["chain" + std::to_string(i)];
             std::vector<int> chain_curr;
-            for (size_t j = 0; j < config["chain" + std::to_string(i)].size();
-                 j++) {
-                chain_curr.push_back(
-                    config["chain" + std::to_string(i)][j].as<int>());
-            }
+            if (chain_node["nodes"]) {
+                chain_curr = chain_node["nodes"].as<std::vector<int>>();
+            } else
+                std::cout << "No nodes in " << path << std::endl;
             chains.push_back(chain_curr);
         } else
             break;
@@ -212,7 +210,7 @@ DAG_Model ReadDAG_Tasks(std::string path, int max_possible_chains) {
 void WriteDAG_Tasks_chains(std::string path, const DAG_Model& dag_tasks) {
     YAML::Node chains;
     for (uint i = 0; i < dag_tasks.chains_.size(); i++) {
-        chains["chain" + std::to_string(i)] = dag_tasks.chains_[i];
+        chains["chain" + std::to_string(i)]["nodes"] = dag_tasks.chains_[i];
     }
     std::ofstream fout(path, std::ios_base::app | std::ios_base::out);
     fout << "\n\n";
@@ -234,8 +232,7 @@ bool WhetherDAGChainsShareNodes(const DAG_Model& dag_tasks) {
         for (const auto& chain_compare : chains) {
             if (chain_curr != chain_compare) {
                 for (int y : chain_compare)
-                    if (record_curr.find(y) != record_curr.end())
-                        return true;
+                    if (record_curr.find(y) != record_curr.end()) return true;
             }
         }
     }
