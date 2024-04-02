@@ -44,7 +44,7 @@ class TaskSetForTest_2tasks1chain : public ::testing::Test {
         tasks.push_back(Task(0, dist_vec1, 5, 5, 0));
         tasks.push_back(Task(1, dist_vec2, 10, 10, 1));
 
-        dag_tasks = DAG_Model(tasks, {{0, 1}}, {1e3, 1e3});
+        dag_tasks = DAG_Model(tasks, {{0, 1}}, {10});
         sp_parameters = SP_Parameters(dag_tasks);
     }
 
@@ -78,7 +78,8 @@ TEST_F(TaskSetForTest_2tasks1chain, GetRTDA_Dist_AllChains) {
 
 TEST_F(TaskSetForTest_2tasks1chain, SP_Calculation_dag) {
     double sp_actual_dag = ObtainSP_DAG(dag_tasks, sp_parameters);
-    double penalty = 0.18 + 0.21 + 0.09 + 0.07 + 0.03 - 0.5;
+    double penalty =
+        0.18 + 0.21 + 0.09 + 0.07 + 0.03 - 0.5;  // for end-to-end latency
     double sp_expected_dag =
         log(1 + 0.5) + log(1 + 0.5 - 0.003) + -0.01 * exp(10 * abs(penalty));
     EXPECT_NEAR(sp_expected_dag, sp_actual_dag, 1e-8);

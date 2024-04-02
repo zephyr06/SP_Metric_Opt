@@ -3,9 +3,9 @@
 
 namespace SP_OPT_PA {
 std::vector<double> GetChainsDDL(const DAG_Model& dag_tasks) {
-    std::vector<double> chains_ddl(dag_tasks.chains_.size(),
-                                   HyperPeriod(dag_tasks.tasks));
-    return chains_ddl;
+    // std::vector<double> chains_ddl(dag_tasks.chains_.size(),
+    //                                HyperPeriod(dag_tasks.tasks));
+    return dag_tasks.chains_deadlines_;
 }
 
 double ObtainSP(const std::vector<FiniteDist>& dists,
