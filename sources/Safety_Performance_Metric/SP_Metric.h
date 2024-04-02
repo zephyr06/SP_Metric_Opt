@@ -32,4 +32,8 @@ double ObtainSP_TaskSet(const TaskSet& tasks,
 
 double ObtainSP_DAG(const DAG_Model& dag_tasks,
                     const SP_Parameters& sp_parameters);
+double ObtainSP_DAG_From_Dists(
+    const DAG_Model& dag_tasks, const SP_Parameters& sp_parameters,
+    const std::vector<FiniteDist>& node_rts_dists,
+    const std::vector<FiniteDist>& path_latency_dists);
 }  // namespace SP_OPT_PA

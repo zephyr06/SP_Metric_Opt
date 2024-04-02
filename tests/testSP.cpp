@@ -110,23 +110,26 @@ TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag) {
                       "TaskData/AnalyzeSP_Metric/MPC_response_time_200_210.txt";
     string tsp_path = GlobalVariables::PROJECT_PATH +
                       "TaskData/AnalyzeSP_Metric/TSP_response_time_200_210.txt";
+    string chain0_path =
+        GlobalVariables::PROJECT_PATH + "TaskData/AnalyzeSP_Metric/chain0.txt";
 
     int granularity = 10;
-    std::vector<FiniteDist> dists;
+    std::vector<FiniteDist> node_rts_dists;
     // std::string folder_path="TaskData/AnalyzeSP_Metric/";
-    dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
-    std::vector<double> deadlines =
-        GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
+    node_rts_dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
+    node_rts_dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
+    node_rts_dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
+    node_rts_dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
+
+    std::vector<FiniteDist> path_latency_dists;
+    path_latency_dists.push_back(
+        FiniteDist(ReadTxtFile(chain0_path), granularity));
 
     SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
-    double sp_metric_val =
-        ObtainSP(dists, deadlines, sp_parameters.thresholds_node,
-                 sp_parameters.weights_node);
+    double sp_metric_val = ObtainSP_DAG_From_Dists(
+        dag_tasks, sp_parameters, node_rts_dists, path_latency_dists);
     cout << "SP-Metric: " << sp_metric_val << "\n";
-    EXPECT_THAT(sp_metric_val, testing::Le(-4.5));
+    EXPECT_THAT(sp_metric_val, testing::Le(-4.5 + log(1.5)));
 }
 
 TEST_F(TaskSetForTest_robotics_v1, read_sp) {}

@@ -43,4 +43,18 @@ double ObtainSP_DAG(const DAG_Model& dag_tasks,
                  sp_parameters.weights_path);
     return sp_overall;
 }
+
+double ObtainSP_DAG_From_Dists(
+    const DAG_Model& dag_tasks, const SP_Parameters& sp_parameters,
+    const std::vector<FiniteDist>& node_rts_dists,
+    const std::vector<FiniteDist>& path_latency_dists) {
+    double sp_overall =
+        ObtainSP(node_rts_dists,
+                 GetParameter<double>(dag_tasks.GetTaskSet(), "deadline"),
+                 sp_parameters.thresholds_node, sp_parameters.weights_node);
+    sp_overall +=
+        ObtainSP(path_latency_dists, GetChainsDDL(dag_tasks),
+                 sp_parameters.thresholds_path, sp_parameters.weights_path);
+    return sp_overall;
+}
 }  // namespace SP_OPT_PA

@@ -87,19 +87,20 @@ int main(int argc, char *argv[]) {
     DAG_Model dag_tasks =
         ReadDAG_Tasks(file_path_ref);  // only read the tasks without worrying
                                        // about the execution time distribution
-    std::vector<FiniteDist> dists;
+
+    SP_Parameters sp_parameters = ReadSP_Parameters(file_path_ref);
+    std::vector<FiniteDist> node_rts_dists;
     // std::string folder_path="TaskData/AnalyzeSP_Metric/";
-    dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
-    dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
+    node_rts_dists.push_back(FiniteDist(ReadTxtFile(tsp_path), granularity));
+    node_rts_dists.push_back(FiniteDist(ReadTxtFile(mpc_path), granularity));
+    node_rts_dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
+    node_rts_dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
 
-        std::vector<double> deadlines =
-        GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
+    std::vector<FiniteDist> reaction_time_dists = {
+        FiniteDist(ReadTxtFile(chain0_path), granularity)};
 
-    SP_Parameters sp_parameters = SP_Parameters(dag_tasks);
-    std::cout << "SP-Metric: "
-              << ObtainSP(dists, deadlines, sp_parameters.thresholds_node,
-                          sp_parameters.weights_node)
-              << "\n";
+    double sp_value_overall = ObtainSP_DAG_From_Dists(
+        dag_tasks, sp_parameters, node_rts_dists, reaction_time_dists);
+
+    std::cout << "SP-Metric: " << sp_value_overall << "\n";
 }
