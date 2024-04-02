@@ -37,7 +37,9 @@ chain0:
     - 0
     - 1
     - 2
+  deadline: 1000
 chain1:
   nodes:
     - 1
     - 2
+  deadline: 1000

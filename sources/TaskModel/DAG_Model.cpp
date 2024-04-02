@@ -144,7 +144,8 @@ std::vector<std::vector<int>> DAG_Model::GetRandomChains(int numOfChains,
 
     for (int sourceId : sourceIds) {
         for (int sinkId : sinkIds) {
-            if (chainCount >= numOfChains) break;
+            if (chainCount >= numOfChains)
+                break;
             auto path = shortest_paths(sourceId, sinkId, graph_);
             if (path.size() > 1) {
                 if (chain_length == 0 ||
@@ -183,7 +184,8 @@ std::vector<int> Str2VecInt(const std::string& str) {
     std::stringstream ss(str);
     for (int i; ss >> i;) {
         vect.push_back(i);
-        if (ss.peek() == ',') ss.ignore();
+        if (ss.peek() == ',')
+            ss.ignore();
     }
     return vect;
 }
@@ -192,25 +194,34 @@ DAG_Model ReadDAG_Tasks(std::string path, int max_possible_chains) {
     TaskSet tasks = ReadTaskSet(path);
     YAML::Node config = YAML::LoadFile(path);
     std::vector<std::vector<int>> chains;
+    std::vector<double> chains_deadlines;
     for (int i = 0; i < max_possible_chains; i++) {
         if (config["chain" + std::to_string(i)]) {
             YAML::Node chain_node = config["chain" + std::to_string(i)];
-            std::vector<int> chain_curr;
             if (chain_node["nodes"]) {
-                chain_curr = chain_node["nodes"].as<std::vector<int>>();
+                std::vector<int> chain_curr =
+                    chain_node["nodes"].as<std::vector<int>>();
+                chains.push_back(chain_curr);
+                if (chain_node["deadline"]) {
+                    double deadline = chain_node["deadline"].as<double>();
+                    chains_deadlines.push_back(deadline);
+                } else
+                    CoutError("No deadline in chain " + std::to_string(i) +
+                              " in " + path);
             } else
                 std::cout << "No nodes in " << path << std::endl;
-            chains.push_back(chain_curr);
         } else
             break;
     }
-    return DAG_Model(tasks, chains);
+    return DAG_Model(tasks, chains, chains_deadlines);
 }
 
 void WriteDAG_Tasks_chains(std::string path, const DAG_Model& dag_tasks) {
     YAML::Node chains;
     for (uint i = 0; i < dag_tasks.chains_.size(); i++) {
         chains["chain" + std::to_string(i)]["nodes"] = dag_tasks.chains_[i];
+        chains["chain" + std::to_string(i)]["deadline"] =
+            dag_tasks.chains_deadlines_[i];
     }
     std::ofstream fout(path, std::ios_base::app | std::ios_base::out);
     fout << "\n\n";
@@ -232,7 +243,8 @@ bool WhetherDAGChainsShareNodes(const DAG_Model& dag_tasks) {
         for (const auto& chain_compare : chains) {
             if (chain_curr != chain_compare) {
                 for (int y : chain_compare)
-                    if (record_curr.find(y) != record_curr.end()) return true;
+                    if (record_curr.find(y) != record_curr.end())
+                        return true;
             }
         }
     }

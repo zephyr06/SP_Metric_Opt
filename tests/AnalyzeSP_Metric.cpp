@@ -33,6 +33,11 @@ int main(int argc, char *argv[]) {
         .help(
             "the relative path of the yaml file that saves information about "
             "the tasks. Example: TaskData/AnalyzeSP_Metric/tsp.txt");
+    program.add_argument("--chain0_path")
+        .default_value(std::string("TaskData/AnalyzeSP_Metric/chain0.txt"))
+        .help(
+            "the relative path of the yaml file that saves information about "
+            "the tasks. Example: TaskData/AnalyzeSP_Metric/chain0.txt");
 
     // program.add_argument("--file_path")
     //     .default_value(std::string("TaskData/test_robotics_v1.yaml"))
@@ -59,13 +64,20 @@ int main(int argc, char *argv[]) {
                     program.get<std::string>("--slam_path");
 
     string rrt_path = program.get<std::string>("--rrt_path");
-    if (rrt_path[0] != '/') rrt_path = GlobalVariables::PROJECT_PATH + rrt_path;
+    if (rrt_path[0] != '/')
+        rrt_path = GlobalVariables::PROJECT_PATH + rrt_path;
 
     string mpc_path = program.get<std::string>("--mpc_path");
-    if (mpc_path[0] != '/') mpc_path = GlobalVariables::PROJECT_PATH + mpc_path;
+    if (mpc_path[0] != '/')
+        mpc_path = GlobalVariables::PROJECT_PATH + mpc_path;
 
     string tsp_path = program.get<std::string>("--tsp_path");
-    if (tsp_path[0] != '/') tsp_path = GlobalVariables::PROJECT_PATH + tsp_path;
+    if (tsp_path[0] != '/')
+        tsp_path = GlobalVariables::PROJECT_PATH + tsp_path;
+
+    string chain0_path = program.get<std::string>("--chain0_path");
+    if (chain0_path[0] != '/')
+        chain0_path = GlobalVariables::PROJECT_PATH + chain0_path;
 
     string file_path_ref = "TaskData/test_robotics_v3.yaml";
 
@@ -82,7 +94,7 @@ int main(int argc, char *argv[]) {
     dists.push_back(FiniteDist(ReadTxtFile(rrt_path), granularity));
     dists.push_back(FiniteDist(ReadTxtFile(slam_path), granularity));
 
-    std::vector<double> deadlines =
+        std::vector<double> deadlines =
         GetParameter<double>(dag_tasks.GetTaskSet(), "deadline");
 
     SP_Parameters sp_parameters = SP_Parameters(dag_tasks);

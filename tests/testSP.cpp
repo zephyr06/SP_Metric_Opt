@@ -44,7 +44,7 @@ class TaskSetForTest_2tasks1chain : public ::testing::Test {
         tasks.push_back(Task(0, dist_vec1, 5, 5, 0));
         tasks.push_back(Task(1, dist_vec2, 10, 10, 1));
 
-        dag_tasks = DAG_Model(tasks, {{0, 1}});
+        dag_tasks = DAG_Model(tasks, {{0, 1}}, {1e3, 1e3});
         sp_parameters = SP_Parameters(dag_tasks);
     }
 
@@ -128,9 +128,7 @@ TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag) {
     EXPECT_THAT(sp_metric_val, testing::Le(-4.5));
 }
 
-TEST_F(TaskSetForTest_robotics_v1, read_sp){
-    
-}
+TEST_F(TaskSetForTest_robotics_v1, read_sp) {}
 // TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag_v2) {
 //     string slam_path =
 //         GlobalVariables::PROJECT_PATH +

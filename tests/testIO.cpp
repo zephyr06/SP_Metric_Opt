@@ -39,6 +39,7 @@ TEST(read, DAG) {
     EXPECT_EQ(0, dag_tasks.chains_[0][0]);
     EXPECT_EQ(2, dag_tasks.chains_[1].size());
     EXPECT_EQ(0, dag_tasks.tasks[0].processorId);
+    EXPECT_EQ(1000, dag_tasks.chains_deadlines_[0]);
 }
 TEST(ReadSP_Parameters, V1) {
     std::string file_name = "test_robotics_v5";

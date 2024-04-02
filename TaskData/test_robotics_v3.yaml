@@ -39,3 +39,11 @@ tasks:
     name: SLAM
     sp_threshold: 0.5
     sp_Weight: 1
+chain0:
+  nodes:
+    - 3
+    - 2
+    - 1
+  sp_threshold: 0.5
+  sp_Weight: 1
+  deadline: 10000

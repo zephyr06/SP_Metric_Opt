@@ -57,10 +57,13 @@ class DAG_Model {
         RecordTaskPosition();
         std::tie(graph_, indexesBGL_) = GenerateGraphForTaskSet();
         chains_ = GetRandomChains(numCauseEffectChain, chain_length);
+        SetDefaultChainDeadlines();
         CategorizeTaskSet();
     }
-    DAG_Model(TaskSet &tasks, const std::vector<std::vector<int>> &chains)
-        : tasks(tasks), chains_(chains) {
+    DAG_Model(TaskSet &tasks, const std::vector<std::vector<int>> &chains,
+              const std::vector<double> chains_deadlines)
+        : tasks(tasks), chains_(chains), chains_deadlines_(chains_deadlines) {
+        SetDefaultChainDeadlines();
         RecordTaskPosition();
         CategorizeTaskSet();
     }
@@ -80,7 +83,15 @@ class DAG_Model {
     std::vector<std::vector<int>> GetRandomChains(int numOfChains,
                                                   int chain_length = 0);
 
-    void SetChains(std::vector<std::vector<int>> &chains) { chains_ = chains; }
+    void SetChains(std::vector<std::vector<int>> &chains) {
+        chains_ = chains;
+        SetDefaultChainDeadlines();
+    }
+
+    void SetDefaultChainDeadlines() {
+        if (chains_deadlines_.empty())
+            chains_deadlines_ = std::vector<double>(chains_.size(), 1e9);
+    }
     std::vector<int> FindSourceTaskIds() const;
     std::vector<int> FindSinkTaskIds() const;
 
@@ -103,6 +114,7 @@ class DAG_Model {
     Graph graph_;
     indexVertexMap indexesBGL_;
     std::vector<std::vector<int>> chains_;
+    std::vector<double> chains_deadlines_;
     std::unordered_map<int, TaskSet> processor2taskset_;
     std::unordered_map<int, uint> task_id2task_index_within_processor_;
     std::unordered_map<int, int> task_id2position_;
