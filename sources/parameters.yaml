@@ -3,7 +3,7 @@
 TIME_LIMIT: 10 # seconds
 
 # must be no less than 1, granularity balences accuracy and speed;
-Granularity: 10
+Granularity: 5
 
 # ************** for debug purposes
 debugMode: 0

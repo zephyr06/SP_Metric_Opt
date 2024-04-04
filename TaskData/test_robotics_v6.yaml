@@ -1,0 +1,49 @@
+tasks:
+  - id: 0
+    execution_time_mu: 2002
+    execution_time_sigma: 5
+    execution_time_min: 2000
+    execution_time_max: 2031
+    period: 10000
+    deadline: 10000
+    name: TSP
+    sp_threshold: 0.5
+    sp_Weight: 1
+  - id: 1
+    execution_time_mu: 10
+    execution_time_sigma: 1
+    execution_time_min: 8
+    execution_time_max: 13
+    period: 20
+    deadline: 20
+    name: MPC
+    sp_threshold: 0.5
+    sp_Weight: 1
+  - id: 2
+    execution_time_mu: 1496
+    execution_time_sigma: 835
+    execution_time_min: 399
+    execution_time_max: 4558
+    period: 2000
+    deadline: 2000
+    name: RRT
+    sp_threshold: 0.5
+    sp_Weight: 1
+  - id: 3
+    execution_time_mu: 3290
+    execution_time_sigma: 4336
+    execution_time_min: 1174
+    execution_time_max: 17979
+    period: 1000
+    deadline: 1000
+    name: SLAM
+    sp_threshold: 0.5
+    sp_Weight: 1
+chain0:
+  nodes:
+    - 0
+    - 1
+    - 2
+  sp_threshold: 0.5
+  sp_Weight: 1
+  deadline: 1000
