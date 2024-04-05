@@ -8,7 +8,7 @@ tasks:
     deadline: 500
     name: TSP
     sp_threshold: 0.5
-    sp_Weight: 1
+    sp_Weight: 0.5
   - id: 1
     execution_time_mu: 800
     execution_time_sigma: 100

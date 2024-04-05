@@ -16,12 +16,7 @@ void OptimizePA_BF::IterateAllPAs(
         // double sp_eval = ObtainSP_DAG(dag_tasks_eval, sp_parameters_);
         double sp_eval = EvaluateSPWithPriorityVec(dag_tasks_, sp_parameters_,
                                                    priority_assignment);
-        if (GlobalVariables::debugMode == 1) {
-            std::cout << "Try PA assignments: ";
-            for (int x : priority_assignment) std::cout << x << ", ";
-            std::cout << sp_eval << "\n";
-        }
-
+        PrintPA_IfDebugMode(priority_assignment, sp_eval);
         if (sp_eval > opt_sp_) {
             opt_sp_ = sp_eval;
             opt_pa_ = priority_assignment;

@@ -7,7 +7,7 @@ Granularity: 5
 Layer_Node_During_Incremental_Optimization: 2
 
 # ************** for debug purposes
-debugMode: 0
+debugMode: 1
 printRTA: 0
 
 

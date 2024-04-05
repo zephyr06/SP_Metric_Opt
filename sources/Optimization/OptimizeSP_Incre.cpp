@@ -117,15 +117,59 @@ std::vector<int> FindTaskWithDifferentEt(const DAG_Model& dag_tasks,
     return seq;
 }
 
+PriorityVec RemoveOneTask(const PriorityVec& pa_vec, int task_id) {
+    PriorityVec res = pa_vec;
+    bool found = false;
+    for (int i = 0; i < static_cast<int>(res.size()); i++) {
+        if (res[i] == task_id) {
+            res.erase(res.begin() + i);
+            found = true;
+            break;
+        }
+    }
+    if (!found)
+        CoutError("Task not found in RemoveOneTask");
+    return res;
+}
+std::vector<PriorityVec> FindPriorityVec1D_Variations(const PriorityVec& pa_vec,
+                                                      int task_id) {
+    std::vector<PriorityVec> res;
+    res.reserve(pa_vec.size());
+    PriorityVec pa_vec_ref = RemoveOneTask(pa_vec, task_id);
+    for (int i = 0; i <= static_cast<int>(pa_vec_ref.size()); i++) {
+        PriorityVec pa_vec_new = pa_vec_ref;
+        pa_vec_new.insert(pa_vec_new.begin() + i, task_id);
+        res.push_back(pa_vec_new);
+    }
+    return res;
+}
+
 PriorityVec OptimizePA_Incre::OptimizeIncre(const DAG_Model& dag_tasks_update) {
     if (opt_pa_.size() == 0) {
         CoutError("OptimizeIncre called before OptimizeFromScratch");
     }
+    // reset optimal sp
+    opt_sp_ =
+        EvaluateSPWithPriorityVec(dag_tasks_update, sp_parameters_, opt_pa_);
+    std::cout << "Initial SP before incremental optimziation is: " << opt_sp_
+              << "\n";
     std::vector<int> tasks_with_diff_et =
         FindTaskWithDifferentEt(dag_tasks_, dag_tasks_update);
     for (int task_id : tasks_with_diff_et) {
-        
+        std::vector<PriorityVec> pa_vec_variations =
+            FindPriorityVec1D_Variations(opt_pa_, task_id);
+        for (const PriorityVec& priority_assignment : pa_vec_variations) {
+            double sp_eval = EvaluateSPWithPriorityVec(
+                dag_tasks_update, sp_parameters_, priority_assignment);
+            PrintPA_IfDebugMode(priority_assignment, sp_eval);
+            if (sp_eval > opt_sp_) {
+                opt_sp_ = sp_eval;
+                opt_pa_ = priority_assignment;
+            }
+        }
     }
-    return {};
+    std::cout << "Optimal SP after  incremental optimziation is: " << opt_sp_
+              << "\n";
+    return opt_pa_;
 }
 }  // namespace SP_OPT_PA

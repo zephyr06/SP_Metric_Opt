@@ -54,6 +54,11 @@ struct CompPriorityPath {
 std::vector<int> FindTaskWithDifferentEt(const DAG_Model& dag_tasks,
                                          const DAG_Model& dag_tasks_updated);
 
+PriorityVec RemoveOneTask(const PriorityVec& pa_vec, int task_id);
+
+std::vector<PriorityVec> FindPriorityVec1D_Variations(const PriorityVec& pa_vec,
+                                                      int task_id);
+
 class OptimizePA_Incre : public OptimimizePA_Base {
    public:
     OptimizePA_Incre(const DAG_Model& dag_tasks,

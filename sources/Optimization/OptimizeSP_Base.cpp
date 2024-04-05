@@ -29,7 +29,9 @@ TaskSet UpdateTaskSetPriorities(const TaskSet& tasks,
     TaskSet tasks_res = tasks;
     for (uint i = 0; i < priority_assignment.size(); i++) {
         if (tasks_res[priority_assignment[i]].id != priority_assignment[i])
-            CoutError("Inconsistent PA!");
+            CoutError(
+                "Input task set to UpdateTaskSetPriorities must be ordered by "
+                "task id!");
         tasks_res[priority_assignment[i]].priority = i;
     }
     SortTasksByPriority(tasks_res);
@@ -91,5 +93,15 @@ double EvaluateSPWithPriorityVec(const DAG_Model& dag_tasks,
     DAG_Model dag_tasks_eval = dag_tasks;
     dag_tasks_eval.tasks = tasks_eval;
     return ObtainSP_DAG(dag_tasks_eval, sp_parameters);
+}
+
+void PrintPA_IfDebugMode(const PriorityVec& priority_assignment,
+                         double sp_eval) {
+    if (GlobalVariables::debugMode == 1) {
+        std::cout
+            << "Try PA assignments (Task ID, high priority to low priority): ";
+        for (int x : priority_assignment) std::cout << x << ", ";
+        std::cout << sp_eval << "\n";
+    }
 }
 }  // namespace SP_OPT_PA
