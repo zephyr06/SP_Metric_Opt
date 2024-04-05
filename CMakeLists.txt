@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.0)
 project(SP_OPT CXX C)
 set (CMAKE_CXX_STANDARD 17)
 # set(CMAKE_BUILD_TYPE Debug)
-
+set(CMAKE_BUILD_TYPE DEBUG)
+  
+  
 include_directories(${CMAKE_SOURCE_DIR})
 # for unittest scripts
 set(CMAKE_WARN_DEPRECATED OFF)
