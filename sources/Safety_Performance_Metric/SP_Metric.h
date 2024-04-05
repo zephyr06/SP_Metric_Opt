@@ -22,9 +22,9 @@ inline double RewardFunc(double violate_probability, double threshold) {
 }
 inline double SP_Func(double violate_probability, double threshold) {
     if (threshold >= violate_probability)
-        return RewardFunc(violate_probability, threshold);
+        return RewardFunc(violate_probability, threshold) + 1.5;
     else
-        return PenaltyFunc(violate_probability, threshold);
+        return PenaltyFunc(violate_probability, threshold) + 1.5;
 }
 
 double ObtainSP_TaskSet(const TaskSet& tasks,
