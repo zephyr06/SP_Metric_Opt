@@ -15,4 +15,5 @@ extern int TIME_LIMIT;
 extern int printRTA;
 
 extern int Granularity;
+extern int Layer_Node_During_Incremental_Optimization;
 }  // namespace GlobalVariables

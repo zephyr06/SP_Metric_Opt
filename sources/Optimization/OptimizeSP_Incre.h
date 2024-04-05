@@ -60,15 +60,16 @@ class OptimizePA_Incre : public OptimimizePA_Base {
     // TODO: Current implementation doesn't consider end-to-end latency, need to
     // add later! One way to do it is by modifying the parameters of
     // sp_parameters
+
     PriorityVec OptimizeFromScratch(int K);
 
     PriorityVec OptimizeIncre();
 };
 
-// inline PriorityVec OptimizePA_Incre(const DAG_Model& dag_tasks,
-//                                          const SP_Parameters& sp_parameters)
-//                                          {
-//     OptimizePA_Incre opt(dag_tasks, sp_parameters);
-//     return opt.OptimizeFromScratch();
-// }
+inline PriorityVec PerformOptimizePA_Incre(const DAG_Model& dag_tasks,
+                                           const SP_Parameters& sp_parameters) {
+    OptimizePA_Incre opt(dag_tasks, sp_parameters);
+    return opt.OptimizeFromScratch(
+        GlobalVariables::Layer_Node_During_Incremental_Optimization);
+}
 }  // namespace SP_OPT_PA

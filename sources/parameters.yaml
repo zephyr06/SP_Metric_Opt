@@ -4,6 +4,7 @@ TIME_LIMIT: 10 # seconds
 
 # must be no less than 1, granularity balences accuracy and speed;
 Granularity: 5
+Layer_Node_During_Incremental_Optimization: 2
 
 # ************** for debug purposes
 debugMode: 0

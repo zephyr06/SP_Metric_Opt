@@ -13,4 +13,7 @@ int TIME_LIMIT = loaded_doc["TIME_LIMIT"].as<int>();
 int printRTA = loaded_doc["printRTA"].as<int>();
 
 int Granularity = loaded_doc["Granularity"].as<int>();
+int Layer_Node_During_Incremental_Optimization =
+    loaded_doc["Layer_Node_During_Incremental_Optimization"].as<int>();
+
 }  // namespace GlobalVariables
