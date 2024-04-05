@@ -166,7 +166,7 @@ TEST_F(TaskSetForTest_robotics_v9, GetPriorityAssignments_IncrementalOpt) {
 
     DAG_Model dag_tasks_update = ReadDAG_Tasks(
         GlobalVariables::PROJECT_PATH + "TaskData/test_robotics_v8.yaml", 5);
-    opt.OptimizeIncre(dag_tasks_update);
+    pa_vec1 = opt.OptimizeIncre(dag_tasks_update);
     EXPECT_EQ("SLAM", dag_tasks.tasks[pa_vec1[0]].name);
     EXPECT_EQ("TSP", dag_tasks.tasks[pa_vec1[1]].name);
 }

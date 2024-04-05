@@ -1,4 +1,6 @@
 
+#include <unordered_map>
+
 #include "sources/TaskModel/RegularTasks.h"
 namespace SP_OPT_PA {
 
@@ -31,21 +33,23 @@ FiniteDist GetRTA_OneTask(const Task& task_curr, const TaskSet& hp_tasks) {
     return rta_cur;
 }
 
-// input must be sorted
-// TODO: fix this input order issue;
 std::vector<FiniteDist> ProbabilisticRTA_TaskSet(const TaskSet& tasks_input) {
+    std::unordered_map<int, int> task_id_to_index;
+    for (int i = 0; i < tasks_input.size(); i++)
+        task_id_to_index[tasks_input[i].id] = i;
+
     TaskSet tasks = tasks_input;
     std::sort(tasks.begin(), tasks.end(), [](const Task& t1, const Task& t2) {
         return t1.priority < t2.priority;
     });
     int n = tasks.size();
-    std::vector<FiniteDist> rtas;
-    rtas.reserve(n);
+    std::vector<FiniteDist> rtas(n);
     TaskSet hp_tasks;
     hp_tasks.reserve(n - 1);
     for (int i = 0; i < n; i++) {
         FiniteDist rta_curr = GetRTA_OneTask(tasks[i], hp_tasks);
-        rtas.push_back(rta_curr);
+        // rtas.push_back(rta_curr);
+        rtas[task_id_to_index[tasks[i].id]] = rta_curr;
         hp_tasks.push_back(tasks[i]);
     }
     return rtas;
