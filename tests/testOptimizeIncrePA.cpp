@@ -133,6 +133,23 @@ class TaskSetForTest_robotics_v9 : public ::testing::Test {
     int N = dag_tasks.tasks.size();
 };
 
+TEST_F(TaskSetForTest_robotics_v8, FindTaskWithDifferentEt) {
+    OptimizePA_Incre opt(dag_tasks, sp_parameters);
+    PriorityVec pa_vec1 = opt.OptimizeFromScratch(2);
+    EXPECT_EQ("SLAM", dag_tasks.tasks[pa_vec1[0]].name);
+    EXPECT_EQ("TSP", dag_tasks.tasks[pa_vec1[1]].name);
+}
+TEST_F(TaskSetForTest_robotics_v7, FindPriorityVec1D_Variations) {
+    OptimizePA_Incre opt(dag_tasks, sp_parameters);
+    PriorityVec pa_vec1 = {0, 1, 2, 3};
+    std::vector<PriorityVec> res = FindPriorityVec1D_Variations(pa_vec1, 0);
+    EXPECT_EQ(4, res.size());
+    AssertEqualVectorExact<int>({0, 1, 2, 3}, res[0], 1e-3, __LINE__);
+    AssertEqualVectorExact<int>({1, 0, 2, 3}, res[1], 1e-3, __LINE__);
+    AssertEqualVectorExact<int>({1, 2, 0, 3}, res[2], 1e-3, __LINE__);
+    AssertEqualVectorExact<int>({1, 2, 3, 0}, res[3], 1e-3, __LINE__);
+}
+
 TEST_F(TaskSetForTest_robotics_v8, AssignAndUpdateSP) {
     dag_tasks.tasks[0].priority = 2;
     dag_tasks.tasks[1].priority = 1;  // SLAM has high priority
@@ -152,12 +169,6 @@ TEST_F(TaskSetForTest_robotics_v8, AssignAndUpdateSP) {
     EXPECT_NEAR(sp_ref, priority_path.sp, 1e-6);
 }
 
-TEST_F(TaskSetForTest_robotics_v8, FindTaskWithDifferentEt) {
-    OptimizePA_Incre opt(dag_tasks, sp_parameters);
-    PriorityVec pa_vec1 = opt.OptimizeFromScratch(2);
-    EXPECT_EQ("SLAM", dag_tasks.tasks[pa_vec1[0]].name);
-    EXPECT_EQ("TSP", dag_tasks.tasks[pa_vec1[1]].name);
-}
 TEST_F(TaskSetForTest_robotics_v9, GetPriorityAssignments_IncrementalOpt) {
     OptimizePA_Incre opt(dag_tasks, sp_parameters);
     PriorityVec pa_vec1 = opt.OptimizeFromScratch(2);
@@ -171,16 +182,6 @@ TEST_F(TaskSetForTest_robotics_v9, GetPriorityAssignments_IncrementalOpt) {
     EXPECT_EQ("TSP", dag_tasks.tasks[pa_vec1[1]].name);
 }
 
-TEST_F(TaskSetForTest_robotics_v7, FindPriorityVec1D_Variations) {
-    OptimizePA_Incre opt(dag_tasks, sp_parameters);
-    PriorityVec pa_vec1 = {0, 1, 2, 3};
-    std::vector<PriorityVec> res = FindPriorityVec1D_Variations(pa_vec1, 0);
-    EXPECT_EQ(4, res.size());
-    AssertEqualVectorExact<int>({0, 1, 2, 3}, res[0], 1e-3, __LINE__);
-    AssertEqualVectorExact<int>({1, 0, 2, 3}, res[1], 1e-3, __LINE__);
-    AssertEqualVectorExact<int>({1, 2, 0, 3}, res[2], 1e-3, __LINE__);
-    AssertEqualVectorExact<int>({1, 2, 3, 0}, res[3], 1e-3, __LINE__);
-}
 int main(int argc, char** argv) {
     // ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);
