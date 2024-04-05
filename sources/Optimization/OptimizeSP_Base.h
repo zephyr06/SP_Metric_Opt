@@ -41,4 +41,7 @@ class OptimimizePA_Base {
     TimerType start_time_;
 };
 
+double EvaluateSPWithPriorityVec(const DAG_Model& dag_tasks,
+                                 const SP_Parameters& sp_parameters,
+                                 const PriorityVec& priority_assignment);
 }  // namespace SP_OPT_PA

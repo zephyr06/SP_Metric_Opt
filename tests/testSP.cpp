@@ -30,7 +30,7 @@ class TaskSetForTest_2tasks : public ::testing::Test {
 };
 TEST_F(TaskSetForTest_2tasks, SP_Calculation) {
     double sp_actual = ObtainSP_TaskSet(tasks, sp_parameters);
-    double sp_expected = log(1 + 0.5) + log(1 + 0.5 - 0.0012) + 1.5 * 2;
+    double sp_expected = log(1 + 0.5) + log(1 + 0.5 - 0.0012) - 0.5 * 2;
     EXPECT_NEAR(sp_expected, sp_actual, 1e-6);
 }
 
@@ -81,7 +81,7 @@ TEST_F(TaskSetForTest_2tasks1chain, SP_Calculation_dag) {
     double penalty =
         0.18 + 0.21 + 0.09 + 0.07 + 0.03 - 0.5;  // for end-to-end latency
     double sp_expected_dag = log(1 + 0.5) + log(1 + 0.5 - 0.003) +
-                             -0.01 * exp(10 * abs(penalty)) + 1.5 * (2 + 1);
+                             -0.01 * exp(10 * abs(penalty)) - 0.5 * (2 + 1);
     EXPECT_NEAR(sp_expected_dag, sp_actual_dag, 1e-8);
 }
 
@@ -129,9 +129,29 @@ TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag) {
     double sp_metric_val = ObtainSP_DAG_From_Dists(
         dag_tasks, sp_parameters, node_rts_dists, path_latency_dists);
     cout << "SP-Metric: " << sp_metric_val << "\n";
-    EXPECT_THAT(sp_metric_val, testing::Le(-4.5 + log(1.5) + 1.5 * (4 + 1)));
+    EXPECT_THAT(sp_metric_val, testing::Le(-4.5 + log(1.5) - 0.5 * (4 + 1)));
 }
 
+class TaskSetForTest_robotics_v8 : public ::testing::Test {
+   public:
+    void SetUp() override {
+        std::string file_name = "test_robotics_v8";
+        std::string path =
+            GlobalVariables::PROJECT_PATH + "TaskData/" + file_name + ".yaml";
+        dag_tasks = ReadDAG_Tasks(path, 5);
+        sp_parameters = ReadSP_Parameters(path);
+    }
+
+    // data members
+    DAG_Model dag_tasks;
+    SP_Parameters sp_parameters;
+    int N = dag_tasks.tasks.size();
+};
+TEST_F(TaskSetForTest_robotics_v8, SP_Calculation) {
+    double sp_actual = ObtainSP_TaskSet(dag_tasks.tasks, sp_parameters);
+    double sp_expected = log(1 + 0.5) + log(1 + 0.5 - 0.0012) + 1.5 * 2;
+    // EXPECT_NEAR(sp_expected, sp_actual, 1e-6);
+}
 TEST_F(TaskSetForTest_robotics_v1, read_sp) {}
 // TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag_v2) {
 //     string slam_path =

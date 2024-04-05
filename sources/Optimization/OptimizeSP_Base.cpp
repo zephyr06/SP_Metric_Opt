@@ -82,4 +82,14 @@ void WritePriorityAssignments(std::string path, const TaskSet& tasks,
         std::cerr << "Unable to open the file: " << path << std::endl;
     }
 }
+
+double EvaluateSPWithPriorityVec(const DAG_Model& dag_tasks,
+                                 const SP_Parameters& sp_parameters,
+                                 const PriorityVec& priority_assignment) {
+    TaskSet tasks_eval =
+        UpdateTaskSetPriorities(dag_tasks.tasks, priority_assignment);
+    DAG_Model dag_tasks_eval = dag_tasks;
+    dag_tasks_eval.tasks = tasks_eval;
+    return ObtainSP_DAG(dag_tasks_eval, sp_parameters);
+}
 }  // namespace SP_OPT_PA

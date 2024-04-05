@@ -8,12 +8,14 @@ void OptimizePA_BF::IterateAllPAs(
     if (ifTimeout(start_time_))
         return;
     if (start == N) {
-        TaskSet tasks_eval =
-            UpdateTaskSetPriorities(dag_tasks_.tasks, priority_assignment);
-        DAG_Model dag_tasks_eval = dag_tasks_;
-        dag_tasks_eval.tasks = tasks_eval;
+        // TaskSet tasks_eval =
+        //     UpdateTaskSetPriorities(dag_tasks_.tasks, priority_assignment);
+        // DAG_Model dag_tasks_eval = dag_tasks_;
+        // dag_tasks_eval.tasks = tasks_eval;
 
-        double sp_eval = ObtainSP_DAG(dag_tasks_eval, sp_parameters_);
+        // double sp_eval = ObtainSP_DAG(dag_tasks_eval, sp_parameters_);
+        double sp_eval = EvaluateSPWithPriorityVec(dag_tasks_, sp_parameters_,
+                                                   priority_assignment);
         if (GlobalVariables::debugMode == 1) {
             std::cout << "Try PA assignments: ";
             for (int x : priority_assignment) std::cout << x << ", ";
