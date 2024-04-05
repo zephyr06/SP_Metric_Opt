@@ -56,7 +56,8 @@ TEST_F(TaskSetForTest_2tasks, Optimize_bf) {
     tasks[0].id = 0;
     tasks[1] = task_t;
     tasks[1].id = 1;
-    sp_parameters.thresholds_node = {0, 0};
+    sp_parameters.thresholds_node[0] = 0;
+    sp_parameters.thresholds_node[1] = 0;
     DAG_Model dag_tasks(tasks, {}, {});
     PriorityVec pa_opt = OptimizePA_BruteForce(dag_tasks, sp_parameters);
     EXPECT_EQ(5, tasks[pa_opt[0]].period);

@@ -9,10 +9,13 @@ namespace SP_OPT_PA {
 
 std::vector<double> GetChainsDDL(const DAG_Model& dag_tasks);
 
-double ObtainSP(const std::vector<FiniteDist>& dists,
-                const std::vector<double>& deadline,
-                const std::vector<double>& ddl_miss_thresholds,
-                const std::vector<double>& weights);
+// double ObtainSP(const std::vector<FiniteDist>& dists,
+//                 const std::vector<double>& deadline,
+//                 const std::vector<double>& ddl_miss_thresholds,
+//                 const std::vector<double>& weights);
+
+double ObtainSP(const FiniteDist& dist, double deadline,
+                double ddl_miss_threshold, double weight);
 
 inline double PenaltyFunc(double violate_probability, double threshold) {
     return -0.01 * exp(10 * abs(threshold - violate_probability));
@@ -32,6 +35,8 @@ double ObtainSP_TaskSet(const TaskSet& tasks,
 
 double ObtainSP_DAG(const DAG_Model& dag_tasks,
                     const SP_Parameters& sp_parameters);
+                    
+// assume the order of all the vectors are matched!!!
 double ObtainSP_DAG_From_Dists(
     const DAG_Model& dag_tasks, const SP_Parameters& sp_parameters,
     const std::vector<FiniteDist>& node_rts_dists,

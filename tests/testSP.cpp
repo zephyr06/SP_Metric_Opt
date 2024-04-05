@@ -147,11 +147,11 @@ class TaskSetForTest_robotics_v8 : public ::testing::Test {
     SP_Parameters sp_parameters;
     int N = dag_tasks.tasks.size();
 };
-TEST_F(TaskSetForTest_robotics_v8, SP_Calculation) {
-    double sp_actual = ObtainSP_TaskSet(dag_tasks.tasks, sp_parameters);
-    double sp_expected = log(1 + 0.5) + log(1 + 0.5 - 0.0012) + 1.5 * 2;
-    // EXPECT_NEAR(sp_expected, sp_actual, 1e-6);
-}
+// TEST_F(TaskSetForTest_robotics_v8, SP_Calculation) {
+//     double sp_actual = ObtainSP_TaskSet(dag_tasks.tasks, sp_parameters);
+//     double sp_expected = log(1 + 0.5) + log(1 + 0.5 - 0.0012) + 1.5 * 2;
+//     // EXPECT_NEAR(sp_expected, sp_actual, 1e-6);
+// }
 TEST_F(TaskSetForTest_robotics_v1, read_sp) {}
 // TEST_F(TaskSetForTest_robotics_v1, SP_Calculation_dag_v2) {
 //     string slam_path =

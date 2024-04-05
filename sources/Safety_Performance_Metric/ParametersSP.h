@@ -8,14 +8,16 @@ namespace SP_OPT_PA {
 struct SP_Parameters {
     SP_Parameters() {}
     SP_Parameters(const TaskSet& tasks) {
-        thresholds_node = std::vector<double>(tasks.size(), 0.5);
-        weights_node = std::vector<double>(tasks.size(), 1);
+        for (uint i = 0; i < tasks.size(); i++) {
+            thresholds_node[tasks[i].id] = 0.5;
+            weights_node[tasks[i].id] = 1;
+        }
     }
-    SP_Parameters(const DAG_Model& dag_tasks) {
-        thresholds_node = std::vector<double>(dag_tasks.tasks.size(), 0.5);
-        weights_node = std::vector<double>(dag_tasks.tasks.size(), 1);
-        thresholds_path = std::vector<double>(dag_tasks.chains_.size(), 0.5);
-        weights_path = std::vector<double>(dag_tasks.chains_.size(), 1);
+    SP_Parameters(const DAG_Model& dag_tasks) : SP_Parameters(dag_tasks.tasks) {
+        for (uint i = 0; i < dag_tasks.chains_.size(); i++) {
+            thresholds_path[i] = 0.5;
+            weights_path[i] = 1;
+        }
     }
 
     void reserve(size_t size) {
@@ -26,10 +28,14 @@ struct SP_Parameters {
     }
 
     // data
-    std::vector<double> thresholds_node;
-    std::vector<double> weights_node;
-    std::vector<double> thresholds_path;
-    std::vector<double> weights_path;
+    // std::vector<double> thresholds_node;
+    // std::vector<double> weights_node;
+    // std::vector<double> thresholds_path;
+    // std::vector<double> weights_path;
+    std::unordered_map<int, double> thresholds_node;
+    std::unordered_map<int, double> weights_node;
+    std::unordered_map<int, double> thresholds_path;
+    std::unordered_map<int, double> weights_path;
 };
 
 SP_Parameters ReadSP_Parameters(const std::string& filename);

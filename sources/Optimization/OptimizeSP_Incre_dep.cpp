@@ -59,7 +59,7 @@ bool OptimizePA_Incre::SameChains(const std::vector<int>& chain) const {
     }
     return true;
 }
-
+// IMPORTANT TODO: do not change order anywhere
 std::vector<FiniteDist> OptimizePA_Incre::ProbabilisticRTA_TaskSet(
     const PriorityVec& priority_assignment, const TaskSet& tasks_input) {
     if (!prev_sp_rec_.count(priority_assignment))
@@ -131,20 +131,13 @@ double OptimizePA_Incre::EvalAndRecordSP(const PriorityVec& priority_assignment,
     // task set SP
     std::vector<FiniteDist> rtas_task_set = ProbabilisticRTA_TaskSet(
         priority_assignment, dag_tasks_eval.GetTaskSet());
-    std::vector<double> deadlines_task_set =
-        GetParameter<double>(dag_tasks_eval.GetTaskSet(), "deadline");
 
     // chain SP
     std::vector<FiniteDist> reaction_time_dists =
         GetRTDA_Dist_AllChains<ObjReactionTime>(priority_assignment,
                                                 dag_tasks_eval);
-    std::vector<double> chains_ddl = GetChainsDDL(dag_tasks_eval);
-    return ObtainSP(rtas_task_set, deadlines_task_set,
-                    sp_parameters_.thresholds_node,
-                    sp_parameters_.weights_node) +
-           ObtainSP(reaction_time_dists, chains_ddl,
-                    sp_parameters_.thresholds_path,
-                    sp_parameters_.weights_path);
+    return ObtainSP_DAG_From_Dists(dag_tasks_, sp_parameters_, rtas_task_set,
+                                   reaction_time_dists);
 }
 
 void OptimizePA_Incre::IterateAllPAs(

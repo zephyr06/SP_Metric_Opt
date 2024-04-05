@@ -20,7 +20,7 @@ struct PriorityPartialPath {
     }
     inline int GetTaskWeight(size_t i) const {
         AssertValidIndex(i);
-        return sp_parameters.weights_node[pa_vec_lower_pri[i]];
+        return sp_parameters.weights_node.at(pa_vec_lower_pri[i]);
     }
     inline int GetTaskPeriod(size_t i) const {
         AssertValidIndex(i);
