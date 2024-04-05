@@ -60,7 +60,6 @@ class OptimizePA_Incre : public OptimimizePA_Base {
     // TODO: Current implementation doesn't consider end-to-end latency, need to
     // add later! One way to do it is by modifying the parameters of
     // sp_parameters
-
     PriorityVec OptimizeFromScratch(int K);
 
     PriorityVec OptimizeIncre();
