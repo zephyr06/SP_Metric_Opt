@@ -68,25 +68,7 @@ class FiniteDist : public ProbabilityDistributionBase {
    public:
     FiniteDist() {}
     FiniteDist(const GaussianDist& gauss_dist, double min_val, double max_val,
-               int granularity)
-        : min_time(min_val), max_time(max_val) {
-        distribution.reserve(granularity);
-        if (granularity < 1)
-            CoutError("Invalid granularity!");
-
-        double step = (max_val - min_val) / (double(granularity) - 1);
-        distribution.push_back(Value_Proba(min_val, gauss_dist.CDF(min_val)));
-        if (step > 0) {
-            for (double execution_time = min_val + step;
-                 execution_time <= max_val; execution_time += step) {
-                double chance = gauss_dist.CDF(execution_time) -
-                                gauss_dist.CDF(execution_time - step);
-                distribution.push_back(Value_Proba(execution_time, chance));
-            }
-        } else {
-            distribution = {Value_Proba(min_val, 1.0)};
-        }
-    }
+               int granularity);
 
     FiniteDist(const GaussianDist& gauss_dist, int granularity)
         : FiniteDist(gauss_dist, gauss_dist.mu - 2.3263 * gauss_dist.sigma,
@@ -98,6 +80,7 @@ class FiniteDist : public ProbabilityDistributionBase {
 
     FiniteDist(const std::vector<double>& data_raw, int granularity);
 
+    void CheckDistributionValid() const;
     void UpdateDistribution(
         const std::vector<Value_Proba>& distribution_input) {
         distribution = distribution_input;

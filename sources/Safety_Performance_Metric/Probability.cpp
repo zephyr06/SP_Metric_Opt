@@ -10,6 +10,34 @@ std::unordered_map<double, double> FiniteDist::GetV_PMap() const {
     return m;
 }
 
+FiniteDist::FiniteDist(const GaussianDist& gauss_dist, double min_val,
+                       double max_val, int granularity)
+    : min_time(min_val), max_time(max_val) {
+    distribution.reserve(granularity);
+    if (granularity < 1)
+        CoutError("Invalid granularity!");
+
+    double step = (max_val - min_val) / (double(granularity) - 1);
+    distribution.push_back(Value_Proba(min_val, gauss_dist.CDF(min_val)));
+    if (step > 0) {
+        for (double execution_time = min_val + step; execution_time < max_val;
+             execution_time += step) {
+            double chance = gauss_dist.CDF(execution_time) -
+                            gauss_dist.CDF(execution_time - step);
+            distribution.push_back(Value_Proba(execution_time, chance));
+        }
+
+        double sum_probability_added = 0;
+        for (const Value_Proba& vp : distribution)
+            sum_probability_added += vp.probability;
+        distribution.push_back(
+            Value_Proba(max_val, 1.0 - sum_probability_added));
+    } else {
+        distribution = {Value_Proba(min_val, 1.0)};
+    }
+    CheckDistributionValid();
+}
+
 // O(n log(n))
 void FiniteDist::UpdateDistribution(
     const std::unordered_map<double, double>& m_v2p) {
@@ -168,7 +196,11 @@ FiniteDist::FiniteDist(const std::vector<double>& data_raw,
                     Value_Proba(val, double(count) / data_size));
         }
     }
+    CheckDistributionValid();
+    UpdateDistribution(distribution);
+}
 
+void FiniteDist::CheckDistributionValid() const {
     double sum = 0;
     for (int i = 0; i < distribution.size(); i++) {
         sum += distribution[i].probability;
@@ -177,7 +209,6 @@ FiniteDist::FiniteDist(const std::vector<double>& data_raw,
         CoutError("Error in FiniteDist constructor: sum of probabilities is " +
                   std::to_string(sum));
     }
-    UpdateDistribution(distribution);
 }
 
 double FiniteDist::CDF(double x) const {
