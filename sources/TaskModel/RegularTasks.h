@@ -22,6 +22,7 @@ inline bool CompareStringNoCase(const std::string& s1, const std::string s2) {
 class Task {
    public:
     // Task() {}
+    // Default priority assignment is the index of the task in TaskSet
     Task(int id, const FiniteDist& exec, double period, double ddl,
          double priority, std::string name = "")
         : id(id),
@@ -71,7 +72,7 @@ class Task {
     int period;  // must be integer for the system simulation to work; if not
                  // integer, must be scaled to be so;
     double deadline;
-    double priority;
+    double priority;   // smaller value mean higher priority
     std::string name;  // optional
     int processorId;
 

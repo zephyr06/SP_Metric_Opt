@@ -39,7 +39,7 @@ void OptimizePA_BF::IterateAllPAs(
 }
 
 PriorityVec OptimizePA_BF::Optimize() {
-    double initial_sp = ObtainSP_TaskSet(dag_tasks_.tasks, sp_parameters_);
+    double initial_sp = ObtainSP_DAG(dag_tasks_, sp_parameters_);
     PriorityVec pa = {};
     std::unordered_set<int> tasks_assigned_priority;
     opt_sp_ = initial_sp;
