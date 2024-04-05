@@ -51,6 +51,9 @@ struct CompPriorityPath {
                     const PriorityPartialPath& rhs) const;
 };
 
+std::vector<int> FindTaskWithDifferentEt(const DAG_Model& dag_tasks,
+                                         const DAG_Model& dag_tasks_updated);
+
 class OptimizePA_Incre : public OptimimizePA_Base {
    public:
     OptimizePA_Incre(const DAG_Model& dag_tasks,
@@ -62,7 +65,7 @@ class OptimizePA_Incre : public OptimimizePA_Base {
     // sp_parameters
     PriorityVec OptimizeFromScratch(int K);
 
-    PriorityVec OptimizeIncre();
+    PriorityVec OptimizeIncre(const DAG_Model& dag_tasks_update);
 };
 
 inline PriorityVec PerformOptimizePA_Incre(const DAG_Model& dag_tasks,

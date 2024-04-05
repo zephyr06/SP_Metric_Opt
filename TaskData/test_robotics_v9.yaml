@@ -1,0 +1,21 @@
+tasks:
+  - id: 0
+    execution_time_mu: 200
+    execution_time_sigma: 5
+    execution_time_min: 200
+    execution_time_max: 200
+    period: 500
+    deadline: 500
+    name: TSP
+    sp_threshold: 0.5
+    sp_Weight: 0.5
+  - id: 1
+    execution_time_mu: 400
+    execution_time_sigma: 100
+    execution_time_min: 200
+    execution_time_max: 600
+    period: 1000
+    deadline: 1000
+    name: SLAM
+    sp_threshold: 0.5
+    sp_Weight: 1

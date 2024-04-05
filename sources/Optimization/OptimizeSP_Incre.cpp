@@ -22,49 +22,49 @@ PriorityPartialPath::PriorityPartialPath(const DAG_Model& dag_tasks,
 
 bool CompPriorityPath::operator()(const PriorityPartialPath& lhs,
                                   const PriorityPartialPath& rhs) const {
-    if (std::abs((lhs.sp - rhs.sp) / lhs.sp) > 5e-2) {
+    if (std::abs((lhs.sp - rhs.sp)) > 5e-2) {
         return lhs.sp < rhs.sp;  // large sp value first
     } else {
-        if (std::abs((lhs.sp - rhs.sp) / lhs.sp) > 5e-2) {
-            return lhs.sp < rhs.sp;  // large sp value first
-        } else {
-            for (int i = 0; i < lhs.pa_vec_lower_pri.size(); i++) {
-                if (lhs.pa_vec_lower_pri[i] != rhs.pa_vec_lower_pri[i]) {
-                    if (lhs.GetTaskWeight(i) != rhs.GetTaskWeight(i)) {
-                        return lhs.GetTaskWeight(i) >
-                               rhs.GetTaskWeight(i);  // assign low priority
-                                                      // to tasks with small
-                                                      // weight
-                    } else {
-                        return lhs.GetTaskMinEt(i) <
-                               rhs.GetTaskMinEt(i);  // assign low priority
-                                                     // to tasks with long ET
-                    }
+        for (int i = 0; i < lhs.pa_vec_lower_pri.size(); i++) {
+            if (lhs.pa_vec_lower_pri[i] != rhs.pa_vec_lower_pri[i]) {
+                if (lhs.GetTaskWeight(i) != rhs.GetTaskWeight(i)) {
+                    return lhs.GetTaskWeight(i) >
+                           rhs.GetTaskWeight(i);  // assign low priority
+                                                  // to tasks with small
+                                                  // weight
+                } else {
+                    return lhs.GetTaskMinEt(i) <
+                           rhs.GetTaskMinEt(i);  // assign low priority
+                                                 // to tasks with long ET
                 }
             }
-            return true;  // should never happen, actually
         }
+        return true;  // should never happen, actually
     }
 }
 
 void PriorityPartialPath::UpdateSP(int task_id) {
     TaskSet hp_tasks;
     hp_tasks.reserve(tasks_to_assign.size());
-    for (int task_id : tasks_to_assign) {
-        hp_tasks.push_back(dag_tasks.tasks[task_id]);
+    for (int task_hp_id : tasks_to_assign) {
+        hp_tasks.push_back(dag_tasks.tasks[task_hp_id]);
     }
     FiniteDist rta_curr = GetRTA_OneTask(dag_tasks.tasks[task_id], hp_tasks);
-    sp += ObtainSP({rta_curr}, {dag_tasks.tasks[task_id].deadline},
-                   {sp_parameters.thresholds_node[task_id]},
-                   {sp_parameters.weights_node[task_id]});
+    sp += ObtainSP(
+        {rta_curr}, {dag_tasks.tasks[task_id].deadline},
+        {sp_parameters.thresholds_node[task_id]},
+        {1.0 * sp_parameters
+                   .weights_node[task_id]});  // use inverse weight to prevent
+                                              // assigning tasks with high
+                                              // weights a lower priority
 }
 
 void PriorityPartialPath::AssignAndUpdateSP(int task_id) {
     if (tasks_to_assign.count(task_id)) {
+        tasks_to_assign.erase(task_id);
         UpdateSP(task_id);
 
         pa_vec_lower_pri.push_back(task_id);
-        tasks_to_assign.erase(task_id);
     } else
         CoutError("Task" + std::to_string(task_id) + " already assigned");
 }
@@ -100,8 +100,31 @@ PriorityVec OptimizePA_Incre::OptimizeFromScratch(int K) {
     }
     PriorityVec res = partial_paths[0].pa_vec_lower_pri;
     std::reverse(res.begin(), res.end());
+    opt_pa_ = res;
     return res;
 }
 
-PriorityVec OptimizePA_Incre::OptimizeIncre() { return {0, 1, 2, 3}; }
+std::vector<int> FindTaskWithDifferentEt(const DAG_Model& dag_tasks,
+                                         const DAG_Model& dag_tasks_updated) {
+    std::vector<int> seq;
+    seq.reserve(dag_tasks.tasks.size());
+    for (int i = 0; i < dag_tasks.tasks.size(); i++) {
+        if (dag_tasks.tasks[i].execution_time_dist !=
+            dag_tasks_updated.tasks[i].execution_time_dist) {
+            seq.push_back(i);
+        }
+    }
+    return seq;
+}
+
+PriorityVec OptimizePA_Incre::OptimizeIncre(const DAG_Model& dag_tasks_update) {
+    if (opt_pa_.size() == 0) {
+        CoutError("OptimizeIncre called before OptimizeFromScratch");
+    }
+    std::vector<int> tasks_with_diff_et =
+        FindTaskWithDifferentEt(dag_tasks_, dag_tasks_update);
+    for (int task_id : tasks_with_diff_et) {
+    }
+    return {};
+}
 }  // namespace SP_OPT_PA
